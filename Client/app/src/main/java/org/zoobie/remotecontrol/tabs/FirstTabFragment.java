@@ -1,6 +1,7 @@
-package org.zoobie.pomd.remotecontrol.fragment.tabs;
+package org.zoobie.remotecontrol.tabs;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -12,9 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.zoobie.pomd.remotecontrol.R;
-import org.zoobie.pomd.remotecontrol.core.controller.TouchPadController;
-import org.zoobie.pomd.remotecontrol.core.listener.TouchPadKeysListener;
-import org.zoobie.pomd.remotecontrol.core.listener.TouchPadListener;
+import org.zoobie.remotecontrol.core.connection.Server;
+import org.zoobie.remotecontrol.core.listener.TouchPadKeysListener;
+import org.zoobie.remotecontrol.core.listener.TouchPadListener;
 
 public class FirstTabFragment extends androidx.fragment.app.Fragment {
 
@@ -24,7 +25,6 @@ public class FirstTabFragment extends androidx.fragment.app.Fragment {
     private GestureDetector gestureDetector;
     private TouchPadKeysListener touchPadKeysListener;
     private Context ctx;
-    private TouchPadController touchPadController;
 
     @Nullable
     @Override
@@ -36,10 +36,14 @@ public class FirstTabFragment extends androidx.fragment.app.Fragment {
         initViews(view);
 
         //Setup code here
-        touchPadListener = new TouchPadListener(ctx);
+        SharedPreferences sp = ctx.getSharedPreferences("org.zoobie.pomd.remotecontrol",Context.MODE_PRIVATE);
+        String ip = sp.getString("server_ip",null);
+        int portUdp =  sp.getInt("udp_port",-1);
+        int portTcp =  sp.getInt("tcp_port",-1);
+        Server server = new Server("157.158.170.23",1711,portTcp);
+        touchPadListener = new TouchPadListener(ctx,server);
         gestureDetector = new GestureDetector(ctx,touchPadListener);
-        touchPadController = new TouchPadController();
-        touchPadKeysListener = new TouchPadKeysListener(touchPadController);
+        touchPadKeysListener = new TouchPadKeysListener(server);
         trackPadView.setOnTouchListener(touchPadListener);
 
         leftClick.setOnClickListener(touchPadKeysListener);

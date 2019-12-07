@@ -1,4 +1,4 @@
-package org.zoobie.pomd.remotecontrol.adapter;
+package org.zoobie.remotecontrol.adapter;
 
 import android.os.Bundle;
 
@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import org.zoobie.pomd.remotecontrol.fragment.tabs.FirstTabFragment;
-import org.zoobie.pomd.remotecontrol.fragment.tabs.SecondTabFragment;
-import org.zoobie.pomd.remotecontrol.fragment.tabs.ThirdTabFragment;
+import org.zoobie.remotecontrol.tabs.FirstTabFragment;
+import org.zoobie.remotecontrol.tabs.SecondTabFragment;
+import org.zoobie.remotecontrol.tabs.ThirdTabFragment;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 

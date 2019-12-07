@@ -1,15 +1,24 @@
-package org.zoobie.pomd.remotecontrol.core.listener;
+package org.zoobie.remotecontrol.core.listener;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import org.zoobie.remotecontrol.core.connection.ClientUdp;
+import org.zoobie.remotecontrol.core.connection.Server;
+
 public class TouchPadListener implements View.OnClickListener, View.OnTouchListener, GestureDetector.OnGestureListener {
     private Context ctx;
+    private Server server;
+    private ClientUdp client;
+    private final String TAG = "TouchPadListener";
 
-    public TouchPadListener(Context ctx){
+    public TouchPadListener(Context ctx, Server server){
+        this.server = server;
         this.ctx = ctx;
+        this.client = new ClientUdp(server);
     }
 
     @Override
@@ -49,6 +58,8 @@ public class TouchPadListener implements View.OnClickListener, View.OnTouchListe
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        return false;
+//        client.sendData(event.getX() + "," + event.getY());
+        Log.i(TAG,"LONG PRESS DATA SENT");
+        return true;
     }
 }

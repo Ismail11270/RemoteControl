@@ -1,16 +1,24 @@
-package org.zoobie.pomd.remotecontrol;
+package org.zoobie.remotecontrol;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.view.GestureDetector;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 
-import org.zoobie.pomd.remotecontrol.adapter.ViewPagerAdapter;
+import org.zoobie.pomd.remotecontrol.R;
+import org.zoobie.remotecontrol.adapter.ViewPagerAdapter;
+import org.zoobie.remotecontrol.view.CustomViewPager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private GestureDetector mGestureDetector;
 
-
+    private boolean fullScreen = false;
     private Toolbar toolbar;
 
     //Views
@@ -32,11 +40,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+
         setContentView(R.layout.activity_main);
+
 
         toolbar = findViewById(R.id.toolBar);
         toolbar.setNavigationIcon(R.drawable.navigation_icon);
         setSupportActionBar(toolbar);
+
+
 
         setup();
 
@@ -55,14 +70,39 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolBar);
         toolbar.setNavigationIcon(R.drawable.navigation_icon);
         setSupportActionBar(toolbar);
-
         //Views
-        pager = findViewById(R.id.pager);
+        pager = (CustomViewPager)findViewById(R.id.pager);
         tabLayout = findViewById(R.id.tabs);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.touchpad_menu,menu);
+        return true;
+    }
 
-//
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==R.id.fullscreen){
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            toolbar.setVisibility(View.GONE);
+            fullScreen = true;
+            Toast.makeText(this, "Press back to exit fullscreen mode", Toast.LENGTH_LONG).show();
+        }
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(fullScreen){
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            toolbar.setVisibility(View.VISIBLE);
+            fullScreen = false;
+        } else super.onBackPressed();
+    }
+
+    //
 //
 //
 //    @Override

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context="org.zoobie.remotecontrol.MainActivity">
 
 
     <include layout="@layout/toolbar_layout"
@@ -21,7 +21,7 @@
 
         app:tabMode="fixed"
         app:tabTextColor="@color/red2"/>
-    <androidx.viewpager.widget.ViewPager
+    <org.zoobie.remotecontrol.view.CustomViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
