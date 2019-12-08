@@ -8,17 +8,18 @@ import android.view.View;
 
 import org.zoobie.remotecontrol.core.connection.ClientUdp;
 import org.zoobie.remotecontrol.core.connection.Server;
+import org.zoobie.remotecontrol.core.controller.ConnectionController;
 
 public class TouchPadListener implements View.OnClickListener, View.OnTouchListener, GestureDetector.OnGestureListener {
     private Context ctx;
     private Server server;
-    private ClientUdp client;
+    private ConnectionController controller;
     private final String TAG = "TouchPadListener";
 
-    public TouchPadListener(Context ctx, Server server){
+    public TouchPadListener(Context ctx, ConnectionController controller){
         this.server = server;
         this.ctx = ctx;
-        this.client = new ClientUdp(server);
+        this.controller = controller;
     }
 
     @Override

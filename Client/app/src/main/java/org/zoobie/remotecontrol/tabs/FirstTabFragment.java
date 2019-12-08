@@ -13,9 +13,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.zoobie.pomd.remotecontrol.R;
+import org.zoobie.remotecontrol.core.connection.ClientUdp;
+import org.zoobie.remotecontrol.core.connection.ConnectionException;
 import org.zoobie.remotecontrol.core.connection.Server;
+import org.zoobie.remotecontrol.core.controller.ConnectionController;
 import org.zoobie.remotecontrol.core.listener.TouchPadKeysListener;
 import org.zoobie.remotecontrol.core.listener.TouchPadListener;
+
+import java.net.UnknownHostException;
+import java.util.concurrent.ExecutionException;
 
 public class FirstTabFragment extends androidx.fragment.app.Fragment {
 
@@ -25,6 +31,7 @@ public class FirstTabFragment extends androidx.fragment.app.Fragment {
     private GestureDetector gestureDetector;
     private TouchPadKeysListener touchPadKeysListener;
     private Context ctx;
+    private ConnectionController connectionController;
 
     @Nullable
     @Override
@@ -36,14 +43,12 @@ public class FirstTabFragment extends androidx.fragment.app.Fragment {
         initViews(view);
 
         //Setup code here
-        SharedPreferences sp = ctx.getSharedPreferences("org.zoobie.pomd.remotecontrol",Context.MODE_PRIVATE);
-        String ip = sp.getString("server_ip",null);
-        int portUdp =  sp.getInt("udp_port",-1);
-        int portTcp =  sp.getInt("tcp_port",-1);
-        Server server = new Server("157.158.170.23",1711,portTcp);
-        touchPadListener = new TouchPadListener(ctx,server);
-        gestureDetector = new GestureDetector(ctx,touchPadListener);
-        touchPadKeysListener = new TouchPadKeysListener(server);
+        initConnection();
+//        Server server = new Server("157.158.170.23",1711,portTcp);
+
+        touchPadListener = new TouchPadListener(ctx, connectionController);
+        gestureDetector = new GestureDetector(ctx, touchPadListener);
+        touchPadKeysListener = new TouchPadKeysListener(connectionController);
         trackPadView.setOnTouchListener(touchPadListener);
 
         leftClick.setOnClickListener(touchPadKeysListener);
@@ -53,12 +58,33 @@ public class FirstTabFragment extends androidx.fragment.app.Fragment {
         return view;
     }
 
+    private void initConnection() {
+        SharedPreferences sp = ctx.getSharedPreferences("org.zoobie.connectiondata", Context.MODE_PRIVATE);
+        String ip = sp.getString("server_ip", null);
+        Integer portUdp = sp.getInt("udp_port", -1) == -1 ? null : sp.getInt("udp_port", -1);
+        Integer portTcp = sp.getInt("tcp_port", -1) == -1 ? null : sp.getInt("tcp_port", -1);
+//        connectionController = new ConnectionController(ip, portUdp, portTcp);
+        Server server = new Server("192.168.42.167", 1711, portTcp);
+        connectionController = new ConnectionController(server);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        System.out.println("resume");
+
+        try {
+            System.out.println(connectionController.checkConnection());
+        } catch (ConnectionException | ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void initViews(View view) {
         trackPadView = view.findViewById(R.id.trackPad);
         leftClick = view.findViewById(R.id.leftClick);
         midClick = view.findViewById(R.id.midClick);
         rightClick = view.findViewById(R.id.rightClick);
-
 
 
 //        leftClick.setLayoutParams(params);

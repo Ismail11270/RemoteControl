@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="mouse_left">1</integer>
+    <integer name="mouse_mid">2</integer>
+    <integer name="mouse_right">3</integer>
+</resources>

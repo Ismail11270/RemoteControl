@@ -4,11 +4,11 @@ import org.zoobie.remotecontrol.core.actions.ActionController;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.Arrays;
 
 public class Server {
 
-    private DatagramSocket socket;
+    private DatagramSocket recieveSocket;
+    private DatagramSocket sendSocket;
     private DatagramPacket packet;
     private int port = 1711;
     private byte[] byteData;
@@ -16,9 +16,9 @@ public class Server {
     private ActionController actionController;
     public Server() {
         try {
-            socket = new DatagramSocket(port);
+            recieveSocket = new DatagramSocket(port);
             ip = InetAddress.getByName("localhost");
-            actionController = new ActionController();
+            actionController = new ActionController(this);
         } catch (SocketException | UnknownHostException e) {
             e.printStackTrace();
         }
@@ -28,14 +28,12 @@ public class Server {
         new Thread(() -> {
             try {
                 while (true) {
-                    byteData = new byte[1024];
+                    byteData = new byte[3];
                     packet = new DatagramPacket(byteData,byteData.length);
-                    socket.receive(packet);
+                    recieveSocket.receive(packet);
                     System.out.println("recieved");
-
-                    byte[] byteData = packet.getData();
                     synchronized (actionController) {
-                        actionController.performAction(byteData);
+                        actionController.performAction(packet);
                     }
                 }
             } catch (IOException | InterruptedException e) {
@@ -44,13 +42,16 @@ public class Server {
         }).start();
     }
 
+    public void reply(DatagramPacket packet, byte[] replyData) throws IOException {
+        System.out.println(packet.getAddress() + ":" + packet.getPort());
+        packet.setData(replyData);
+        recieveSocket.send(packet);
+    }
 
-    public void send(String text) throws IOException {
-            byte[] bytes = text.getBytes();
-            DatagramSocket dgSocket = new DatagramSocket();
-            DatagramPacket dgPacket = new DatagramPacket(bytes, bytes.length, ip, port);
-            dgSocket.send(dgPacket);
-
+    public void send(byte[] data) throws IOException {
+            DatagramPacket dgPacket = new DatagramPacket(data, data.length, ip, port);
+        System.out.println("sent");
+            recieveSocket.send(dgPacket);
     }
 
 }

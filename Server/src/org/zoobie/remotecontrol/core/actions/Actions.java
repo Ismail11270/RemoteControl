@@ -1,12 +1,19 @@
 package org.zoobie.remotecontrol.core.actions;
 
 public abstract class Actions {
-    public static final int MOUSE_KEY_ACTION = 901;
-    public static final int MOUSE_MOVE_ACTION = 902;
-    public static final int MOUSE_SCROLL_ACTION = 903;
-    public static final int TEXT_INPUT_ACTION = 910;
-    public static final String ACTION_SEPERATOR = "@c!i0n";
 
+    //non-functional actions
+    public static final byte CONNECTION_CHECK_ACTION = 127;
+
+    public static final byte MOUSE_KEY_ACTION = 101;
+    public static final byte MOUSE_MOVE_ACTION = 102;
+    public static final byte MOUSE_SCROLL_ACTION = 103;
+    public static final byte TEXT_INPUT_ACTION = 90;
+
+
+    /**
+     * Unique for each action
+     */
     class MouseKeyAction {
         public static final int MOUSE_LEFT = 1;
         public static final int MOUSE_MID = 2;

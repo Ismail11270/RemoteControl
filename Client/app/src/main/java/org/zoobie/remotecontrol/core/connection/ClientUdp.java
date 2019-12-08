@@ -1,13 +1,19 @@
 package org.zoobie.remotecontrol.core.connection;
 
+import android.os.AsyncTask;
+import android.util.Log;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.util.concurrent.ExecutionException;
 
 public class ClientUdp {
-    Server server;
-    DatagramSocket socket;
+
+    private Server server;
+    private DatagramSocket socket;
+    private final String TAG = "client_udp";
 
     public ClientUdp(Server server) {
         try {
@@ -18,20 +24,43 @@ public class ClientUdp {
         this.server = server;
     }
 
-    public void sendData(final CharSequence d) {
-        final String data = d.toString();
+    public byte[] receive() throws ExecutionException, InterruptedException {
+        return new UdpReciever().execute(socket).get();
+    }
+
+    public void sendData(byte[] byteData){
         new Thread(() -> {
             try {
-                byte[] byteData;
-                byteData = data.getBytes();
                 DatagramPacket packet = new DatagramPacket(byteData, byteData.length, server.getIpAdress(), server.getUdpPort());
                 socket.send(packet);
-                System.out.println(data);
-            } catch (SocketException ex) {
-//                    ex.printStackTrace();
-            } catch (IOException e) {
-//                    e.printStackTrace();
+            } catch (IOException ex) {
+                Log.i(TAG, ex.getMessage());
             }
         }).start();
+    }
+
+    public void sendData(final CharSequence d) {
+        sendData(d.toString().getBytes());
+    }
+
+
+
+    class UdpReciever extends AsyncTask<DatagramSocket,Void,byte[]> {
+        @Override
+        protected byte[] doInBackground(DatagramSocket... socket) {
+            final byte[] recievedBytes = new byte[1];
+            try{
+                socket[0].setSoTimeout(2000);
+                DatagramPacket recievedPacket = new DatagramPacket(recievedBytes,recievedBytes.length);
+                socket[0].receive(recievedPacket);
+                recievedBytes[0] = recievedPacket.getData()[0];
+                System.out.println(socket[0].getLocalPort() + " " + recievedBytes[0]);
+                socket[0].setSoTimeout(0);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            } finally {
+            }
+            return recievedBytes;
+        }
     }
 }

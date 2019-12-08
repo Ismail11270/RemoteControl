@@ -5,21 +5,22 @@ import android.view.View;
 
 import org.zoobie.remotecontrol.core.actions.Actions;
 import org.zoobie.remotecontrol.core.connection.ClientUdp;
-import org.zoobie.remotecontrol.core.connection.Server;
+import org.zoobie.remotecontrol.core.controller.ConnectionController;
 
 
 public class TouchPadKeysListener implements View.OnClickListener {
     private final String TAG = "MousePadController";
-    ClientUdp client;
-    public TouchPadKeysListener(Server server){
-        client = new ClientUdp(server);
+    private ConnectionController controller;
+    public TouchPadKeysListener(ConnectionController controller){
+        this.controller = controller;
     }
 
     @Override
     public void onClick(View v) {
         int keyCode = Integer.parseInt(v.getTag().toString());
         Log.d(TAG,"Key " + keyCode);
-        client.sendData(Actions.MOUSE_KEY_ACTION + keyCode + "");
+        byte[] bytes = new byte[] {Actions.MOUSE_KEY_ACTION, (byte)keyCode};
+        controller.sendUdp(bytes);
     }
 
 }
