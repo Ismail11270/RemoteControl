@@ -4,7 +4,6 @@ import android.util.Log;
 import android.view.View;
 
 import org.zoobie.remotecontrol.core.actions.Actions;
-import org.zoobie.remotecontrol.core.connection.ClientUdp;
 import org.zoobie.remotecontrol.core.controller.ConnectionController;
 
 

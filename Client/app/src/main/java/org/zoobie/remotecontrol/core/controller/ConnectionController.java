@@ -1,11 +1,10 @@
 package org.zoobie.remotecontrol.core.controller;
 
-import org.zoobie.remotecontrol.core.connection.ClientUdp;
+import org.zoobie.remotecontrol.core.connection.UdpClient;
 import org.zoobie.remotecontrol.core.connection.ConnectionException;
 import org.zoobie.remotecontrol.core.connection.Server;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
@@ -13,7 +12,7 @@ public class ConnectionController {
     private InetAddress serverIp;
     private Integer portUdp;
     private Integer portTcp;
-    private ClientUdp clientUdp;
+    private UdpClient clientUdp;
     private Server server;
 
     public ConnectionController(String ip, Integer portUdp, Integer portTcp) {
@@ -31,7 +30,7 @@ public class ConnectionController {
     }
 
     public boolean checkConnection() throws ConnectionException, ExecutionException, InterruptedException {
-        sendUdp(new byte[] {127});
+        sendUdp(new byte[] {127,1});
         System.out.println("checked connection");
         byte[] recieved = clientUdp.receive();
         System.out.println(Arrays.toString(recieved));
@@ -40,7 +39,7 @@ public class ConnectionController {
 
     public void sendUdp(byte[] data){
         if(clientUdp == null)
-            clientUdp = new ClientUdp(server);
+            clientUdp = new UdpClient(server);
         clientUdp.sendData(data);
     }
 }

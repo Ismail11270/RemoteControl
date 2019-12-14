@@ -13,14 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.zoobie.pomd.remotecontrol.R;
-import org.zoobie.remotecontrol.core.connection.ClientUdp;
 import org.zoobie.remotecontrol.core.connection.ConnectionException;
 import org.zoobie.remotecontrol.core.connection.Server;
 import org.zoobie.remotecontrol.core.controller.ConnectionController;
 import org.zoobie.remotecontrol.core.listener.TouchPadKeysListener;
 import org.zoobie.remotecontrol.core.listener.TouchPadListener;
 
-import java.net.UnknownHostException;
 import java.util.concurrent.ExecutionException;
 
 public class FirstTabFragment extends androidx.fragment.app.Fragment {
@@ -64,9 +62,10 @@ public class FirstTabFragment extends androidx.fragment.app.Fragment {
         Integer portUdp = sp.getInt("udp_port", -1) == -1 ? null : sp.getInt("udp_port", -1);
         Integer portTcp = sp.getInt("tcp_port", -1) == -1 ? null : sp.getInt("tcp_port", -1);
 //        connectionController = new ConnectionController(ip, portUdp, portTcp);
-        Server server = new Server("192.168.42.167", 1711, portTcp);
+        Server server = new Server("157.158.170.23", 1711, portTcp);
         connectionController = new ConnectionController(server);
     }
+
 
     @Override
     public void onResume() {

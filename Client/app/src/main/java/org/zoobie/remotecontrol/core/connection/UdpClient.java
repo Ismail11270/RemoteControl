@@ -9,13 +9,13 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.util.concurrent.ExecutionException;
 
-public class ClientUdp {
+public class UdpClient {
 
     private Server server;
     private DatagramSocket socket;
     private final String TAG = "client_udp";
 
-    public ClientUdp(Server server) {
+    public UdpClient(Server server) {
         try {
             socket = new DatagramSocket();
         } catch (SocketException e) {
@@ -60,6 +60,7 @@ public class ClientUdp {
                 System.out.println(e.getMessage());
             } finally {
             }
+
             return recievedBytes;
         }
     }

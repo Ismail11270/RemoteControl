@@ -5,8 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
+import android.media.AudioManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,11 +33,11 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean fullScreen = false;
     private Toolbar toolbar;
-
+    private AudioManager audioManager;
     //Views
     private ViewPager pager;
     private TabLayout tabLayout;
-
+    private
     //Adapters
     ViewPagerAdapter viewPagerAdapter;
 
@@ -42,8 +46,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-
+        audioManager  = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
         setContentView(R.layout.activity_main);
 
 
@@ -101,6 +104,21 @@ public class MainActivity extends AppCompatActivity {
             fullScreen = false;
         } else super.onBackPressed();
     }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        super.onKeyDown(keyCode,event);
+        if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            Log.i(TAG,"Volume down...");
+            audioManager.adjustVolume(AudioManager.ADJUST_LOWER,AudioManager.FLAG_PLAY_SOUND);
+        } else if(keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            Log.i(TAG, "Volume up...");
+            audioManager.adjustVolume(AudioManager.ADJUST_RAISE,AudioManager.FLAG_PLAY_SOUND);
+        }
+        return true;
+    }
+
 
     //
 //

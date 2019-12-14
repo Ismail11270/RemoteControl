@@ -6,7 +6,6 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-import org.zoobie.remotecontrol.core.connection.ClientUdp;
 import org.zoobie.remotecontrol.core.connection.Server;
 import org.zoobie.remotecontrol.core.controller.ConnectionController;
 
