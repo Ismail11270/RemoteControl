@@ -33,7 +33,6 @@ public class ServerUdp {
                     byteData = new byte[3];
                     packet = new DatagramPacket(byteData, byteData.length);
                     recieveSocket.receive(packet);
-                    System.out.println("recieved");
                     synchronized (actionController) {
                         actionController.performAction(packet);
                     }

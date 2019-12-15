@@ -1,4 +1,4 @@
-package org.zoobie.remotecontrol;
+package org.zoobie.remotecontrol.core.actions;
 
 import javax.sound.sampled.*;
 

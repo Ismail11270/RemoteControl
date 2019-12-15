@@ -24,17 +24,20 @@ public class ActionController {
         System.out.println(Arrays.toString(actionBytes));
         //Mouse action
         Thread actionThread = null;
-        if(actionBytes[0] == Actions.CONNECTION_ACTION){
+        if (actionBytes[0] == Actions.CONNECTION_ACTION) {
             System.out.println("Connection check");
-            actionThread = new Thread(() ->{
-                new ConnectionAction(serverUdp,packet,actionBytes).performAction();
+            actionThread = new Thread(() -> {
+                new ConnectionAction(serverUdp, packet, actionBytes).performAction();
             });
-        }
-        else if (actionBytes[0] == Actions.MOUSE_KEY_ACTION) {
+        } else if (actionBytes[0] == Actions.MOUSE_KEY_ACTION) {
+            actionThread = new Thread(() -> {
+                new MouseAction(robot, actionBytes).performAction();
+            });
+        }else if(actionBytes[0] == Actions.MOUSE_MOVE_ACTION){
             actionThread = new Thread(()->{
-                new MouseAction(robot,actionBytes[1]).performAction();
+                new MouseAction(robot,actionBytes).performAction();
             });
-        } else if(actionBytes[0] == Actions.TEXT_INPUT_ACTION){
+        }else if(actionBytes[0] == Actions.TEXT_INPUT_ACTION){
             actionThread = new Thread(()->{
                 new KeyboardAction(robot,actionBytes[1]).performAction();
             });
