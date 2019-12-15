@@ -16,10 +16,12 @@ public abstract class Actions {
     public static final byte VOLUME_UP_ACTION = 52;
     public static final byte VOLUME_DOWN_ACTION = 53;
     public static final byte VOLUME_MUTE_ACTION = 54;
+    //todo
     public static final byte VOLUME_SET_ACTION = 55;
 
 
     //Connection actions
     public static final byte CONNECTION_ACTION = 127;
     public static final byte CONNECTION_CHECK_ACTION = 1;
+    public static final byte CONNECTION_GET_SERVER_NAME = 2;
 }

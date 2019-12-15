@@ -23,6 +23,9 @@ public class Server {
         return udpPort;
     }
 
+    public boolean isValid(){
+        return ipAdress!=null && udpPort!=null && tcpPort!=null;
+    }
     public void setUdpPort(int udpPort) {
         this.udpPort = udpPort;
     }

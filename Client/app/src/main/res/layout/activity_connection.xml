@@ -12,25 +12,57 @@
         android:text="Check connection"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"/>
+    <TextView
+        android:id="@+id/localConnectionStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter you computers IP"
+        android:textSize="16sp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintTop_toBottomOf="@id/connectionCheckBt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/connectionIp"
+        />
+
     <EditText
         android:id="@+id/connectionIp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Enter ip address..."
-        app:layout_constraintTop_toBottomOf="@id/connectionCheckBt"
+        app:layout_constraintTop_toBottomOf="@id/localConnectionStatus"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent  "
+        app:layout_constraintBottom_toTopOf="@id/connectBt"
         />
+    <EditText
+        android:id="@+id/udpEt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="UDP Port"
+        app:layout_constraintTop_toBottomOf="@id/connectionIp"
+        app:layout_constraintEnd_toStartOf="@id/tcpEt"
+        app:layout_constraintStart_toStartOf="parent"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/tcpEt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="TCP Port"
+        app:layout_constraintTop_toBottomOf="@id/connectionIp"
+        app:layout_constraintStart_toEndOf="@id/udpEt"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:inputType="number"/>
     <Button
         android:id="@+id/connectBt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/connectionIp"
+        app:layout_constraintTop_toBottomOf="@id/tcpEt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:text="Connect"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

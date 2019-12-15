@@ -1,20 +1,19 @@
 package org.zoobie.remotecontrol.core.actions;
 
-import org.zoobie.remotecontrol.server.Server;
+import org.zoobie.remotecontrol.server.ServerUdp;
 
 import java.awt.*;
-import java.io.IOException;
 import java.net.DatagramPacket;
 import java.util.Arrays;
 
 public class ActionController {
     private Robot robot;
-    private Server server;
+    private ServerUdp serverUdp;
 
-    public ActionController(Server server) {
+    public ActionController(ServerUdp serverUdp) {
         try {
             robot = new Robot();
-            this.server = server;
+            this.serverUdp = serverUdp;
         } catch (AWTException e) {
             e.printStackTrace();
         }
@@ -28,7 +27,7 @@ public class ActionController {
         if(actionBytes[0] == Actions.CONNECTION_ACTION){
             System.out.println("Connection check");
             actionThread = new Thread(() ->{
-                new ConnectionAction(server,packet,actionBytes).performAction();
+                new ConnectionAction(serverUdp,packet,actionBytes).performAction();
             });
         }
         else if (actionBytes[0] == Actions.MOUSE_KEY_ACTION) {

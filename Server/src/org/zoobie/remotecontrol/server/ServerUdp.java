@@ -5,19 +5,21 @@ import org.zoobie.remotecontrol.core.actions.ActionController;
 import java.io.IOException;
 import java.net.*;
 
-public class Server {
+public class ServerUdp {
 
     private DatagramSocket recieveSocket;
     private DatagramSocket sendSocket;
     private DatagramPacket packet;
-    private int port = 1711;
+    private int port;
     private byte[] byteData;
     private InetAddress ip;
     private ActionController actionController;
-    public Server() {
+
+    public ServerUdp(int port) {
         try {
+            this.port = port;
             recieveSocket = new DatagramSocket(port);
-            ip = InetAddress.getByName("localhost");
+            ip = InetAddress.getLocalHost();
             actionController = new ActionController(this);
         } catch (SocketException | UnknownHostException e) {
             e.printStackTrace();
@@ -29,7 +31,7 @@ public class Server {
             try {
                 while (true) {
                     byteData = new byte[3];
-                    packet = new DatagramPacket(byteData,byteData.length);
+                    packet = new DatagramPacket(byteData, byteData.length);
                     recieveSocket.receive(packet);
                     System.out.println("recieved");
                     synchronized (actionController) {
@@ -49,9 +51,20 @@ public class Server {
     }
 
     public void send(byte[] data) throws IOException {
-            DatagramPacket dgPacket = new DatagramPacket(data, data.length, ip, port);
+        DatagramPacket dgPacket = new DatagramPacket(data, data.length, ip, port);
         System.out.println("sent");
-            recieveSocket.send(dgPacket);
+        recieveSocket.send(dgPacket);
     }
 
+    public String getMachineName() {
+        return ip.getHostName();
+    }
+
+    public String getIp(){
+        return ip.getHostAddress();
+    }
+
+    public int getPort() {
+        return port;
+    }
 }

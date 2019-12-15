@@ -1,17 +1,17 @@
 package org.zoobie.remotecontrol.core.actions;
 
-import org.zoobie.remotecontrol.server.Server;
+import org.zoobie.remotecontrol.server.ServerUdp;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 
 public class ConnectionAction implements Action {
     private final byte[] command;
-    private final Server server;
+    private final ServerUdp serverUdp;
     private final DatagramPacket senderPacket;
-    public ConnectionAction(Server server, DatagramPacket senderPacket, byte... command){
+    public ConnectionAction(ServerUdp serverUdp, DatagramPacket senderPacket, byte... command){
         this.senderPacket = senderPacket;
-        this.server = server;
+        this.serverUdp = serverUdp;
         this.command = command;
     }
 
@@ -22,6 +22,9 @@ public class ConnectionAction implements Action {
             case Actions.CONNECTION_CHECK_ACTION:
                 reply((byte)1);
                 break;
+            case Actions.CONNECTION_GET_SERVER_NAME:
+                reply(serverUdp.getMachineName().getBytes());
+                break;
             default:
                 break;
         }
@@ -30,7 +33,7 @@ public class ConnectionAction implements Action {
     private void reply(byte... reply) {
         try {
             System.out.println("Sending confirmation");
-            server.reply(senderPacket, reply);
+            serverUdp.reply(senderPacket, reply);
         } catch (IOException e) {
             e.printStackTrace();
         }

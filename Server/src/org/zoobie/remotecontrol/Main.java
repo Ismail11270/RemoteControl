@@ -1,22 +1,19 @@
 package org.zoobie.remotecontrol;
 
-import com.profesorfalken.jpowershell.PowerShell;
-import com.profesorfalken.jpowershell.PowerShellResponse;
-import org.zoobie.remotecontrol.server.Server;
+import org.zoobie.remotecontrol.server.ServerUdp;
 
 import javax.sound.sampled.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.util.Timer;
 
 public class Main {
 
     public static Robot robot;
 
     public static void main(String[] args) throws IOException, AWTException, InterruptedException, LineUnavailableException {
-        Server server = new Server();
-        server.listen();
+        ServerUdp serverUdp = new ServerUdp(1711);
+        System.out.println("Udp Server started at " + serverUdp.getIp() + ":"+serverUdp.getPort());
+        serverUdp.listen();
     }
 
 //        ProcessBuilder processBuilder = new ProcessBuilder("notepad.exe");

@@ -3,13 +3,16 @@ package org.zoobie.remotecontrol.core.connection;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.zoobie.remotecontrol.core.actions.Actions;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
-public class UdpClient {
+public class UdpClient implements Client{
 
     private Server server;
     private DatagramSocket socket;
@@ -28,7 +31,8 @@ public class UdpClient {
         return new UdpReciever().execute(socket).get();
     }
 
-    public void sendData(byte[] byteData){
+    @Override
+    public void send(byte... byteData){
         new Thread(() -> {
             try {
                 DatagramPacket packet = new DatagramPacket(byteData, byteData.length, server.getIpAdress(), server.getUdpPort());
@@ -39,16 +43,33 @@ public class UdpClient {
         }).start();
     }
 
-    public void sendData(final CharSequence d) {
-        sendData(d.toString().getBytes());
+    @Override
+    public boolean checkConnection() throws ExecutionException, InterruptedException {
+        System.out.println("checked connection");
+        byte[] recieved = ask(Actions.CONNECTION_ACTION,Actions.CONNECTION_CHECK_ACTION);
+        System.out.println(Arrays.toString(recieved));
+        return recieved[0] == Actions.CONNECTION_CHECK_ACTION;
+    }
+
+    public String askServerName() throws ExecutionException, InterruptedException {
+        byte[] answer = ask(Actions.CONNECTION_ACTION,Actions.CONNECTION_GET_SERVER_NAME);
+        return new String(answer);
+    }
+    private byte[] ask(byte... data) throws ExecutionException, InterruptedException {
+        send(data);
+        System.out.println("checked connection");
+        return receive();
     }
 
 
+    public void send(final CharSequence d) {
+        send(d.toString().getBytes());
+    }
 
     class UdpReciever extends AsyncTask<DatagramSocket,Void,byte[]> {
         @Override
         protected byte[] doInBackground(DatagramSocket... socket) {
-            final byte[] recievedBytes = new byte[1];
+            final byte[] recievedBytes = new byte[64];
             try{
                 socket[0].setSoTimeout(2000);
                 DatagramPacket recievedPacket = new DatagramPacket(recievedBytes,recievedBytes.length);
