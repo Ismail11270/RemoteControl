@@ -1,6 +1,5 @@
 package org.zoobie.remotecontrol.tabs;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,72 +19,78 @@ import org.zoobie.remotecontrol.activity.ConnectionActivity;
 import org.zoobie.remotecontrol.core.connection.ConnectionException;
 import org.zoobie.remotecontrol.core.connection.Connector;
 import org.zoobie.remotecontrol.core.connection.Server;
+import org.zoobie.remotecontrol.core.listener.TouchPadGestureListener;
 import org.zoobie.remotecontrol.core.listener.TouchPadKeysListener;
-import org.zoobie.remotecontrol.core.listener.TouchPadListener;
 
 import java.util.concurrent.ExecutionException;
 
-public class FirstTabFragment extends androidx.fragment.app.Fragment {
+public class TrackPadFragment extends androidx.fragment.app.Fragment {
 
     private static final int CONNECTION_RESULT = 123;
     private View trackPadView;
     private ImageButton leftClick, midClick, rightClick;
-    private TouchPadListener touchPadListener;
-    private GestureDetector gestureDetector;
     private TouchPadKeysListener touchPadKeysListener;
+    private TouchPadGestureListener touchPadGestureListener;
     private Context ctx;
     private Connector connector;
-    SharedPreferences connectionSp;
+    private SharedPreferences connectionSp;
+    private SharedPreferences settingsSp;
+    private float sens;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //Inflate the layout for this fragment
         ctx = container.getContext();
-        View view = inflater.inflate(R.layout.fragment_tab_one, container, false);
+        View view = inflater.inflate(R.layout.fragment_trackpad, container, false);
         connectionSp = ctx.getSharedPreferences("org.zoobie.connectiondata", Context.MODE_PRIVATE);
-
+        settingsSp = ctx.getSharedPreferences("org.zoobie.settings", Context.MODE_PRIVATE);
         initViews(view);
 
         //Setup code here
         initConnection();
-//        Server server = new Server("157.158.170.23",1711,portTcp);
 
-        touchPadListener = new TouchPadListener(ctx, connector);
-        gestureDetector = new GestureDetector(ctx, touchPadListener);
-        gestureDetector.setOnDoubleTapListener(touchPadListener);
+
         touchPadKeysListener = new TouchPadKeysListener(connector);
-        trackPadView.setOnTouchListener(touchPadListener);
+        touchPadGestureListener = new TouchPadGestureListener(ctx, connector);
+        trackPadView.setOnTouchListener(touchPadGestureListener);
 
         leftClick.setOnClickListener(touchPadKeysListener);
         midClick.setOnClickListener(touchPadKeysListener);
         rightClick.setOnClickListener(touchPadKeysListener);
 
+        updateSettings();
         return view;
     }
+
 
     private void initConnection() {
         String ip = connectionSp.getString("server_ip", null);
         Integer portUdp = connectionSp.getInt("udp_port", -1) == -1 ? null : connectionSp.getInt("udp_port", -1);
         Integer portTcp = connectionSp.getInt("tcp_port", -1) == -1 ? null : connectionSp.getInt("tcp_port", -1);
-//        connectionController = new ConnectionController(ip, portUdp, portTcp);
         Server server = new Server(ip, portUdp, portTcp);
         try {
             connector = new Connector(server);
             boolean isConnected = connector.checkUdpConnection() | connector.checkBluetoothConnection();
-            if(!isConnected) throw new ConnectionException("Couldn't connect to the server");
+            if (!isConnected) throw new ConnectionException("Couldn't connect to the server");
             Toast.makeText(ctx, "Connected to " + connector.getServerName(), Toast.LENGTH_SHORT).show();
         } catch (ConnectionException | ExecutionException | InterruptedException e) {
             Toast.makeText(ctx, "FAILED TO CONNECT", Toast.LENGTH_SHORT).show();
             Intent connectionIntent = new Intent(ctx, ConnectionActivity.class);
-            startActivityForResult(connectionIntent,CONNECTION_RESULT);
+            startActivityForResult(connectionIntent, CONNECTION_RESULT);
         }
+    }
+
+    private void updateSettings() {
+        sens = connectionSp.getFloat("sens", 1.0f);
+        touchPadGestureListener.setSens(sens);
     }
 
 
     @Override
     public void onResume() {
         initConnection();
+        updateSettings();
         super.onResume();
         System.out.println("resume");
     }
@@ -93,7 +98,7 @@ public class FirstTabFragment extends androidx.fragment.app.Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == CONNECTION_RESULT){
+        if (requestCode == CONNECTION_RESULT) {
             System.out.println(resultCode + " CONNECTION RESULT");
         }
     }

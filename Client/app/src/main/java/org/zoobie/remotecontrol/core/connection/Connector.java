@@ -57,6 +57,19 @@ public class Connector {
         prioritiseInetConnection = inetOrBluetooth;
     }
 
+    public void send(byte... data){
+        if(prioritiseInetConnection) sendUdp(data);
+        else sendBluetooth(data);
+    }
+
+    private void sendBluetooth(byte[] data) {
+    }
+
+    public void ship(byte... data){
+        if(prioritiseInetConnection) sendTcp(data);
+        else sendBluetooth(data);
+    }
+
     public void send(Class<? extends Client> client, byte... data){
         if(client == UdpClient.class) sendUdp(data);
         else if(client == TcpClient.class) sendTcp(data);

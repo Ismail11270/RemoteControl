@@ -18,7 +18,7 @@ public class ThirdTabFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //Inflate the layout for this fragment
 
-        View view = inflater.inflate(R.layout.fragment_tab_one, container, false);
+        View view = inflater.inflate(R.layout.fragment_trackpad, container, false);
 
         //Setup code here
 
