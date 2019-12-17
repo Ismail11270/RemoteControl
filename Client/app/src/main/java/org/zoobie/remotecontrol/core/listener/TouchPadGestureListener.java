@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import org.zoobie.remotecontrol.core.actions.Actions;
 import org.zoobie.remotecontrol.core.connection.Connector;
@@ -14,7 +15,8 @@ public class TouchPadGestureListener implements View.OnTouchListener, GestureDet
     private GestureDetector gestureDetector;
     private Connector connector;
     private float sens;
-
+    private int counter = 0;
+    private final int ACCURACY = 0;
     public TouchPadGestureListener(Context context, Connector connector) {
         this.context = context;
         this.connector = connector;
@@ -30,18 +32,18 @@ public class TouchPadGestureListener implements View.OnTouchListener, GestureDet
 
     @Override
     public boolean onDown(MotionEvent e) {
-//        Log.i(TAG,"ON DOWN");
+        Log.i(TAG,"ON DOWN");
         return true;
     }
 
     @Override
     public void onShowPress(MotionEvent e) {
-//        Log.i(TAG,"ON SHOW PRESS");
+        Log.i(TAG,"ON SHOW PRESS");
     }
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-//        Log.i(TAG,"ON SINGLE TAP UP");
+        Log.i(TAG,"ON SINGLE TAP UP");
         return true;
     }
 
@@ -51,9 +53,15 @@ public class TouchPadGestureListener implements View.OnTouchListener, GestureDet
      */
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        Log.i(TAG,"ON SCROLL " + distanceX + " " + distanceY);
-        int x = (int) (distanceX*sens), y = (int) (distanceY*sens);
-        connector.send(Actions.MOUSE_MOVE_ACTION,(byte)(x),(byte)(y));
+        if(counter < ACCURACY){
+            counter++;
+        } else {
+//            Toast.makeText(context, "SCROLL", Toast.LENGTH_SHORT).show();
+            Log.i(TAG, "ON SCROLL " + distanceX + " " + distanceY);
+            int x = (int) (distanceX * sens), y = (int) (distanceY * sens);
+            connector.send(Actions.MOUSE_MOVE_ACTION, (byte) (x), (byte) (y));
+            counter = 0;
+        }
         return true;
     }
 
@@ -70,6 +78,7 @@ public class TouchPadGestureListener implements View.OnTouchListener, GestureDet
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
+        Log.i(TAG,"SINGLE TAP CONFIRMED");
         return true;
     }
 
@@ -86,6 +95,21 @@ public class TouchPadGestureListener implements View.OnTouchListener, GestureDet
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+//        Log.i(TAG,"POINTER " + event.getPointerCount());
+        Log.i(TAG,"ON TOUCH");
+        int pointerId = event.getPointerId(0);
+
+        switch (event.getAction() & MotionEvent.ACTION_MASK){
+            case MotionEvent.ACTION_UP:
+                System.out.println("UP");
+                break;
+            case MotionEvent.ACTION_DOWN:
+                System.out.println("DOWN");
+                break;
+            case MotionEvent.ACTION_MOVE:
+                Log.i(TAG,"MOVE");
+                break;
+        }
         gestureDetector.onTouchEvent(event);
 //        client.send(event.getX() + "," + event.getY());
 //        Log.i(TAG,"ON TOUCH");

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.zoobie.pomd.remotecontrol.R;
+import org.zoobie.remotecontrol.core.listener.TouchPadKeysGestureListener;
 import org.zoobie.remotecontrol.activity.ConnectionActivity;
 import org.zoobie.remotecontrol.core.connection.ConnectionException;
 import org.zoobie.remotecontrol.core.connection.Connector;
@@ -30,6 +30,7 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
     private View trackPadView;
     private ImageButton leftClick, midClick, rightClick;
     private TouchPadKeysListener touchPadKeysListener;
+    private TouchPadKeysGestureListener touchPadKeysGestureListener;
     private TouchPadGestureListener touchPadGestureListener;
     private Context ctx;
     private Connector connector;
@@ -50,14 +51,15 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
         //Setup code here
         initConnection();
 
-
         touchPadKeysListener = new TouchPadKeysListener(connector);
         touchPadGestureListener = new TouchPadGestureListener(ctx, connector);
+        touchPadKeysGestureListener = new TouchPadKeysGestureListener(ctx,connector);
         trackPadView.setOnTouchListener(touchPadGestureListener);
 
-        leftClick.setOnClickListener(touchPadKeysListener);
-        midClick.setOnClickListener(touchPadKeysListener);
-        rightClick.setOnClickListener(touchPadKeysListener);
+        leftClick.setOnTouchListener(touchPadKeysGestureListener);
+//        leftClick.setOnClickListener(touchPadKeysListener);
+//        midClick.setOnClickListener(touchPadKeysListener);
+//        rightClick.setOnClickListener(touchPadKeysListener);
 
         updateSettings();
         return view;
