@@ -6,37 +6,29 @@ import java.net.UnknownHostException;
 public class Server {
     private InetAddress ipAdress;
 
-    private Integer udpPort;
-    private Integer tcpPort;
+    private Integer port;
 
-    public Server(String ipAdress, Integer udpPort, Integer tcpPort) {
+    public Server(String ipAdress, Integer port) {
         try {
             this.ipAdress = InetAddress.getByName(ipAdress);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        this.udpPort = udpPort;
-        this.tcpPort = tcpPort;
+        this.port = port;
     }
 
-    public Integer getUdpPort() {
-        return udpPort;
+    public Integer getPort() {
+        return port;
     }
 
     public boolean isValid(){
-        return ipAdress!=null && udpPort!=null && tcpPort!=null;
+        return ipAdress!=null && port !=null;
     }
-    public void setUdpPort(int udpPort) {
-        this.udpPort = udpPort;
-    }
-
-    public Integer getTcpPort() {
-        return tcpPort;
+    public void setPort(int port) {
+        this.port = port;
     }
 
-    public void setTcpPort(int tcpPort) {
-        this.tcpPort = tcpPort;
-    }
+
 
     public InetAddress getIpAdress() {
         return ipAdress;

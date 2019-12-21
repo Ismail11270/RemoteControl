@@ -37,7 +37,7 @@ public class TextInputFragment extends androidx.fragment.app.Fragment {
         //Inflate the layout for this fragment
         ctx = container.getContext();
         View view = inflater.inflate(R.layout.fragment_tab_two, container, false);
-
+        connectionSp = ctx.getSharedPreferences("org.zoobie.connectiondata",Context.MODE_PRIVATE);
         textInput = view.findViewById(R.id.textInput);
         leftBt = view.findViewById(R.id.arrowLeft);
         rightBt = view.findViewById(R.id.arrowRight);
@@ -55,11 +55,10 @@ public class TextInputFragment extends androidx.fragment.app.Fragment {
     private void initConnection() {
         String ip = connectionSp.getString("server_ip", null);
         Integer portUdp = connectionSp.getInt("udp_port", -1) == -1 ? null : connectionSp.getInt("udp_port", -1);
-        Integer portTcp = connectionSp.getInt("tcp_port", -1) == -1 ? null : connectionSp.getInt("tcp_port", -1);
-        Server server = new Server(ip, portUdp, portTcp);
+        Server server = new Server(ip, portUdp);
         try {
             connector = new Connector(server);
-            boolean isConnected = connector.checkTcpConnection() | connector.checkBluetoothConnection();
+            boolean isConnected = connector.checkConnection() > 0;
             if (!isConnected) throw new ConnectionException("Couldn't connect to the server");
             Toast.makeText(ctx, "Connected to " + connector.getServerName(), Toast.LENGTH_SHORT).show();
         } catch (ConnectionException | ExecutionException | InterruptedException e) {

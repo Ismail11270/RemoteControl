@@ -35,7 +35,7 @@ public class UdpClient implements Client{
     public void send(byte... byteData){
         new Thread(() -> {
             try {
-                DatagramPacket packet = new DatagramPacket(byteData, byteData.length, server.getIpAdress(), server.getUdpPort());
+                DatagramPacket packet = new DatagramPacket(byteData, byteData.length, server.getIpAdress(), server.getPort());
                 socket.send(packet);
             } catch (IOException ex) {
                 Log.i(TAG, ex.getMessage());

@@ -79,23 +79,6 @@ public class TouchPadGestureListener implements View.OnTouchListener,  GestureDe
         return true;
     }
 
-//    @Override
-//    public boolean onSingleTapConfirmed(MotionEvent e) {
-////        Log.i(TAG,"SINGLE TAP CONFIRMED");
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onDoubleTap(MotionEvent e) {
-////        Log.i(TAG,"Double tap");
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onDoubleTapEvent(MotionEvent e) {
-//        return true;
-//    }
-
     @Override
     public boolean onTouch(View v, MotionEvent event) {
 

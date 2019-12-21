@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.zoobie.pomd.remotecontrol.R;
-import org.zoobie.remotecontrol.core.connection.TcpClient;
 import org.zoobie.remotecontrol.core.listener.TouchPadKeysGestureListener;
 import org.zoobie.remotecontrol.activity.ConnectionActivity;
 import org.zoobie.remotecontrol.core.connection.ConnectionException;
@@ -54,7 +53,6 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
 
         //Setup code here
         initConnection();
-        Log.d("Trackpad","AFTER sending");
 
         touchPadKeysListener = new TouchPadKeysListener(connector);
         touchPadGestureListener = new TouchPadGestureListener(ctx, connector);
@@ -64,9 +62,6 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
         leftClick.setOnTouchListener(touchPadKeysGestureListener);
         midClick.setOnTouchListener(touchPadKeysGestureListener);
         rightClick.setOnTouchListener(touchPadKeysGestureListener);
-//        leftClick.setOnClickListener(touchPadKeysListenerб);
-//        midClick.setOnClickListener(touchPadKeysListener);
-//        rightClick.setOnClickListener(touchPadKeysListener);
 
         updateSettings();
         return view;
@@ -77,9 +72,8 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
         String ip = connectionSp.getString("server_ip", null);
         Integer portUdp = connectionSp.getInt("udp_port", -1) == -1 ? null : connectionSp.getInt("udp_port", -1);
         Integer portTcp = connectionSp.getInt("tcp_port", -1) == -1 ? null : connectionSp.getInt("tcp_port", -1);
-        Server server = new Server(ip, portUdp, portTcp);
+        Server server = new Server(ip, portUdp);
         try {
-            Log.d("Trackpad","AFTER CONNECTOR");
             connector = new Connector(server);
             boolean isConnected = connector.checkUdpConnection() | connector.checkBluetoothConnection();
             if (!isConnected) throw new ConnectionException("Couldn't connect to the server");
@@ -102,8 +96,6 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
         initConnection();
         updateSettings();
         super.onResume();
-        if(connector!=null)
-        connector.send(TcpClient.class, "hello world".getBytes());
         System.out.println("resume");
     }
 
@@ -120,10 +112,5 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
         leftClick = view.findViewById(R.id.leftClick);
         midClick = view.findViewById(R.id.midClick);
         rightClick = view.findViewById(R.id.rightClick);
-
-
-//        leftClick.setLayoutParams(params);
-//        midClick.setLayoutParams(params);
-//        rightClick.setLayoutParams(params);
     }
 }

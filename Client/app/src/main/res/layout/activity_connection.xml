@@ -43,24 +43,16 @@
         android:layout_height="wrap_content"
         android:hint="UDP Port"
         app:layout_constraintTop_toBottomOf="@id/connectionIp"
-        app:layout_constraintEnd_toStartOf="@id/tcpEt"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:inputType="number"/>
 
-    <EditText
-        android:id="@+id/tcpEt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="TCP Port"
-        app:layout_constraintTop_toBottomOf="@id/connectionIp"
-        app:layout_constraintStart_toEndOf="@id/udpEt"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:inputType="number"/>
+
     <Button
         android:id="@+id/connectBt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tcpEt"
+        app:layout_constraintTop_toBottomOf="@id/udpEt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="Connect"/>
