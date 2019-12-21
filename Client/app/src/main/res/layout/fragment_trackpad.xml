@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
 
-    <View
+    <org.zoobie.remotecontrol.view.TrackPadView
         android:id="@+id/trackPad"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

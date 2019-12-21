@@ -1,6 +1,9 @@
 package org.zoobie.remotecontrol.core.connection;
 
 
+import android.util.Log;
+
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -18,7 +21,11 @@ public class Connector {
         if(!server.isValid()) throw new ConnectionException("Server is not valid");
         this.server = server;
         udpClient = new UdpClient(server);
-        tcpClient = new TcpClient(server);
+        try {
+            tcpClient = new TcpClient(server);
+        } catch (IOException e) {
+            throw new ConnectionException("Couldn't establish a connection with the tcp server at port " + server.getTcpPort());
+        }
         prioritiseInetConnection = true;
         bluetoothClient = new BluetoothClient();
     }
@@ -76,8 +83,6 @@ public class Connector {
     }
 
     private void sendTcp(byte[] data) {
-        if(tcpClient == null)
-            tcpClient = new TcpClient(server);
         tcpClient.send(data);
     }
 }

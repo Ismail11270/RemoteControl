@@ -15,6 +15,7 @@ public class TouchPadKeysGestureListener extends GestureDetector.SimpleOnGesture
     private GestureDetector gestureDetector;
     private Connector connector;
     private boolean tapped = false;
+    private View view;
 
     public TouchPadKeysGestureListener(Context context, Connector connector) {
         this.context = context;
@@ -26,8 +27,9 @@ public class TouchPadKeysGestureListener extends GestureDetector.SimpleOnGesture
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        v.performClick();
 //        Log.i(TAG,"POINTER " + event.getPointerCount());
-
+        view = v;
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
                 Log.i(TAG, "Action up");
@@ -40,10 +42,15 @@ public class TouchPadKeysGestureListener extends GestureDetector.SimpleOnGesture
                 break;
         }
         gestureDetector.onTouchEvent(event);
-
         return true;
     }
 
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        sendClick(view);
+        return super.onSingleTapUp(e);
+    }
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {

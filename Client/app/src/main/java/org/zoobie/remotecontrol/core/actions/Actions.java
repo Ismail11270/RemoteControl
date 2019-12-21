@@ -7,6 +7,8 @@ package org.zoobie.remotecontrol.core.actions;
 public class Actions {
 
     public static final byte MOUSE_KEY_ACTION = 101;
+    public static final byte MOUSE_DOWN_ACTION = 1;
+    public static final byte MOUSE_UP_ACTION = 2;
     public static final byte MOUSE_MOVE_ACTION = 102;
     public static final byte MOUSE_SCROLL_ACTION = 103;
     public static final byte TEXT_INPUT_ACTION = 90;

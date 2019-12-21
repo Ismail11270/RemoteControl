@@ -1,9 +1,11 @@
 package org.zoobie.remotecontrol.tabs;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.zoobie.pomd.remotecontrol.R;
+import org.zoobie.remotecontrol.core.connection.TcpClient;
 import org.zoobie.remotecontrol.core.listener.TouchPadKeysGestureListener;
 import org.zoobie.remotecontrol.activity.ConnectionActivity;
 import org.zoobie.remotecontrol.core.connection.ConnectionException;
@@ -38,6 +41,7 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
     private SharedPreferences settingsSp;
     private float sens;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,6 +54,7 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
 
         //Setup code here
         initConnection();
+        Log.d("Trackpad","AFTER sending");
 
         touchPadKeysListener = new TouchPadKeysListener(connector);
         touchPadGestureListener = new TouchPadGestureListener(ctx, connector);
@@ -57,7 +62,9 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
         trackPadView.setOnTouchListener(touchPadGestureListener);
 
         leftClick.setOnTouchListener(touchPadKeysGestureListener);
-//        leftClick.setOnClickListener(touchPadKeysListener);
+        midClick.setOnTouchListener(touchPadKeysGestureListener);
+        rightClick.setOnTouchListener(touchPadKeysGestureListener);
+//        leftClick.setOnClickListener(touchPadKeysListenerб);
 //        midClick.setOnClickListener(touchPadKeysListener);
 //        rightClick.setOnClickListener(touchPadKeysListener);
 
@@ -72,6 +79,7 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
         Integer portTcp = connectionSp.getInt("tcp_port", -1) == -1 ? null : connectionSp.getInt("tcp_port", -1);
         Server server = new Server(ip, portUdp, portTcp);
         try {
+            Log.d("Trackpad","AFTER CONNECTOR");
             connector = new Connector(server);
             boolean isConnected = connector.checkUdpConnection() | connector.checkBluetoothConnection();
             if (!isConnected) throw new ConnectionException("Couldn't connect to the server");
@@ -94,6 +102,8 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
         initConnection();
         updateSettings();
         super.onResume();
+        if(connector!=null)
+        connector.send(TcpClient.class, "hello world".getBytes());
         System.out.println("resume");
     }
 

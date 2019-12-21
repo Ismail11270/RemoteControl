@@ -8,6 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -37,16 +38,15 @@ public class MainActivity extends AppCompatActivity {
     //Views
     private ViewPager pager;
     private TabLayout tabLayout;
-    private
-    //Adapters
-    ViewPagerAdapter viewPagerAdapter;
+    private ViewPagerAdapter viewPagerAdapter;
 
+    //Adapters
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        audioManager  = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+        audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
         setContentView(R.layout.activity_main);
 
 
@@ -54,11 +54,14 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.navigation_icon);
         setSupportActionBar(toolbar);
 
+        //todo put tcp server on a seperate thread
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
+        StrictMode.setThreadPolicy(policy);
 
         setup();
 
-        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),ViewPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), ViewPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         pager.setAdapter(viewPagerAdapter);
 
         tabLayout.setupWithViewPager(pager);
@@ -74,19 +77,19 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.navigation_icon);
         setSupportActionBar(toolbar);
         //Views
-        pager = (CustomViewPager)findViewById(R.id.pager);
+        pager = (CustomViewPager) findViewById(R.id.pager);
         tabLayout = findViewById(R.id.tabs);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.touchpad_menu,menu);
+        getMenuInflater().inflate(R.menu.touchpad_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId()==R.id.fullscreen){
+        if (item.getItemId() == R.id.fullscreen) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
             toolbar.setVisibility(View.GONE);
@@ -98,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(fullScreen){
+        if (fullScreen) {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             toolbar.setVisibility(View.VISIBLE);
             fullScreen = false;
@@ -108,13 +111,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        super.onKeyDown(keyCode,event);
-        if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-            Log.i(TAG,"Volume down...");
-            audioManager.adjustVolume(AudioManager.ADJUST_LOWER,AudioManager.FLAG_PLAY_SOUND);
-        } else if(keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+        super.onKeyDown(keyCode, event);
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            Log.i(TAG, "Volume down...");
+            audioManager.adjustVolume(AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND);
+        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
             Log.i(TAG, "Volume up...");
-            audioManager.adjustVolume(AudioManager.ADJUST_RAISE,AudioManager.FLAG_PLAY_SOUND);
+            audioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
         }
         return true;
     }
