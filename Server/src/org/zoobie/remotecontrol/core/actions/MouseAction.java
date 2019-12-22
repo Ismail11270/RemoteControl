@@ -43,10 +43,6 @@ public class MouseAction implements Action {
         Point pos = MouseInfo.getPointerInfo().getLocation();
         x += pos.x;
         y += pos.y;
-        if(x >= Main.resolution.width) x = Main.resolution.width-1;
-        else if(x <= 0) x = 0;
-        if(y >= Main.resolution.height) y = Main.resolution.height-1;
-        else if(y <= 0) y = 0;
         robot.mouseMove(x, y);
     }
 

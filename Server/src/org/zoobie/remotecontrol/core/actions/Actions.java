@@ -5,11 +5,18 @@ public abstract class Actions {
     //non-functional actions
 
 
+    //Mouse Actions
     public static final byte MOUSE_KEY_ACTION = 101;
     public static final byte MOUSE_MOVE_ACTION = 102;
     public static final byte MOUSE_SCROLL_ACTION = 103;
     public static final byte TEXT_INPUT_ACTION = 90;
 
+    //Keyboard actions
+    public static final byte KEYBOARD_ACTION = 41;
+    public static final byte KEYBOARD_CHAR_INPUT = 1;
+    public static final byte KEYBOARD_SPECIAL_INPUT = 2;
+
+    public static final byte MESSAGE_RECIEVED = 42;
 
     //Volume actions
     public static final byte VOLUME_ACTION = 51;
