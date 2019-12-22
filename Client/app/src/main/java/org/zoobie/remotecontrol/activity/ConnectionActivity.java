@@ -25,7 +25,6 @@ public class ConnectionActivity extends AppCompatActivity implements View.OnClic
     private TextView connectionStatusLocalTv;
     private EditText ipAddressEt, udpPortEt;
     private SharedPreferences connectionSp;
-    private static final int CONNECTION_RESULT = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
