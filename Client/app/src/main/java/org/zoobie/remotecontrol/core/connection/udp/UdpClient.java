@@ -1,9 +1,10 @@
-package org.zoobie.remotecontrol.core.connection;
+package org.zoobie.remotecontrol.core.connection.udp;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
 import org.zoobie.remotecontrol.core.actions.Actions;
+import org.zoobie.remotecontrol.core.connection.Client;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -12,7 +13,7 @@ import java.net.SocketException;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
-public class UdpClient implements Client{
+public class UdpClient implements Client {
 
     private Server server;
     private DatagramSocket socket;
@@ -35,7 +36,7 @@ public class UdpClient implements Client{
     public void send(byte... byteData){
         new Thread(() -> {
             try {
-                DatagramPacket packet = new DatagramPacket(byteData, byteData.length, server.getIpAdress(), server.getUdpPort());
+                DatagramPacket packet = new DatagramPacket(byteData, byteData.length, server.getIpAdress(), server.getPort());
                 socket.send(packet);
             } catch (IOException ex) {
                 Log.i(TAG, ex.getMessage());

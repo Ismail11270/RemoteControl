@@ -13,6 +13,12 @@ public class VolumeControl extends FloatControl {
     }
 
 
+    protected void volUp(){
+
+    }
+
+
+
 
     private void non() throws LineUnavailableException {
         float volume = 0.1f;

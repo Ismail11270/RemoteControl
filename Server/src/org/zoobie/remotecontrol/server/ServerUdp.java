@@ -7,6 +7,7 @@ import java.net.*;
 
 public class ServerUdp {
 
+    private static final int MAX_PACKET_SIZE = 5;
     private DatagramSocket recieveSocket;
     private DatagramSocket sendSocket;
     private DatagramPacket packet;
@@ -30,14 +31,14 @@ public class ServerUdp {
         new Thread(() -> {
             try {
                 while (true) {
-                    byteData = new byte[3];
+                    byteData = new byte[MAX_PACKET_SIZE];
                     packet = new DatagramPacket(byteData, byteData.length);
                     recieveSocket.receive(packet);
                     synchronized (actionController) {
                         actionController.performAction(packet);
                     }
                 }
-            } catch (IOException | InterruptedException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }).start();

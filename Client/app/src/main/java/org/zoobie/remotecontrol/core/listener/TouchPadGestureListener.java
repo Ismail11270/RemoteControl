@@ -10,21 +10,22 @@ import android.widget.Toast;
 import org.zoobie.remotecontrol.core.actions.Actions;
 import org.zoobie.remotecontrol.core.connection.Connector;
 
-public class TouchPadGestureListener implements View.OnTouchListener, GestureDetector.OnDoubleTapListener, GestureDetector.OnGestureListener {
+public class TouchPadGestureListener implements View.OnTouchListener,  GestureDetector.OnGestureListener {
     private Context context;
     private GestureDetector gestureDetector;
     private Connector connector;
     private float sens;
     private int counter = 0;
     private final int ACCURACY = 0;
+
     public TouchPadGestureListener(Context context, Connector connector) {
         this.context = context;
         this.connector = connector;
-        gestureDetector = new GestureDetector(context,this);
-        gestureDetector.setOnDoubleTapListener(this);
+        gestureDetector = new GestureDetector(context, this);
+//        gestureDetector.setOnDoubleTapListener(this);
     }
 
-    public GestureDetector getGestureDetector(){
+    public GestureDetector getGestureDetector() {
         return gestureDetector;
     }
 
@@ -32,18 +33,20 @@ public class TouchPadGestureListener implements View.OnTouchListener, GestureDet
 
     @Override
     public boolean onDown(MotionEvent e) {
-        Log.i(TAG,"ON DOWN");
+        Log.i(TAG, "ON DOWN");
         return true;
     }
 
     @Override
     public void onShowPress(MotionEvent e) {
-        Log.i(TAG,"ON SHOW PRESS");
+        Log.i(TAG, "ON SHOW PRESS");
     }
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        Log.i(TAG,"ON SINGLE TAP UP");
+        int keyCode = 1;
+        byte[] bytes = new byte[]{Actions.MOUSE_ACTION,Actions.MOUSE_KEY_ACTION, (byte) keyCode};
+        connector.sendUdp(bytes);
         return true;
     }
 
@@ -53,53 +56,35 @@ public class TouchPadGestureListener implements View.OnTouchListener, GestureDet
      */
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        if(counter < ACCURACY){
+        if (counter < ACCURACY) {
             counter++;
         } else {
 //            Toast.makeText(context, "SCROLL", Toast.LENGTH_SHORT).show();
             Log.i(TAG, "ON SCROLL " + distanceX + " " + distanceY);
-            int x = (int) (distanceX * sens), y = (int) (distanceY * sens);
-            connector.send(Actions.MOUSE_MOVE_ACTION, (byte) (x), (byte) (y));
-            counter = 0;
+            move((int)distanceX,(int)distanceY);
         }
         return true;
     }
 
+    void move(int x, int y){
+        x*=sens; y*=sens;
+        connector.send(Actions.MOUSE_ACTION,Actions.MOUSE_MOVE_ACTION, (byte)x,(byte)y);
+    }
     @Override
     public void onLongPress(MotionEvent e) {
-        Log.i(TAG,"ON LONG PRESS");
+//        Log.i(TAG,"ON LONG PRESS");
     }
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        Log.i(TAG,"ON FLING");
-        return true;
-    }
-
-    @Override
-    public boolean onSingleTapConfirmed(MotionEvent e) {
-        Log.i(TAG,"SINGLE TAP CONFIRMED");
-        return true;
-    }
-
-    @Override
-    public boolean onDoubleTap(MotionEvent e) {
-        Log.i(TAG,"Double tap");
-        return true;
-    }
-
-    @Override
-    public boolean onDoubleTapEvent(MotionEvent e) {
+//        Log.i(TAG,"ON FLING");
         return true;
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-//        Log.i(TAG,"POINTER " + event.getPointerCount());
-        Log.i(TAG,"ON TOUCH");
-        int pointerId = event.getPointerId(0);
 
-        switch (event.getAction() & MotionEvent.ACTION_MASK){
+        switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
                 System.out.println("UP");
                 break;
@@ -107,12 +92,10 @@ public class TouchPadGestureListener implements View.OnTouchListener, GestureDet
                 System.out.println("DOWN");
                 break;
             case MotionEvent.ACTION_MOVE:
-                Log.i(TAG,"MOVE");
+                Log.i(TAG, "MOVE");
                 break;
         }
         gestureDetector.onTouchEvent(event);
-//        client.send(event.getX() + "," + event.getY());
-//        Log.i(TAG,"ON TOUCH");
         return true;
     }
 

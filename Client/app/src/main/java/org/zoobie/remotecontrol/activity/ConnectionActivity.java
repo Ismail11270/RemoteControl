@@ -3,7 +3,6 @@ package org.zoobie.remotecontrol.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +14,7 @@ import android.widget.Toast;
 import org.zoobie.pomd.remotecontrol.R;
 import org.zoobie.remotecontrol.core.connection.ConnectionException;
 import org.zoobie.remotecontrol.core.connection.Connector;
-import org.zoobie.remotecontrol.core.connection.Server;
+import org.zoobie.remotecontrol.core.connection.udp.Server;
 
 import java.util.concurrent.ExecutionException;
 
@@ -23,9 +22,8 @@ public class ConnectionActivity extends AppCompatActivity implements View.OnClic
 
     private Button connectButton;
     private TextView connectionStatusLocalTv;
-    private EditText ipAddressEt, udpPortEt, tcpPortEt;
+    private EditText ipAddressEt, udpPortEt;
     private SharedPreferences connectionSp;
-    private static final int CONNECTION_RESULT = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +35,8 @@ public class ConnectionActivity extends AppCompatActivity implements View.OnClic
         connectionStatusLocalTv = findViewById(R.id.localConnectionStatus);
         ipAddressEt = findViewById(R.id.connectionIp);
         udpPortEt = findViewById(R.id.udpEt);
-        tcpPortEt = findViewById(R.id.tcpEt);
         ipAddressEt.setText(connectionSp.getString("server_ip",""));
         udpPortEt.setText(connectionSp.getInt("udp_port",8888) + "");
-        tcpPortEt.setText(connectionSp.getInt("tcp_port",9999) + "");
         connectButton.setOnClickListener(this);
     }
 
@@ -48,15 +44,14 @@ public class ConnectionActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         if (v.getId() == R.id.connectBt) {
             try {
-                int tcpPort = Integer.parseInt(tcpPortEt.getText().toString());
                 int udpPort = Integer.parseInt(udpPortEt.getText().toString());
                 String ip = ipAddressEt.getText().toString();
-                Server server = new Server(ip, udpPort, tcpPort);
+                Server server = new Server(ip, udpPort);
                 Connector connector = new Connector(server);
-                boolean connected = connector.checkUdpConnection() & connector.checkTcpConnection();
+                boolean connected = connector.checkUdpConnection();
                 if(!connected) throw new ConnectionException("Not connected");
                 Toast.makeText(this, "connection established successfully", Toast.LENGTH_LONG).show();
-                connectionSp.edit().putInt("udp_port",udpPort).putInt("tcp_port",tcpPort).putString("server_ip",ip).apply();
+                connectionSp.edit().putInt("udp_port",udpPort).putString("server_ip",ip).apply();
                 finish();
             } catch (NumberFormatException | ConnectionException | ExecutionException | InterruptedException e) {
                 Toast.makeText(this, "Connection failed, please check the values.", Toast.LENGTH_LONG).show();

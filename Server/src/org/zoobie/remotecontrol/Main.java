@@ -1,5 +1,6 @@
 package org.zoobie.remotecontrol;
 
+import com.profesorfalken.jpowershell.PowerShell;
 import org.zoobie.remotecontrol.server.ServerUdp;
 
 import javax.sound.sampled.*;
@@ -8,14 +9,14 @@ import java.io.IOException;
 
 public class Main {
 
-    public static Robot robot;
-    public static Dimension resolution;
 
     public static void main(String[] args) throws IOException, AWTException, InterruptedException, LineUnavailableException {
+
         ServerUdp serverUdp = new ServerUdp(1711);
-        System.out.println("Udp Server started at " + serverUdp.getIp() + ":"+serverUdp.getPort());
+
         serverUdp.listen();
-        resolution = Toolkit.getDefaultToolkit().getScreenSize();
+        System.out.println("Udp Server started at " + serverUdp.getIp() + ":"+serverUdp.getPort());
+//        MouseInfo.getPointerInfo().getDevice().se
     }
 
 //        ProcessBuilder processBuilder = new ProcessBuilder("notepad.exe");

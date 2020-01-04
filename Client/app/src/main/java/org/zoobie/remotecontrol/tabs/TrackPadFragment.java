@@ -1,5 +1,6 @@
 package org.zoobie.remotecontrol.tabs;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,11 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.zoobie.pomd.remotecontrol.R;
+import org.zoobie.remotecontrol.core.listener.ScrollerGestureListener;
 import org.zoobie.remotecontrol.core.listener.TouchPadKeysGestureListener;
 import org.zoobie.remotecontrol.activity.ConnectionActivity;
 import org.zoobie.remotecontrol.core.connection.ConnectionException;
 import org.zoobie.remotecontrol.core.connection.Connector;
-import org.zoobie.remotecontrol.core.connection.Server;
+import org.zoobie.remotecontrol.core.connection.udp.Server;
 import org.zoobie.remotecontrol.core.listener.TouchPadGestureListener;
 import org.zoobie.remotecontrol.core.listener.TouchPadKeysListener;
 
@@ -27,7 +29,7 @@ import java.util.concurrent.ExecutionException;
 public class TrackPadFragment extends androidx.fragment.app.Fragment {
 
     private static final int CONNECTION_RESULT = 123;
-    private View trackPadView;
+    private View trackPadView, scrollerView;
     private ImageButton leftClick, midClick, rightClick;
     private TouchPadKeysListener touchPadKeysListener;
     private TouchPadKeysGestureListener touchPadKeysGestureListener;
@@ -37,7 +39,12 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
     private SharedPreferences connectionSp;
     private SharedPreferences settingsSp;
     private float sens;
+    private ScrollerGestureListener scrollerGestureListener;
 
+    public TrackPadFragment(Connector connector){
+        this.connector = connector;
+    }
+    @SuppressLint("ClickableViewAccessibility")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,28 +56,27 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
         initViews(view);
 
         //Setup code here
-        initConnection();
+//        verifyConnection();
 
         touchPadKeysListener = new TouchPadKeysListener(connector);
         touchPadGestureListener = new TouchPadGestureListener(ctx, connector);
-        touchPadKeysGestureListener = new TouchPadKeysGestureListener(ctx,connector);
+        touchPadKeysGestureListener = new TouchPadKeysGestureListener(ctx,connector,touchPadGestureListener);
+        scrollerGestureListener = new ScrollerGestureListener(ctx,connector);
         trackPadView.setOnTouchListener(touchPadGestureListener);
-
+        scrollerView.setOnTouchListener(scrollerGestureListener);
         leftClick.setOnTouchListener(touchPadKeysGestureListener);
-//        leftClick.setOnClickListener(touchPadKeysListener);
-//        midClick.setOnClickListener(touchPadKeysListener);
-//        rightClick.setOnClickListener(touchPadKeysListener);
+        midClick.setOnTouchListener(touchPadKeysGestureListener);
+        rightClick.setOnTouchListener(touchPadKeysGestureListener);
 
         updateSettings();
         return view;
     }
 
 
-    private void initConnection() {
+    private void verifyConnection() {
         String ip = connectionSp.getString("server_ip", null);
         Integer portUdp = connectionSp.getInt("udp_port", -1) == -1 ? null : connectionSp.getInt("udp_port", -1);
-        Integer portTcp = connectionSp.getInt("tcp_port", -1) == -1 ? null : connectionSp.getInt("tcp_port", -1);
-        Server server = new Server(ip, portUdp, portTcp);
+        Server server = new Server(ip, portUdp);
         try {
             connector = new Connector(server);
             boolean isConnected = connector.checkUdpConnection() | connector.checkBluetoothConnection();
@@ -91,7 +97,7 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
 
     @Override
     public void onResume() {
-        initConnection();
+        verifyConnection();
         updateSettings();
         super.onResume();
         System.out.println("resume");
@@ -106,14 +112,10 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
     }
 
     private void initViews(View view) {
+        scrollerView = view.findViewById(R.id.scroller);
         trackPadView = view.findViewById(R.id.trackPad);
         leftClick = view.findViewById(R.id.leftClick);
         midClick = view.findViewById(R.id.midClick);
         rightClick = view.findViewById(R.id.rightClick);
-
-
-//        leftClick.setLayoutParams(params);
-//        midClick.setLayoutParams(params);
-//        rightClick.setLayoutParams(params);
     }
 }

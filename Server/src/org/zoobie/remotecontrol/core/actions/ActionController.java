@@ -3,23 +3,39 @@ package org.zoobie.remotecontrol.core.actions;
 import org.zoobie.remotecontrol.server.ServerUdp;
 
 import java.awt.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.DatagramPacket;
+import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 
 public class ActionController {
     private Robot robot;
     private ServerUdp serverUdp;
+    private Runtime runtime;
+    private static ArrayList<Locale> supportedLanguageLocales;
+    static {
+        supportedLanguageLocales = new ArrayList<>();
+        supportedLanguageLocales.add(Locale.US);
+    }
 
     public ActionController(ServerUdp serverUdp) {
         try {
             robot = new Robot();
+            runtime = Runtime.getRuntime();
             this.serverUdp = serverUdp;
         } catch (AWTException e) {
             e.printStackTrace();
         }
     }
 
-    public void performAction(DatagramPacket packet) throws InterruptedException {
+
+
+    //from udp
+    public void performAction(DatagramPacket packet) {
         byte[] actionBytes = packet.getData();
         System.out.println(Arrays.toString(actionBytes));
         //Mouse action
@@ -29,26 +45,24 @@ public class ActionController {
             actionThread = new Thread(() -> {
                 new ConnectionAction(serverUdp, packet, actionBytes).performAction();
             });
-        } else if (actionBytes[0] == Actions.MOUSE_KEY_ACTION) {
+        } else if (actionBytes[0] == Actions.MOUSE_ACTION) {
             actionThread = new Thread(() -> {
                 new MouseAction(robot, actionBytes).performAction();
             });
-        }else if(actionBytes[0] == Actions.MOUSE_MOVE_ACTION){
-            actionThread = new Thread(()->{
-                new MouseAction(robot,actionBytes).performAction();
+        } else if (actionBytes[0] == Actions.VOLUME_ACTION) {
+            actionThread = new Thread(() -> {
+                new VolumeAction(actionBytes).performAction();
             });
-        }else if(actionBytes[0] == Actions.TEXT_INPUT_ACTION){
+        } else if(actionBytes[0] == Actions.KEYBOARD_ACTION){
             actionThread = new Thread(()->{
-                new KeyboardAction(robot,actionBytes[1]).performAction();
-            });
-        } else if(actionBytes[0] == Actions.VOLUME_ACTION){
-            actionThread = new Thread(() ->{
-               new VolumeAction(actionBytes[1]).performAction();
+                try {
+                    new KeyboardAction(robot,supportedLanguageLocales,actionBytes).performAction();
+                } catch (UnsupportedActionException e) {
+                    e.printStackTrace();
+                }
             });
         }
         actionThread.start();
     }
-
-
 
 }

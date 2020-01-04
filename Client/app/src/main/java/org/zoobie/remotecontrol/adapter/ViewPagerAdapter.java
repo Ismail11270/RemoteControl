@@ -8,14 +8,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import org.zoobie.remotecontrol.core.connection.Connector;
 import org.zoobie.remotecontrol.tabs.TrackPadFragment;
-import org.zoobie.remotecontrol.tabs.SecondTabFragment;
+import org.zoobie.remotecontrol.tabs.TextInputFragment;
 import org.zoobie.remotecontrol.tabs.ThirdTabFragment;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    public ViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
+    private Connector connector;
+
+    public ViewPagerAdapter(@NonNull FragmentManager fm, int behavior, Connector connector) {
         super(fm, behavior);
+        this.connector = connector;
     }
 
     @NonNull
@@ -26,8 +30,8 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
 
         Bundle bundle = new Bundle();
-        if(position == 1) item = new TrackPadFragment();
-        else if(position == 2) item = new SecondTabFragment();
+        if(position == 1) item = new TrackPadFragment(connector);
+        else if(position == 2) item = new TextInputFragment(connector);
         else item = new ThirdTabFragment();
         bundle.putString("message","" + position);
         bundle.putInt("id",position);
