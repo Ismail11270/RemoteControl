@@ -10,11 +10,8 @@ public class KeyboardAction implements Action {
 
     private final Robot robot;
     private final byte[] command;
-    private static ArrayList<Locale> supportedLanguageLocales;
-    static {
-        supportedLanguageLocales.add(Locale.US);
-    }
-    public KeyboardAction(Robot robot, byte... command) throws UnsupportedActionException {
+
+    public KeyboardAction(Robot robot, ArrayList<Locale> supportedLanguageLocales, byte... command) throws UnsupportedActionException {
         this.robot = robot;
         this.command = command;
         InputContext context = InputContext.getInstance();
@@ -23,14 +20,33 @@ public class KeyboardAction implements Action {
         }
     }
 
+
+
     @Override
     public void performAction() {
-        if (command[1] == Actions.KEYBOARD_CHAR_INPUT) {
+        if (command[1] == Actions.TEXT_KEY_ACTION) {
             char c = (char) command[2];
-            if (Character.isUpperCase(c)) {
                 pressKey(c);
-            }
+        } else if(command[1] == Actions.SPECIAL_KEY_ACTION){
+            pressSpecialKey(command[2]);
         }
+    }
+
+    private void pressSpecialKey(byte b) {
+        int keyCode;
+        switch(b){
+            case Actions.Keys.BACKSPACE:
+                keyCode = KeyEvent.VK_BACK_SPACE;
+                break;
+            case Actions.Keys.ENTER:
+                keyCode = KeyEvent.VK_ENTER;
+                break;
+            default:
+                keyCode = 1;
+                break;
+        }
+        robot.keyPress(keyCode);
+        robot.keyRelease(keyCode);
     }
 
 

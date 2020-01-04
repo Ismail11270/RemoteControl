@@ -1,4 +1,4 @@
-package org.zoobie.remotecontrol.core.connection;
+package org.zoobie.remotecontrol.core.connection.udp;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

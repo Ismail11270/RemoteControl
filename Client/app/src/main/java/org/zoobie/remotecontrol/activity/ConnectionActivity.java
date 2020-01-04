@@ -3,7 +3,6 @@ package org.zoobie.remotecontrol.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +14,7 @@ import android.widget.Toast;
 import org.zoobie.pomd.remotecontrol.R;
 import org.zoobie.remotecontrol.core.connection.ConnectionException;
 import org.zoobie.remotecontrol.core.connection.Connector;
-import org.zoobie.remotecontrol.core.connection.Server;
+import org.zoobie.remotecontrol.core.connection.udp.Server;
 
 import java.util.concurrent.ExecutionException;
 

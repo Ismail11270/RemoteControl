@@ -13,7 +13,14 @@
         android:background="@drawable/track_pad"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
-
+    <View
+        android:id="@+id/scroller"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/mousewheel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/rightClick"
+        app:layout_constraintTop_toTopOf="parent"/>
     <ImageButton
         android:id="@+id/leftClick"
         android:layout_width="150dp"

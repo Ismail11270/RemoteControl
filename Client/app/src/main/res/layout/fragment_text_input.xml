@@ -16,6 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+
         android:layout_marginVertical="50dp"
         />
     <LinearLayout
@@ -41,11 +42,6 @@
         android:rotation="-90"
         android:src="@android:drawable/arrow_down_float"
         />
-        <Button
-            android:id="@+id/backspace"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Backspace"
-            />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

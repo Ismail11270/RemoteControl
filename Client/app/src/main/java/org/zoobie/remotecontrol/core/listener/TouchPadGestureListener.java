@@ -45,7 +45,7 @@ public class TouchPadGestureListener implements View.OnTouchListener,  GestureDe
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
         int keyCode = 1;
-        byte[] bytes = new byte[]{Actions.MOUSE_KEY_ACTION, (byte) keyCode};
+        byte[] bytes = new byte[]{Actions.MOUSE_ACTION,Actions.MOUSE_KEY_ACTION, (byte) keyCode};
         connector.sendUdp(bytes);
         return true;
     }
@@ -61,13 +61,15 @@ public class TouchPadGestureListener implements View.OnTouchListener,  GestureDe
         } else {
 //            Toast.makeText(context, "SCROLL", Toast.LENGTH_SHORT).show();
             Log.i(TAG, "ON SCROLL " + distanceX + " " + distanceY);
-            int x = (int) (distanceX * sens), y = (int) (distanceY * sens);
-            connector.send(Actions.MOUSE_MOVE_ACTION, (byte) (x), (byte) (y));
-            counter = 0;
+            move((int)distanceX,(int)distanceY);
         }
         return true;
     }
 
+    void move(int x, int y){
+        x*=sens; y*=sens;
+        connector.send(Actions.MOUSE_ACTION,Actions.MOUSE_MOVE_ACTION, (byte)x,(byte)y);
+    }
     @Override
     public void onLongPress(MotionEvent e) {
 //        Log.i(TAG,"ON LONG PRESS");

@@ -1,15 +1,18 @@
 package org.zoobie.remotecontrol.core.actions;
 
 import com.profesorfalken.jpowershell.PowerShell;
-import com.profesorfalken.jpowershell.PowerShellResponse;
+
+import java.io.IOException;
 
 public class VolumeAction implements Action {
 
     private boolean isWindows = false;
 
     private final byte[] command;
+    private Runtime runtime;
 
     public VolumeAction(byte... command) {
+        this.runtime = Runtime.getRuntime();
         if (System.getProperty("os.name").equals("Windows 10")) {
             isWindows = true;
         }
@@ -18,35 +21,39 @@ public class VolumeAction implements Action {
 
     @Override
     public void performAction() {
-        StringBuilder commandSb = new StringBuilder("(new-object -com wscript.shell).SendKeys([char]");
-        switch (command[0]) {
-            case Actions.VOLUME_DOWN_ACTION:
-                down();
-                break;
-            case Actions.VOLUME_UP_ACTION:
-                up();
-                break;
-            case Actions.VOLUME_MUTE_ACTION:
+        try {
+            switch (command[1]) {
+                case Actions.VOLUME_DOWN_ACTION:
+                    down();
+                    break;
+                case Actions.VOLUME_UP_ACTION:
+                    up();
+                    break;
+                case Actions.VOLUME_MUTE_ACTION:
 
-                break;
-            case Actions.VOLUME_SET_ACTION:
+                    break;
+                case Actions.VOLUME_SET_ACTION:
 
-                break;
+                    break;
+            }
+        }catch(IOException e){
+            System.out.println(e.getMessage());
         }
     }
 
-    private void up() {
+    private void up() throws IOException {
         if (isWindows)
-            PowerShell.executeSingleCommand("(new-object -com wscript.shell).SendKeys([char]175)");
+            runtime.exec(new String[]{"powershell.exe", "(new-object -com wscript.shell).SendKeys([char]175)"});
     }
 
-    private void down() {
+    private void down() throws IOException {
         if (isWindows)
-            PowerShell.executeSingleCommand("(new-object -com wscript.shell).SendKeys([char]174)");
+            runtime.exec(new String[]{"powershell.exe", "(new-object -com wscript.shell).SendKeys([char]174)"});
+
     }
 
-    private void mute() {
+    private void mute() throws IOException {
         if (isWindows)
-            PowerShell.executeSingleCommand("(new-object -com wscript.shell).SendKeys([char]173)");
+            runtime.exec(new String[]{"powershell.exe", "(new-object -com wscript.shell).SendKeys([char]173)"});
     }
 }

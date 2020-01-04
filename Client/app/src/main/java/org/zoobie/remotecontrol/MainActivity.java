@@ -6,6 +6,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -22,8 +24,15 @@ import android.widget.Toast;
 import com.google.android.material.tabs.TabLayout;
 
 import org.zoobie.pomd.remotecontrol.R;
+import org.zoobie.remotecontrol.activity.ConnectionActivity;
 import org.zoobie.remotecontrol.adapter.ViewPagerAdapter;
+import org.zoobie.remotecontrol.core.actions.Actions;
+import org.zoobie.remotecontrol.core.connection.ConnectionException;
+import org.zoobie.remotecontrol.core.connection.Connector;
+import org.zoobie.remotecontrol.core.connection.udp.Server;
 import org.zoobie.remotecontrol.view.CustomViewPager;
+
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,11 +48,14 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager pager;
     private TabLayout tabLayout;
     private ViewPagerAdapter viewPagerAdapter;
+    private Connector connector;
+    private SharedPreferences connectionSp;
 
     //Adapters
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        connectionSp = getSharedPreferences("org.zoobie.connectiondata", Context.MODE_PRIVATE);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
@@ -60,15 +72,11 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         setup();
-
-        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), ViewPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        initConnection();
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), ViewPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,connector);
         pager.setAdapter(viewPagerAdapter);
 
         tabLayout.setupWithViewPager(pager);
-//        view = findViewById(R.id.view);
-//        view.setOnTouchListener(this);
-//
-//        mGestureDetector = new GestureDetector(this,this);
     }
 
     private void setup() {
@@ -105,85 +113,64 @@ public class MainActivity extends AppCompatActivity {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             toolbar.setVisibility(View.VISIBLE);
             fullScreen = false;
-        } else super.onBackPressed();
+        } else {
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
     }
 
+
+
+    private boolean volumeButtonPressed = false;
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         super.onKeyDown(keyCode, event);
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN && !volumeButtonPressed) {
             Log.i(TAG, "Volume down...");
             audioManager.adjustVolume(AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND);
-        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            connector.send(Actions.VOLUME_ACTION, Actions.VOLUME_DOWN_ACTION);
+            volumeButtonPressed = true;
+        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP && !volumeButtonPressed) {
             Log.i(TAG, "Volume up...");
             audioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
+            connector.send(Actions.VOLUME_ACTION, Actions.VOLUME_UP_ACTION);
+            volumeButtonPressed = true;
         }
         return true;
     }
 
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        super.onKeyUp(keyCode,event);
+        volumeButtonPressed = false;
+        return true;
+    }
 
-    //
-//
-//
-//    @Override
-//    public boolean onTouch(View v, MotionEvent event) {
-//        mGestureDetector.onTouchEvent(event);
-//        int action = event.getAction();
-//
-//        switch(action) {
-//            case (MotionEvent.ACTION_DOWN) :
-//                Log.d(TAG,"Action was DOWN");
-//                return true;
-//            case (MotionEvent.ACTION_MOVE) :
-//                Log.d(TAG,"Action was MOVE " + event.getX() + "," + event.getY());
-//                return true;
-//            case (MotionEvent.ACTION_UP) :
-//                Log.d(TAG,"Action was UP");
-//                return true;
-//            case (MotionEvent.ACTION_CANCEL) :
-//                Log.d(TAG,"Action was CANCEL");
-//                return true;
-//            case (MotionEvent.ACTION_OUTSIDE) :
-//                Log.d(TAG,"Movement occurred outside bounds " +
-//                        "of current screen element");
-//                return true;
-//            default :
-//                return super.onTouchEvent(event);
-//        }
-//    }
-//
-//    @Override
-//    public boolean onDown(MotionEvent e) {
-//        Log.d(TAG, "onDown");
-//        return true;
-//    }
-//
-//    @Override
-//    public void onShowPress(MotionEvent e) {
-//        Log.d(TAG, "onShowPress");
-//    }
-//
-//    @Override
-//    public boolean onSingleTapUp(MotionEvent e) {
-//        Log.d(TAG, "onSignleTapUp");
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-//        //Log.d(TAG, "onScroll");
-//        return true;
-//    }
-//
-//    @Override
-//    public void onLongPress(MotionEvent e) {
-//        Log.d(TAG, "onLongPress");
-//    }
-//
-//    @Override
-//    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-//        Log.d(TAG, "onFling " + velocityX + "," + velocityY);
-//        return true;
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPostResume() {
+        Log.d(TAG, "RESUME");
+
+        super.onPostResume();
+    }
+
+    private void initConnection() {
+        String ip = connectionSp.getString("server_ip", null);
+        Integer portUdp = connectionSp.getInt("udp_port", -1) == -1 ? null : connectionSp.getInt("udp_port", -1);
+        Server server = new Server(ip, portUdp);
+        try {
+            connector = new Connector(server);
+            boolean isConnected = connector.checkUdpConnection() | connector.checkBluetoothConnection();
+            if (!isConnected) throw new ConnectionException("Couldn't connect to the server");
+            Toast.makeText(this, "Connected to " + connector.getServerName(), Toast.LENGTH_SHORT).show();
+        } catch (ConnectionException | ExecutionException | InterruptedException e) {
+            Toast.makeText(this, "FAILED TO CONNECT", Toast.LENGTH_SHORT).show();
+            Intent connectionIntent = new Intent(this, ConnectionActivity.class);
+            startActivity(connectionIntent);
+        }
+    }
 }
