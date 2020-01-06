@@ -4,7 +4,6 @@ package org.zoobie.remotecontrol.core.actions;
 import android.content.res.Resources;
 
 import org.zoobie.pomd.remotecontrol.R;
-import org.zoobie.remotecontrol.MainActivity;
 
 import java.util.HashMap;
 
@@ -29,9 +28,7 @@ public class Actions {
     public static class Keys{
         private HashMap<String,Byte> keyActionsMap;
         private Resources res;
-        public Keys(String[] tags) {
 
-        }
 
         public Keys(Resources res) {
             this.res = res;

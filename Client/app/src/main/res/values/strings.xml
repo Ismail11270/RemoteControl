@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_name">RemoteControl0</string>
 
     <string-array name="tags">
         <item name="tag_caps">capslock</item>
@@ -34,7 +35,7 @@
         <item name="tag_alt_tab">alt-tab</item>
         <item name="tag_esc">esc</item>
     </string-array>
-    <string name="app_name">RemoteControl0</string>
+    <!--    KEYS-->
     <string name="tag_caps">capslock</string>
     <string name="tag_shift">shift</string>
     <string name="tag_f1">f1</string>
@@ -67,5 +68,5 @@
     <string name="win_d">win-d</string>
     <string name="tag_alt_tab">alt-tab</string>
     <string name="tag_esc">esc</string>
-
+    <!--    END KEYS-->
 </resources>

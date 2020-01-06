@@ -61,16 +61,6 @@ public class KeyboardFragment extends androidx.fragment.app.Fragment implements 
         textInput = view.findViewById(R.id.textInput);
         res = getResources();
         keys = new Actions.Keys(res);
-//        leftBt = view.findViewById(R.id.arrowLeft);
-//        rightBt = view.findViewById(R.id.arrowRight);
-//
-//
-//        leftBt.setOnClickListener(v -> {
-//            connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, Actions.Keys.ARROW_LEFT);
-//        });
-//        rightBt.setOnClickListener(v -> {
-//            connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, Actions.Keys.ARROW_RIGHT);
-//        });
         initViews(view);
         textInputSetup();
         keyboardInit();
@@ -84,7 +74,6 @@ public class KeyboardFragment extends androidx.fragment.app.Fragment implements 
     private void textInputSetup() {
         textInput.setOnKeyListener((v, keyCode, event) -> {
             Log.i(TAG, keyCode + " key pressed");
-            keys = new Actions.Keys(getResources().getStringArray(R.array.tags));
             if(event.getAction() == KeyEvent.ACTION_DOWN)
                 switch (keyCode) {
                     case KeyEvent.KEYCODE_DEL:

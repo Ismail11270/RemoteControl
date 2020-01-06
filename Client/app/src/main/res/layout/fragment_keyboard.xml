@@ -23,11 +23,13 @@
         android:id="@+id/backspace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Backspace"
+        android:text="@string/tag_backspace"
         app:layout_constraintBottom_toTopOf="@id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/textInput"
-        app:layout_constraintTop_toTopOf="@id/textInput" />
+        app:layout_constraintTop_toTopOf="@id/textInput"
+        android:tag="@string/tag_backspace"
+        />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -384,6 +386,7 @@
         android:tag="@string/tag_ctrl"
         app:layout_constraintBottom_toBottomOf="@+id/capslock"
         app:layout_constraintEnd_toStartOf="@id/enter"
+
         app:layout_constraintStart_toEndOf="@+id/alt"
         app:layout_constraintTop_toTopOf="@+id/capslock" />
 
