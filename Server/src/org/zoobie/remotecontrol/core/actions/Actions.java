@@ -36,8 +36,6 @@ public abstract class Actions {
     public static final byte SPECIAL_KEY_ACTION_RELEASE = 4;
 
     public static class Keys{
-        public static final byte ENTER = 1;
-        public static final byte BACKSPACE = 2;
         public static final HashMap<Byte,Integer[]> keysMap; //Action code vs awt keycode
         static {
             keysMap = new HashMap<>();
