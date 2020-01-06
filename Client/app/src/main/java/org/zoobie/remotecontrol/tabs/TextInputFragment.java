@@ -36,6 +36,10 @@ public class TextInputFragment extends androidx.fragment.app.Fragment {
     private Connector connector;
     private Context ctx;
 
+    public TextInputFragment(){
+
+    }
+
     public TextInputFragment(Connector connector) {
         this.connector = connector;
     }

@@ -41,6 +41,9 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
     private float sens;
     private ScrollerGestureListener scrollerGestureListener;
 
+    public TrackPadFragment(){
+
+    }
     public TrackPadFragment(Connector connector){
         this.connector = connector;
     }

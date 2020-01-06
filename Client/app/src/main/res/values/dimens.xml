@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="touchpad_keys_height">90dp</dimen>
+    <dimen name="button_corner_radius">10dp</dimen>
+
 </resources>

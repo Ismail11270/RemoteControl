@@ -14,4 +14,6 @@
     <color name="gray">#9E9E9E</color>
     <color name="amber_light">#FFF8E1</color>
     <color name="amber">#FFC107</color>
+    <color name="blue">#0066cc</color>
+    <color name="gold">#e6b121</color>
 </resources>

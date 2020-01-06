@@ -1,3 +1,39 @@
 <resources>
     <string name="app_name">RemoteControl</string>
+
+
+
+    <string name="tag_caps">capslock</string>
+    <string name="tag_shift">shift</string>
+    <string name="tag_f1">f1</string>
+    <string name="tag_f2">f2</string>
+    <string name="tag_f3">f3</string>
+    <string name="tag_f4">f4</string>
+    <string name="tag_f5">f5</string>
+    <string name="tag_f6">f6</string>
+    <string name="tag_f7">f7</string>
+    <string name="tag_f8">f8</string>
+    <string name="tag_f9">f9</string>
+    <string name="tag_f10">f10</string>
+    <string name="tag_f11">f11</string>
+    <string name="tag_f12">f12</string>
+    <string name="tag_enter">enter</string>
+    <string name="tag_fn">fn</string>
+    <string name="tag_ctrl">ctrl</string>
+    <string name="tag_alt">alt</string>
+    <string name="tag_win">windows</string>
+    <string name="tag_copy">copy</string>
+    <string name="tag_paste">paste</string>
+    <string name="tag_space">space</string>
+    <string name="tag_ctrl_alt_del">cad</string>
+    <string name="tag_backspace">backspace</string>
+    <string name="tag_down">down</string>
+    <string name="tag_up">up</string>
+    <string name="tag_right">right</string>
+    <string name="tag_left">left</string>
+    <string name="tag_alt_f4">alt-f4</string>
+    <string name="win_d">win-d</string>
+    <string name="tag_alt_tab">alt-tab</string>
+    <string name="tag_esc">esc</string>
+
 </resources>
