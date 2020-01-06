@@ -1,8 +1,41 @@
 <resources>
-    <string name="app_name">RemoteControl</string>
+    <string name="app_name">RemoteControl0</string>
 
-
-
+    <string-array name="tags">
+        <item name="tag_caps">capslock</item>
+        <item name="tag_shift">shift</item>
+        <item name="tag_f1">f1</item>
+        <item name="tag_f2">f2</item>
+        <item name="tag_f3">f3</item>
+        <item name="tag_f4">f4</item>
+        <item name="tag_f5">f5</item>
+        <item name="tag_f6">f6</item>
+        <item name="tag_f7">f7</item>
+        <item name="tag_f8">f8</item>
+        <item name="tag_f9">f9</item>
+        <item name="tag_f10">f10</item>
+        <item name="tag_f11">f11</item>
+        <item name="tag_f12">f12</item>
+        <item name="tag_enter">enter</item>
+        <item name="tag_menu">menu</item>
+        <item name="tag_ctrl">ctrl</item>
+        <item name="tag_alt">alt</item>
+        <item name="tag_win">windows</item>
+        <item name="tag_copy">copy</item>
+        <item name="tag_paste">paste</item>
+        <item name="tag_space">space</item>
+        <item name="tag_ctrl_alt_del">cad</item>
+        <item name="tag_backspace">backspace</item>
+        <item name="tag_down">down</item>
+        <item name="tag_up">up</item>
+        <item name="tag_right">right</item>
+        <item name="tag_left">left</item>
+        <item name="tag_alt_f4">alt-f4</item>
+        <item name="win_d">win-d</item>
+        <item name="tag_alt_tab">alt-tab</item>
+        <item name="tag_esc">esc</item>
+    </string-array>
+    <!--    KEYS-->
     <string name="tag_caps">capslock</string>
     <string name="tag_shift">shift</string>
     <string name="tag_f1">f1</string>
@@ -18,7 +51,7 @@
     <string name="tag_f11">f11</string>
     <string name="tag_f12">f12</string>
     <string name="tag_enter">enter</string>
-    <string name="tag_fn">fn</string>
+    <string name="tag_menu">menu</string>
     <string name="tag_ctrl">ctrl</string>
     <string name="tag_alt">alt</string>
     <string name="tag_win">windows</string>
@@ -35,5 +68,5 @@
     <string name="win_d">win-d</string>
     <string name="tag_alt_tab">alt-tab</string>
     <string name="tag_esc">esc</string>
-
+    <!--    END KEYS-->
 </resources>

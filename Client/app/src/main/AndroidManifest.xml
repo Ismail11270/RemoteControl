@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="org.zoobie.remotecontrol.activity.ConnectionActivity"></activity>
-        <activity android:name="org.zoobie.remotecontrol.activity.EntryActivity">
+        <activity android:name="org.zoobie.remotecontrol.activity.EntryActivity"
+            android:theme="@style/Theme.Design.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.zoobie.remotecontrol.MainActivity"
+            android:name="org.zoobie.remotecontrol.activity.MainActivity"
             android:label="Remote Controller"
             android:theme="@style/Theme.Design.NoActionBar"></activity>
 
