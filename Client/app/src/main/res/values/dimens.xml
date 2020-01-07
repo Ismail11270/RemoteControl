@@ -2,5 +2,5 @@
 <resources>
     <dimen name="touchpad_keys_height">90dp</dimen>
     <dimen name="button_corner_radius">10dp</dimen>
-
+    <item name="mouse_buttons_guideline" format="float" type="dimen">0.88</item>
 </resources>
