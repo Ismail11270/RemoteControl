@@ -46,7 +46,8 @@ public class KeyboardFragment extends androidx.fragment.app.Fragment implements 
     private Actions.Keys keys;
     private Resources res;
     private View view;
-    public KeyboardFragment(){
+
+    public KeyboardFragment() {
 
     }
 
@@ -77,7 +78,7 @@ public class KeyboardFragment extends androidx.fragment.app.Fragment implements 
     private void textInputSetup() {
         textInput.setOnKeyListener((v, keyCode, event) -> {
             Log.i(TAG, keyCode + " key pressed");
-            if(event.getAction() == KeyEvent.ACTION_DOWN)
+            if (event.getAction() == KeyEvent.ACTION_DOWN)
                 switch (keyCode) {
                     case KeyEvent.KEYCODE_DEL:
                         connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, keys.getActionCodeForKey(R.string.tag_backspace));
@@ -91,20 +92,26 @@ public class KeyboardFragment extends androidx.fragment.app.Fragment implements 
 
         textInput.addTextChangedListener(new TextWatcher() {
             boolean isChanged = true;
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Log.i(TAG,s.toString());
-                if (before < count && isChanged)
-                    connector.send(Actions.KEYBOARD_ACTION, Actions.TEXT_KEY_ACTION_CLICK, (byte) s.charAt(before));
+                Log.i(TAG, s.toString());
+                if (before < count && isChanged) {
+                    if (s.charAt(before) == '\n')
+                        connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, keys.getActionCodeForKey(R.string.tag_enter));
+                    else
+                        connector.send(Actions.KEYBOARD_ACTION, Actions.TEXT_KEY_ACTION_CLICK, (byte) s.charAt(before));
+
+                }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!s.toString().equals(""))
+                if (!s.toString().equals(""))
                     textInput.setText("");
             }
         });
@@ -117,17 +124,18 @@ public class KeyboardFragment extends androidx.fragment.app.Fragment implements 
         hideKeyboard();
     }
 
-    private void hideKeyboard(){
+    private void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) ctx.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
     private void initViews() {
         keysLayout = (ConstraintLayout) view;
         ArrayList<View> views = keysLayout.getTouchables(); //get touchable children
         buttonsList = new ArrayList<>();
-        for(View v : views){
-            if(v instanceof KeyboardButton){
-                KeyboardButton b = (KeyboardButton)v;
+        for (View v : views) {
+            if (v instanceof KeyboardButton) {
+                KeyboardButton b = (KeyboardButton) v;
                 b.setOnClickListener(this);
                 b.setOnLongClickListener(this);
                 buttonsList.add(b);
@@ -161,28 +169,28 @@ public class KeyboardFragment extends androidx.fragment.app.Fragment implements 
 
     @Override
     public void onClick(View v) {
-        if(v instanceof KeyboardButton){
+        if (v instanceof KeyboardButton) {
             KeyboardButton b = (KeyboardButton) v;
             byte keyCode = keys.getActionCodeForKey(b.getTag().toString());
-            if(b.isButtonPressed()){
+            if (b.isButtonPressed()) {
                 b.toggle();
                 b.buttonPress();
-                connector.send(Actions.KEYBOARD_ACTION,Actions.SPECIAL_KEY_ACTION_RELEASE,keyCode);
+                connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_RELEASE, keyCode);
             }
-            connector.send(Actions.KEYBOARD_ACTION,Actions.SPECIAL_KEY_ACTION_CLICK,keyCode);
+            connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, keyCode);
         }
     }
 
     @Override
     public boolean onLongClick(View v) {
-        if(v instanceof KeyboardButton){
+        if (v instanceof KeyboardButton) {
             KeyboardButton b = (KeyboardButton) v;
             byte keyCode = keys.getActionCodeForKey(b.getTag().toString());
-            if(!b.isButtonPressed()){
+            if (!b.isButtonPressed()) {
                 b.toggle();
                 b.buttonPress();
-                connector.send(Actions.KEYBOARD_ACTION,Actions.SPECIAL_KEY_ACTION_PRESS,keyCode);
-            }else {
+                connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_PRESS, keyCode);
+            } else {
                 connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_RELEASE, keyCode);
                 b.toggle();
                 b.buttonPress();
