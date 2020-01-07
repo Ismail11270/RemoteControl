@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
             toolbar.setVisibility(View.VISIBLE);
             fullScreen = false;
         } else {
-            android.os.Process.killProcess(android.os.Process.myPid());
+            finish();
         }
     }
 
@@ -150,17 +150,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPostResume() {
-        Log.d(TAG, "RESUME");
-
-        super.onPostResume();
-    }
 
     private void initConnection() {
         String ip = connectionSp.getString("server_ip", null);

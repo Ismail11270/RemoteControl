@@ -4,10 +4,12 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.im.InputContext;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
 public class KeyboardAction implements Action {
 
+    public static int keysPressed = 0;
     private final Robot robot;
     private final byte[] command;
 
@@ -15,38 +17,45 @@ public class KeyboardAction implements Action {
         this.robot = robot;
         this.command = command;
         InputContext context = InputContext.getInstance();
-        if(!supportedLanguageLocales.contains(context.getLocale())) {
+        if (!supportedLanguageLocales.contains(context.getLocale())) {
             throw new UnsupportedActionException("Current language is not supported");
         }
     }
 
 
-
     @Override
     public void performAction() {
-        if (command[1] == Actions.TEXT_KEY_ACTION) {
+        if (command[1] == Actions.TEXT_KEY_ACTION_CLICK) {
             char c = (char) command[2];
-                pressKey(c);
-        } else if(command[1] == Actions.SPECIAL_KEY_ACTION){
-            pressSpecialKey(command[2]);
+            pressKey(c);
+        } else if (command[1] == Actions.SPECIAL_KEY_ACTION_CLICK) {
+            pressSpecialKey(command[2], true);
+        } else if (command[1] == Actions.SPECIAL_KEY_ACTION_PRESS) {
+            int keyCode = pressSpecialKey(command[2], false);
+            keysPressed++;
+            if (keysPressed > 4) {
+
+            }
+        } else if (command[1] == Actions.SPECIAL_KEY_ACTION_RELEASE) {
+            keysPressed--;
         }
     }
 
-    private void pressSpecialKey(byte b) {
-        int keyCode;
-        switch(b){
-            case Actions.Keys.BACKSPACE:
-                keyCode = KeyEvent.VK_BACK_SPACE;
-                break;
-            case Actions.Keys.ENTER:
-                keyCode = KeyEvent.VK_ENTER;
-                break;
-            default:
-                keyCode = 1;
-                break;
-        }
-        robot.keyPress(keyCode);
-        robot.keyRelease(keyCode);
+    private int pressSpecialKey(byte b, boolean release) {
+        Integer[] keyCodes = Actions.Keys.keysMap.get(b);
+        System.out.println(Arrays.toString(keyCodes) + " KEYS NEED TO BE PRESSED");
+        if (keyCodes.length > 1) {
+            for (int i : keyCodes) {
+                robot.keyPress(i);
+            }
+            for (int i : keyCodes) {
+                robot.keyRelease(i);
+            }
+        } else robot.keyPress(keyCodes[0]);
+        if(release)
+            robot.keyRelease(keyCodes[0]);
+        return keyCodes[0];
+
     }
 
 

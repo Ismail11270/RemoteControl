@@ -19,15 +19,17 @@
 
         />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/backspace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Backspace"
+        android:text="@string/tag_backspace"
         app:layout_constraintBottom_toTopOf="@id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/textInput"
-        app:layout_constraintTop_toTopOf="@id/textInput" />
+        app:layout_constraintTop_toTopOf="@id/textInput"
+        android:tag="@string/tag_backspace"
+        />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -38,11 +40,10 @@
         app:layout_constraintGuide_percent="0.2"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/arrowLeft"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="◄"
         android:textSize="40sp"
         app:layout_constraintTop_toBottomOf="@id/guideline"
@@ -52,11 +53,10 @@
         android:tag="@string/tag_left"
         />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/arrowRight"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="►"
         android:textSize="40sp"
         app:layout_constraintTop_toBottomOf="@id/guideline"
@@ -65,11 +65,10 @@
         app:layout_constraintStart_toEndOf="@id/arrowDown"
         android:tag="@string/tag_right"
         />
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/arrowUp"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="▲"
         android:textSize="40sp"
         app:layout_constraintTop_toBottomOf="@id/guideline"
@@ -79,11 +78,10 @@
         android:tag="@string/tag_up"
         />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/arrowDown"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="▼"
         android:textSize="40sp"
         app:layout_constraintTop_toBottomOf="@id/guideline"
@@ -92,11 +90,10 @@
         app:layout_constraintStart_toEndOf="@id/arrowUp"
         android:tag="@string/tag_down"
         />
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/copy"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="CTRL-C"
         app:layout_constraintBottom_toTopOf="@id/f1"
         app:layout_constraintEnd_toStartOf="@id/paste"
@@ -108,11 +105,10 @@
         android:tag="@string/tag_copy"
         />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/paste"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="CTRL-V"
         app:layout_constraintBottom_toBottomOf="@id/copy"
         app:layout_constraintEnd_toStartOf="@id/shiftToggle"
@@ -120,7 +116,7 @@
         app:layout_constraintStart_toEndOf="@id/copy"
         app:layout_constraintTop_toTopOf="@id/copy"
         android:tag="@string/tag_paste"/>
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/shiftToggle"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -129,12 +125,11 @@
         app:layout_constraintBottom_toBottomOf="@id/paste"
         app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toEndOf="@id/paste"
-        android:background="@drawable/button_background"
         app:layout_constraintEnd_toEndOf="parent"
         android:tag="@string/tag_shift"
         />
 
-    <!--    <Button-->
+    <!--    <org.zoobie.remotecontrol.view.KeyboardButton-->
     <!--        android:id="@+id/button4"-->
     <!--        android:layout_width="0dp"-->
     <!--        android:layout_height="0dp"-->
@@ -146,11 +141,10 @@
     <!--        app:layout_constraintTop_toTopOf="@+id/button" />-->
 
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/f1"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="@string/tag_f1"
         app:layout_constraintBottom_toTopOf="@id/f7"
         app:layout_constraintEnd_toStartOf="@id/f2"
@@ -159,11 +153,10 @@
         android:tag="@string/tag_f1"
         />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/f3"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="@string/tag_f3"
         app:layout_constraintBottom_toBottomOf="@id/f1"
         app:layout_constraintEnd_toStartOf="@id/f4"
@@ -173,11 +166,10 @@
         android:tag="@string/tag_f3"
         />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/f4"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="@string/tag_f4"
         app:layout_constraintBottom_toBottomOf="@id/f1"
         app:layout_constraintEnd_toStartOf="@id/f5"
@@ -187,11 +179,10 @@
         android:tag="@string/tag_f4"
         />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/f5"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="@string/tag_f5"
         app:layout_constraintBottom_toBottomOf="@id/f1"
         app:layout_constraintEnd_toStartOf="@id/f6"
@@ -201,11 +192,10 @@
         android:tag="@string/tag_f5"
         />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/f6"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="@string/tag_f6"
         app:layout_constraintBottom_toBottomOf="@id/f1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -215,11 +205,10 @@
         android:tag="@string/tag_f6"
         />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/f7"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="@string/tag_f7"
         app:layout_constraintBottom_toTopOf="@+id/capslock"
         app:layout_constraintEnd_toStartOf="@+id/f8"
@@ -229,11 +218,10 @@
         android:tag="@string/tag_f7"
         />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/f8"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="@string/tag_f8"
         app:layout_constraintBottom_toBottomOf="@+id/f7"
         app:layout_constraintEnd_toStartOf="@+id/f9"
@@ -243,11 +231,10 @@
         android:tag="@string/tag_f8"
         />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/f9"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="@string/tag_f9"
         app:layout_constraintBottom_toBottomOf="@+id/f7"
         app:layout_constraintEnd_toStartOf="@+id/f10"
@@ -257,11 +244,10 @@
         android:tag="@string/tag_f9"
         />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/f10"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="@string/tag_f10"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="@+id/f7"
@@ -272,11 +258,10 @@
         android:tag="@string/tag_f10"
         />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/f11"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="@string/tag_f11"
         app:layout_constraintBottom_toBottomOf="@+id/f7"
         app:layout_constraintEnd_toStartOf="@id/f12"
@@ -286,11 +271,10 @@
         android:tag="@string/tag_f11"
         />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/f12"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="@string/tag_f12"
         app:layout_constraintBottom_toBottomOf="@+id/f7"
         app:layout_constraintEnd_toEndOf="parent"
@@ -300,11 +284,10 @@
         android:tag="@string/tag_f12"
         />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/f2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="@string/tag_f2"
         app:layout_constraintBottom_toBottomOf="@+id/f1"
         app:layout_constraintEnd_toStartOf="@id/f3"
@@ -314,11 +297,10 @@
         android:tag="@string/tag_f2"/>
 
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/esc"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="@string/tag_esc"
         app:layout_constraintBottom_toTopOf="@+id/space"
         app:layout_constraintEnd_toStartOf="@+id/alt_tab"
@@ -327,11 +309,10 @@
         android:tag="@string/tag_esc"
         />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/alt_tab"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="@string/tag_alt_tab"
         app:layout_constraintBottom_toBottomOf="@+id/esc"
         app:layout_constraintEnd_toStartOf="@+id/win_d"
@@ -339,11 +320,10 @@
         app:layout_constraintTop_toTopOf="@+id/esc"
         android:tag="@string/tag_alt_tab"/>
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/win_d"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="@string/win_d"
         app:layout_constraintBottom_toBottomOf="@+id/esc"
         app:layout_constraintEnd_toStartOf="@+id/alt_f4"
@@ -351,11 +331,10 @@
         app:layout_constraintTop_toTopOf="@+id/esc"
         android:tag="@string/win_d"/>
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/alt_f4"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="@string/tag_alt_f4"
         app:layout_constraintBottom_toBottomOf="@+id/esc"
         app:layout_constraintEnd_toStartOf="@id/enter"
@@ -365,12 +344,11 @@
         />
 
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/capslock"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="4dp"
-        android:background="@drawable/button_background"
         android:text="@string/tag_caps"
         android:tag="@string/tag_caps"
         app:layout_constraintBottom_toTopOf="@+id/esc"
@@ -378,23 +356,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/f7" />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/fn"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
-        android:text="@string/tag_fn"
-        android:tag="@string/tag_fn"
+        android:text="@string/tag_menu"
+        android:tag="@string/tag_menu"
         app:layout_constraintBottom_toBottomOf="@+id/capslock"
         app:layout_constraintEnd_toStartOf="@+id/alt"
         app:layout_constraintStart_toEndOf="@+id/capslock"
         app:layout_constraintTop_toTopOf="@+id/capslock" />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/alt"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="@string/tag_alt"
         android:tag="@string/tag_alt"
         app:layout_constraintBottom_toBottomOf="@+id/capslock"
@@ -402,23 +378,22 @@
         app:layout_constraintStart_toEndOf="@+id/fn"
         app:layout_constraintTop_toTopOf="@+id/capslock" />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/ctrl"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="@string/tag_ctrl"
         android:tag="@string/tag_ctrl"
         app:layout_constraintBottom_toBottomOf="@+id/capslock"
         app:layout_constraintEnd_toStartOf="@id/enter"
+
         app:layout_constraintStart_toEndOf="@+id/alt"
         app:layout_constraintTop_toTopOf="@+id/capslock" />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/enter"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="@string/tag_enter"
         android:tag="@string/tag_enter"
         app:layout_constraintBottom_toTopOf="@id/ctrl_alt_del"
@@ -426,11 +401,10 @@
         app:layout_constraintStart_toEndOf="@id/ctrl"
         app:layout_constraintTop_toBottomOf="@id/f12" />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/space"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="@string/tag_space"
         android:tag="@string/tag_space"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -441,11 +415,10 @@
         app:layout_constraintTop_toBottomOf="@+id/esc"
         app:layout_constraintVertical_bias="1.0" />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/ctrl_alt_del"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="CTRL-ALT-DEl"
         android:tag="@string/tag_ctrl_alt_del"
         app:layout_constraintBottom_toBottomOf="@+id/space"
@@ -454,11 +427,10 @@
         app:layout_constraintStart_toEndOf="@+id/button4"
         app:layout_constraintTop_toTopOf="@+id/space" />
 
-    <Button
+    <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/button4"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/button_background"
         android:text="@string/tag_win"
         android:tag="@string/tag_win"
         app:layout_constraintBottom_toBottomOf="@+id/space"

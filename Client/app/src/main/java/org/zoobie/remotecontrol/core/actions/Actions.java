@@ -1,6 +1,12 @@
 package org.zoobie.remotecontrol.core.actions;
 
 
+import android.content.res.Resources;
+
+import org.zoobie.pomd.remotecontrol.R;
+
+import java.util.HashMap;
+
 /**
  * Action codes 900+, unique
  */
@@ -14,25 +20,34 @@ public class Actions {
 
     //keyboard actions
     public static final byte KEYBOARD_ACTION = 30;
-    public static final byte SPECIAL_KEY_ACTION = 1;
-    public static final byte TEXT_KEY_ACTION = 2;
-    public static class Keys{
-        public static final byte ENTER = 1;
-        public static final byte BACKSPACE = 2;
-        public static final byte ARROW_LEFT = 3;
-        public static final byte ARROW_UP = 4;
-        public static final byte ARROW_DOWN = 5;
-        public static final byte ARROW_RIGHT = 6;
-        public static final byte ESC = 7;
-        public static final byte TAB = 8;
-        public static final byte CAPS = 9;
-        public static final byte CTRL = 10;
-        public static final byte SHIFT = 11;
-        public static final byte WINDOWS = 12;
-        public static final byte ALT = 13;
-        public static final byte SPACE = 14;
-        public static final byte FN = 15;
+    public static final byte SPECIAL_KEY_ACTION_CLICK = 1;
+    public static final byte TEXT_KEY_ACTION_CLICK = 2;
+    public static final byte SPECIAL_KEY_ACTION_PRESS = 3;
+    public static final byte SPECIAL_KEY_ACTION_RELEASE = 4;
 
+    public static class Keys{
+        private HashMap<String,Byte> keyActionsMap;
+        private Resources res;
+
+
+        public Keys(Resources res) {
+            this.res = res;
+            String[] tags = res.getStringArray(R.array.tags);
+            keyActionsMap = new HashMap<>();
+            byte b = 0;
+            for(String tag : tags){
+                keyActionsMap.put(tag,b);
+                b++;
+            }
+        }
+
+        public Byte getActionCodeForKey(int id){
+            return keyActionsMap.get(res.getString(id));
+        }
+
+        public Byte getActionCodeForKey(String keyTag){
+            return keyActionsMap.get(keyTag);
+        }
     }
 
     //Volume actions

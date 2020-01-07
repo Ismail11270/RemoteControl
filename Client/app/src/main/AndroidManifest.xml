@@ -11,12 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="org.zoobie.remotecontrol.activity.ConnectionActivity"
-            android:theme="@style/Theme.Design.NoActionBar"
-            />
+
+        <activity android:name="org.zoobie.remotecontrol.activity.ConnectionActivity"></activity>
         <activity android:name="org.zoobie.remotecontrol.activity.EntryActivity"
-            android:theme="@style/Theme.Design.NoActionBar"
-            >
+            android:theme="@style/Theme.Design.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,9 +26,6 @@
             android:label="Remote Controller"
             android:theme="@style/Theme.Design.NoActionBar"></activity>
 
-        <service
-            android:name="org.zoobie.remotecontrol.service.DataProcessor"
-            android:enabled="true" />
     </application>
 
 </manifest>

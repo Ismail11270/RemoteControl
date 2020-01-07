@@ -3,6 +3,7 @@ package org.zoobie.remotecontrol.tabs;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,11 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import org.zoobie.pomd.remotecontrol.R;
 import org.zoobie.remotecontrol.activity.ConnectionActivity;
@@ -24,23 +25,29 @@ import org.zoobie.remotecontrol.core.actions.Actions;
 import org.zoobie.remotecontrol.core.connection.ConnectionException;
 import org.zoobie.remotecontrol.core.connection.Connector;
 import org.zoobie.remotecontrol.core.connection.udp.Server;
+import org.zoobie.remotecontrol.view.KeyboardButton;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-public class TextInputFragment extends androidx.fragment.app.Fragment {
+public class KeyboardFragment extends androidx.fragment.app.Fragment implements View.OnClickListener, View.OnLongClickListener {
 
-    private final String TAG = "TextInputFragment";
-    private EditText textInput;
-    private ImageButton leftBt, rightBt;
+
+    private final String TAG = "KeyboardFragment";
     private SharedPreferences connectionSp;
     private Connector connector;
     private Context ctx;
 
-    public TextInputFragment(){
+    private EditText textInput;
+    private ConstraintLayout keysLayout;
+    private ArrayList<KeyboardButton> buttonsList;
+    private Actions.Keys keys;
+    private Resources res;
+    public KeyboardFragment(){
 
     }
 
-    public TextInputFragment(Connector connector) {
+    public KeyboardFragment(Connector connector) {
         this.connector = connector;
     }
 
@@ -49,35 +56,34 @@ public class TextInputFragment extends androidx.fragment.app.Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //Inflate the layout for this fragment
         ctx = container.getContext();
-        View view = inflater.inflate(R.layout.fragment_text_input, container, false);
+        View view = inflater.inflate(R.layout.fragment_keyboard, container, false);
         connectionSp = ctx.getSharedPreferences("org.zoobie.connectiondata", Context.MODE_PRIVATE);
         textInput = view.findViewById(R.id.textInput);
-        leftBt = view.findViewById(R.id.arrowLeft);
-        rightBt = view.findViewById(R.id.arrowRight);
+        res = getResources();
+        keys = new Actions.Keys(res);
+        initViews(view);
+        textInputSetup();
+        keyboardInit();
+        return view;
+    }
 
+    private void keyboardInit() {
 
-        leftBt.setOnClickListener(v -> {
-            connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION, Actions.Keys.ARROW_LEFT);
-        });
-        rightBt.setOnClickListener(v -> {
-            connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION, Actions.Keys.ARROW_RIGHT);
-        });
+    }
 
-        textInput.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                Log.i(TAG, keyCode + " key pressed");
-                if(event.getAction() == KeyEvent.ACTION_DOWN)
+    private void textInputSetup() {
+        textInput.setOnKeyListener((v, keyCode, event) -> {
+            Log.i(TAG, keyCode + " key pressed");
+            if(event.getAction() == KeyEvent.ACTION_DOWN)
                 switch (keyCode) {
                     case KeyEvent.KEYCODE_DEL:
-                        connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION, Actions.Keys.BACKSPACE);
+                        connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, keys.getActionCodeForKey(R.string.tag_backspace));
                         break;
                     case KeyEvent.KEYCODE_ENTER:
-                        connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION, Actions.Keys.ENTER);
+                        connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, keys.getActionCodeForKey(R.string.tag_enter));
                         break;
                 }
-                return true;
-            }
+            return true;
         });
 
         textInput.addTextChangedListener(new TextWatcher() {
@@ -90,7 +96,7 @@ public class TextInputFragment extends androidx.fragment.app.Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Log.i(TAG,s.toString());
                 if (before < count && isChanged)
-                    connector.send(Actions.KEYBOARD_ACTION, Actions.TEXT_KEY_ACTION, (byte) s.charAt(before));
+                    connector.send(Actions.KEYBOARD_ACTION, Actions.TEXT_KEY_ACTION_CLICK, (byte) s.charAt(before));
             }
 
             @Override
@@ -99,8 +105,23 @@ public class TextInputFragment extends androidx.fragment.app.Fragment {
                     textInput.setText("");
             }
         });
-        return view;
     }
+
+    private void initViews(View view) {
+        keysLayout = (ConstraintLayout) view;
+        ArrayList<View> views = keysLayout.getTouchables(); //get touchable children
+        buttonsList = new ArrayList<>();
+        for(View v : views){
+            if(v instanceof KeyboardButton){
+                KeyboardButton b = (KeyboardButton)v;
+                b.setOnClickListener(this);
+                b.setOnLongClickListener(this);
+                buttonsList.add(b);
+            }
+        }
+        System.out.println(buttonsList.size() + " VIEWS");
+    }
+
 
     @Override
     public void onResume() {
@@ -122,5 +143,37 @@ public class TextInputFragment extends androidx.fragment.app.Fragment {
             Intent connectionIntent = new Intent(ctx, ConnectionActivity.class);
             startActivity(connectionIntent);
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v instanceof KeyboardButton){
+            KeyboardButton b = (KeyboardButton) v;
+            byte keyCode = keys.getActionCodeForKey(b.getTag().toString());
+            if(b.isButtonPressed()){
+                b.toggle();
+                b.buttonPress();
+                connector.send(Actions.KEYBOARD_ACTION,Actions.SPECIAL_KEY_ACTION_RELEASE,keyCode);
+            }
+            connector.send(Actions.KEYBOARD_ACTION,Actions.SPECIAL_KEY_ACTION_CLICK,keyCode);
+        }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        if(v instanceof KeyboardButton){
+            KeyboardButton b = (KeyboardButton) v;
+            byte keyCode = keys.getActionCodeForKey(b.getTag().toString());
+            if(!b.isButtonPressed()){
+                b.toggle();
+                b.buttonPress();
+                connector.send(Actions.KEYBOARD_ACTION,Actions.SPECIAL_KEY_ACTION_PRESS,keyCode);
+            }else {
+                connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_RELEASE, keyCode);
+                b.toggle();
+                b.buttonPress();
+            }
+        }
+        return true;
     }
 }
