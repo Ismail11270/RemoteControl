@@ -23,6 +23,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import org.zoobie.pomd.remotecontrol.R;
 import org.zoobie.remotecontrol.activity.ConnectionActivity;
+import org.zoobie.remotecontrol.activity.MainActivity;
 import org.zoobie.remotecontrol.core.actions.Actions;
 import org.zoobie.remotecontrol.core.connection.ConnectionException;
 import org.zoobie.remotecontrol.core.connection.Connector;
@@ -30,6 +31,7 @@ import org.zoobie.remotecontrol.core.connection.udp.Server;
 import org.zoobie.remotecontrol.view.KeyboardButton;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 public class KeyboardFragment extends androidx.fragment.app.Fragment implements View.OnClickListener, View.OnLongClickListener {
@@ -78,7 +80,7 @@ public class KeyboardFragment extends androidx.fragment.app.Fragment implements 
     private void textInputSetup() {
         textInput.setOnKeyListener((v, keyCode, event) -> {
             Log.i(TAG, keyCode + " key pressed");
-            if (event.getAction() == KeyEvent.ACTION_DOWN)
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
                 switch (keyCode) {
                     case KeyEvent.KEYCODE_DEL:
                         connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, keys.getActionCodeForKey(R.string.tag_backspace));
@@ -86,7 +88,22 @@ public class KeyboardFragment extends androidx.fragment.app.Fragment implements 
                     case KeyEvent.KEYCODE_ENTER:
                         connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, keys.getActionCodeForKey(R.string.tag_enter));
                         break;
+                    case KeyEvent.KEYCODE_BACK:
+                        v.clearFocus();
+                        break;
+                    default:
+                        return false;
                 }
+            } else if (event.getAction() == KeyEvent.ACTION_UP) {
+                switch (keyCode) {
+                    case KeyEvent.KEYCODE_DEL:
+                    case KeyEvent.KEYCODE_ENTER:
+                    case KeyEvent.KEYCODE_BACK:
+                        break;
+                    default:
+                        return false;
+                }
+            }
             return true;
         });
 
@@ -120,7 +137,7 @@ public class KeyboardFragment extends androidx.fragment.app.Fragment implements 
     @Override
     public void onPause() {
         super.onPause();
-        System.out.println("PAUSED");
+        textInput.clearFocus();
         hideKeyboard();
     }
 

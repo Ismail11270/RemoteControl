@@ -71,6 +71,7 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
         configuration.orientation = getActivity().getResources().getConfiguration().orientation;
         onConfigurationChanged(configuration);
 
+
         //Setup code here
 //        verifyConnection();
 
