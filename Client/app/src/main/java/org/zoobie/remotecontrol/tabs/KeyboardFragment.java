@@ -1,5 +1,6 @@
 package org.zoobie.remotecontrol.tabs;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -43,6 +45,7 @@ public class KeyboardFragment extends androidx.fragment.app.Fragment implements 
     private ArrayList<KeyboardButton> buttonsList;
     private Actions.Keys keys;
     private Resources res;
+    private View view;
     public KeyboardFragment(){
 
     }
@@ -56,12 +59,12 @@ public class KeyboardFragment extends androidx.fragment.app.Fragment implements 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //Inflate the layout for this fragment
         ctx = container.getContext();
-        View view = inflater.inflate(R.layout.fragment_keyboard, container, false);
+        view = inflater.inflate(R.layout.fragment_keyboard, container, false);
         connectionSp = ctx.getSharedPreferences("org.zoobie.connectiondata", Context.MODE_PRIVATE);
         textInput = view.findViewById(R.id.textInput);
         res = getResources();
         keys = new Actions.Keys(res);
-        initViews(view);
+        initViews();
         textInputSetup();
         keyboardInit();
         return view;
@@ -107,7 +110,18 @@ public class KeyboardFragment extends androidx.fragment.app.Fragment implements 
         });
     }
 
-    private void initViews(View view) {
+    @Override
+    public void onPause() {
+        super.onPause();
+        System.out.println("PAUSED");
+        hideKeyboard();
+    }
+
+    private void hideKeyboard(){
+        InputMethodManager imm = (InputMethodManager) ctx.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+    private void initViews() {
         keysLayout = (ConstraintLayout) view;
         ArrayList<View> views = keysLayout.getTouchables(); //get touchable children
         buttonsList = new ArrayList<>();

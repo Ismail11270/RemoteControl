@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +41,7 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
     private SharedPreferences settingsSp;
     private float sens;
     private ScrollerGestureListener scrollerGestureListener;
-
+    private View view;
     public TrackPadFragment(){
 
     }
@@ -53,10 +54,10 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //Inflate the layout for this fragment
         ctx = container.getContext();
-        View view = inflater.inflate(R.layout.fragment_trackpad, container, false);
+        view = inflater.inflate(R.layout.fragment_trackpad, container, false);
         connectionSp = ctx.getSharedPreferences("org.zoobie.connectiondata", Context.MODE_PRIVATE);
         settingsSp = ctx.getSharedPreferences("org.zoobie.settings", Context.MODE_PRIVATE);
-        initViews(view);
+        initViews();
 
         //Setup code here
 //        verifyConnection();
@@ -114,7 +115,7 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
         }
     }
 
-    private void initViews(View view) {
+    private void initViews() {
         scrollerView = view.findViewById(R.id.scroller);
         trackPadView = view.findViewById(R.id.trackPad);
         leftClick = view.findViewById(R.id.leftClick);
