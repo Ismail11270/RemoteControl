@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Guideline;
 
 import org.zoobie.pomd.remotecontrol.R;
@@ -66,6 +67,9 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
         connectionSp = ctx.getSharedPreferences("org.zoobie.connectiondata", Context.MODE_PRIVATE);
         settingsSp = ctx.getSharedPreferences("org.zoobie.settings", Context.MODE_PRIVATE);
         initViews();
+        Configuration configuration = new Configuration();
+        configuration.orientation = getActivity().getResources().getConfiguration().orientation;
+        onConfigurationChanged(configuration);
 
         //Setup code here
 //        verifyConnection();
@@ -113,13 +117,16 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
         Log.i(TAG,"ORIENTATION CHANGED");
         if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
             guideline.setGuidelinePercent(0.70f);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         } else if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
             TypedValue typedValue = new TypedValue();
             getResources().getValue(R.dimen.mouse_buttons_guideline,typedValue,true);
             float value = typedValue.getFloat();
             guideline.setGuidelinePercent(value);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         }
     }
+
 
     @Override
     public void onResume() {
