@@ -3,14 +3,11 @@ package org.zoobie.remotecontrol.core.actions;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 
-
+//todo add support for special characters
 /**
  * Action codes, identical storing identical to the client action codes
  */
 public abstract class Actions {
-
-    //non-functional actions
-
 
     //Mouse Actions
     public static final byte MOUSE_ACTION = 100;
@@ -35,42 +32,57 @@ public abstract class Actions {
     public static final byte SPECIAL_KEY_ACTION_PRESS = 3;
     public static final byte SPECIAL_KEY_ACTION_RELEASE = 4;
 
-    public static class Keys{
-        public static final HashMap<Byte,Integer[]> keysMap; //Action code vs awt keycode
+    public static class Keys {
+        public static final HashMap<Byte, Integer[]> specialKeysMap; //Action code vs awt keycode
+        public static final HashMap<Character, Integer> characterKeysMap;
+
         static {
-            keysMap = new HashMap<>();
-            keysMap.put((byte)0,new Integer[]{KeyEvent.VK_CAPS_LOCK});
-            keysMap.put((byte)1,new Integer[]{KeyEvent.VK_SHIFT});
-            keysMap.put((byte)2,new Integer[]{KeyEvent.VK_F1});
-            keysMap.put((byte)3,new Integer[]{KeyEvent.VK_F2});
-            keysMap.put((byte)4,new Integer[]{KeyEvent.VK_F3});
-            keysMap.put((byte)5,new Integer[]{KeyEvent.VK_F4});
-            keysMap.put((byte)6,new Integer[]{KeyEvent.VK_F5});
-            keysMap.put((byte)7,new Integer[]{KeyEvent.VK_F6});
-            keysMap.put((byte)8,new Integer[]{KeyEvent.VK_F7});
-            keysMap.put((byte)9,new Integer[]{KeyEvent.VK_8});
-            keysMap.put((byte)10,new Integer[]{KeyEvent.VK_F9});
-            keysMap.put((byte)11,new Integer[]{KeyEvent.VK_F10});
-            keysMap.put((byte)12,new Integer[]{KeyEvent.VK_F11});
-            keysMap.put((byte)13,new Integer[]{KeyEvent.VK_F12});
-            keysMap.put((byte)14,new Integer[]{KeyEvent.VK_ENTER});
-            keysMap.put((byte)15,new Integer[]{KeyEvent.VK_CONTEXT_MENU});
-            keysMap.put((byte)16,new Integer[]{KeyEvent.VK_CONTROL});
-            keysMap.put((byte)17,new Integer[]{KeyEvent.VK_ALT});
-            keysMap.put((byte)18,new Integer[]{KeyEvent.VK_WINDOWS});
-            keysMap.put((byte)19,new Integer[]{KeyEvent.VK_CONTROL,KeyEvent.VK_C});
-            keysMap.put((byte)20,new Integer[]{KeyEvent.VK_CONTROL,KeyEvent.VK_V});
-            keysMap.put((byte)21,new Integer[]{KeyEvent.VK_SPACE});
-            keysMap.put((byte)22,new Integer[]{KeyEvent.VK_CONTROL,KeyEvent.VK_ALT,KeyEvent.VK_DELETE});
-            keysMap.put((byte)23,new Integer[]{KeyEvent.VK_BACK_SPACE});
-            keysMap.put((byte)24,new Integer[]{KeyEvent.VK_DOWN});
-            keysMap.put((byte)25,new Integer[]{KeyEvent.VK_UP});
-            keysMap.put((byte)26,new Integer[]{KeyEvent.VK_RIGHT});
-            keysMap.put((byte)27,new Integer[]{KeyEvent.VK_LEFT});
-            keysMap.put((byte)28,new Integer[]{KeyEvent.VK_ALT,KeyEvent.VK_F4});
-            keysMap.put((byte)29,new Integer[]{KeyEvent.VK_WINDOWS,KeyEvent.VK_D});
-            keysMap.put((byte)30,new Integer[]{KeyEvent.VK_ALT,KeyEvent.VK_TAB});
-            keysMap.put((byte)31,new Integer[]{KeyEvent.VK_ESCAPE});
+            specialKeysMap = new HashMap<>();
+            characterKeysMap = new HashMap<>();
+            specialKeysMap.put((byte) 0, new Integer[]{KeyEvent.VK_CAPS_LOCK});
+            specialKeysMap.put((byte) 1, new Integer[]{KeyEvent.VK_SHIFT});
+
+            //Adding functional keys
+            for (int i = 0x70, j = 2; i <= 0x7B; i++,j++) {
+                specialKeysMap.put((byte)j,new Integer[]{i});
+            }
+            specialKeysMap.put((byte) 14, new Integer[]{KeyEvent.VK_ENTER});
+            specialKeysMap.put((byte) 15, new Integer[]{KeyEvent.VK_CONTEXT_MENU});
+            specialKeysMap.put((byte) 16, new Integer[]{KeyEvent.VK_CONTROL});
+            specialKeysMap.put((byte) 17, new Integer[]{KeyEvent.VK_ALT});
+            specialKeysMap.put((byte) 18, new Integer[]{KeyEvent.VK_WINDOWS});
+            specialKeysMap.put((byte) 19, new Integer[]{KeyEvent.VK_CONTROL, KeyEvent.VK_C});
+            specialKeysMap.put((byte) 20, new Integer[]{KeyEvent.VK_CONTROL, KeyEvent.VK_V});
+            specialKeysMap.put((byte) 21, new Integer[]{KeyEvent.VK_SPACE});
+            specialKeysMap.put((byte) 22, new Integer[]{KeyEvent.VK_CONTROL, KeyEvent.VK_ALT, KeyEvent.VK_DELETE});
+            specialKeysMap.put((byte) 23, new Integer[]{KeyEvent.VK_BACK_SPACE});
+            specialKeysMap.put((byte) 24, new Integer[]{KeyEvent.VK_DOWN});
+            specialKeysMap.put((byte) 25, new Integer[]{KeyEvent.VK_UP});
+            specialKeysMap.put((byte) 26, new Integer[]{KeyEvent.VK_RIGHT});
+            specialKeysMap.put((byte) 27, new Integer[]{KeyEvent.VK_LEFT});
+            specialKeysMap.put((byte) 28, new Integer[]{KeyEvent.VK_ALT, KeyEvent.VK_F4});
+            specialKeysMap.put((byte) 29, new Integer[]{KeyEvent.VK_WINDOWS, KeyEvent.VK_D});
+            specialKeysMap.put((byte) 30, new Integer[]{KeyEvent.VK_ALT, KeyEvent.VK_TAB});
+            specialKeysMap.put((byte) 31, new Integer[]{KeyEvent.VK_ESCAPE});
+
+            //adding numeric keys
+            for (int i = 0x30; i <= 0x39; i++) {
+                characterKeysMap.put((char) i, i);
+            }
+
+            //adding alphabetic keys
+            for (int i = 0x41; i <= 0x5A; i++) {
+                characterKeysMap.put((char)(i+32), i);
+            }
+            characterKeysMap.put('.', KeyEvent.VK_PERIOD);
+            characterKeysMap.put(',', KeyEvent.VK_COMMA);
+            characterKeysMap.put('-', KeyEvent.VK_MINUS);
+            characterKeysMap.put('"', KeyEvent.VK_QUOTE);
+            characterKeysMap.put('\'', KeyEvent.VK_QUOTE);
+
+        }
+        public static int getCharKeyCode(char key){
+            return characterKeysMap.getOrDefault(key, KeyEvent.VK_SPACE);
         }
     }
 
