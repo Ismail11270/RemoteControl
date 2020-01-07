@@ -13,6 +13,9 @@
 
         <item android:title="Settings"
             android:id="@+id/settings"/>
-        <item android:title="Something else"/>
+        <item
+            android:id="@+id/connectionSettings"
+            android:title="Connection"/>
+
     </group>
 </menu>

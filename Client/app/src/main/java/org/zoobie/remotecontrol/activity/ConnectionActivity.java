@@ -1,6 +1,7 @@
 package org.zoobie.remotecontrol.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -24,6 +25,7 @@ public class ConnectionActivity extends AppCompatActivity implements View.OnClic
     private TextView connectionStatusLocalTv;
     private EditText ipAddressEt, udpPortEt;
     private SharedPreferences connectionSp;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,9 @@ public class ConnectionActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_connection);
         connectionSp = this.getSharedPreferences("org.zoobie.connectiondata", Context.MODE_PRIVATE);
 
+        toolbar = findViewById(R.id.toolBar);
+        toolbar.setNavigationIcon(R.drawable.navigation_icon);
+        setSupportActionBar(toolbar);
         connectButton = findViewById(R.id.connectBt);
         connectionStatusLocalTv = findViewById(R.id.localConnectionStatus);
         ipAddressEt = findViewById(R.id.connectionIp);

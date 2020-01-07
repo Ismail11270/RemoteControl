@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import org.zoobie.remotecontrol.MainActivity;
 import org.zoobie.pomd.remotecontrol.R;
 
 public class EntryActivity extends AppCompatActivity {

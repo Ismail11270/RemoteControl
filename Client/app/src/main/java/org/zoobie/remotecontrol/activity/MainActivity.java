@@ -1,4 +1,4 @@
-package org.zoobie.remotecontrol;
+package org.zoobie.remotecontrol.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,7 +24,6 @@ import android.widget.Toast;
 import com.google.android.material.tabs.TabLayout;
 
 import org.zoobie.pomd.remotecontrol.R;
-import org.zoobie.remotecontrol.activity.ConnectionActivity;
 import org.zoobie.remotecontrol.adapter.ViewPagerAdapter;
 import org.zoobie.remotecontrol.core.actions.Actions;
 import org.zoobie.remotecontrol.core.connection.ConnectionException;
@@ -50,13 +49,14 @@ public class MainActivity extends AppCompatActivity {
     private ViewPagerAdapter viewPagerAdapter;
     private Connector connector;
     private SharedPreferences connectionSp;
+    private Intent connectionIntent;
 
     //Adapters
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         connectionSp = getSharedPreferences("org.zoobie.connectiondata", Context.MODE_PRIVATE);
-
+        connectionIntent = new Intent(this, ConnectionActivity.class);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
         setContentView(R.layout.activity_main);
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.touchpad_menu, menu);
+        getMenuInflater().inflate(R.menu.settings_menu, menu);
         return true;
     }
 
@@ -103,6 +103,10 @@ public class MainActivity extends AppCompatActivity {
             toolbar.setVisibility(View.GONE);
             fullScreen = true;
             Toast.makeText(this, "Press back to exit fullscreen mode", Toast.LENGTH_LONG).show();
+        } else if(item.getItemId() == R.id.connectionSettings){
+            startActivity(connectionIntent);
+        } else if(item.getItemId() == R.id.settings){
+
         }
         return true;
     }
@@ -169,7 +173,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Connected to " + connector.getServerName(), Toast.LENGTH_SHORT).show();
         } catch (ConnectionException | ExecutionException | InterruptedException e) {
             Toast.makeText(this, "FAILED TO CONNECT", Toast.LENGTH_SHORT).show();
-            Intent connectionIntent = new Intent(this, ConnectionActivity.class);
             startActivity(connectionIntent);
         }
     }
