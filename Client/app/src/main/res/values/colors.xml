@@ -16,4 +16,5 @@
     <color name="amber">#FFC107</color>
     <color name="blue">#0066cc</color>
     <color name="gold">#e6b121</color>
+    <color name="gray_dark">#5E1D1C1C</color>
 </resources>

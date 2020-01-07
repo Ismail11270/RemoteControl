@@ -4,10 +4,10 @@
 
     <gradient
         android:angle="45"
-        android:endColor="@color/gray"
-        android:startColor="@color/blue_gray"
+        android:endColor="@android:color/background_dark"
+        android:startColor="@color/cardview_dark_background"
         android:type="linear" />
-    <corners android:radius="30dp"/>
+    <corners android:topRightRadius="20dp" android:bottomRightRadius="20dp"/>
     <stroke
         android:width="2dp"
         android:color="@color/orange1" />

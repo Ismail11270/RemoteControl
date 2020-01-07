@@ -16,39 +16,56 @@
     <View
         android:id="@+id/scroller"
         android:layout_width="60dp"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:background="@drawable/mousewheel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/rightClick"
         app:layout_constraintTop_toTopOf="parent"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/leftClick"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintGuide_percent="0.88"
+        />
     <ImageButton
         android:id="@+id/leftClick"
-        android:layout_width="150dp"
-        android:layout_height="@dimen/touchpad_keys_height"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/mouse_buttons_background"
+        app:layout_constraintHorizontal_weight="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/midClick"
+        app:layout_constraintTop_toBottomOf="@id/guideline"
         android:tag="1"/>
 
     <ImageButton
         android:id="@+id/midClick"
         android:layout_width="0dp"
-        android:layout_height="@dimen/touchpad_keys_height"
-        android:background="@drawable/mouse_buttons_background"
+        android:layout_height="0dp"
+        android:background="@drawable/mouse_middle_button_background"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/rightClick"
         app:layout_constraintStart_toEndOf="@+id/leftClick"
+        app:layout_constraintTop_toBottomOf="@id/guideline"
         android:tag="2"/>
 
     <ImageButton
         android:id="@+id/rightClick"
-        android:layout_width="150dp"
-        android:layout_height="@dimen/touchpad_keys_height"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:rotation="180"
         android:background="@drawable/mouse_buttons_background"
+        app:layout_constraintHorizontal_weight="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/midClick"
+        app:layout_constraintTop_toBottomOf="@id/guideline"
         android:tag="3"/>
 
 

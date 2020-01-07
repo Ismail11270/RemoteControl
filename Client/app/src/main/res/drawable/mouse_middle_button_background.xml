@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape android:shape="rectangle"
     xmlns:android="http://schemas.android.com/apk/res/android" >
-    <gradient android:angle="0"
-        android:startColor="@color/gray_dark"
+
+    <gradient
+        android:angle="45"
         android:endColor="@android:color/background_dark"
+        android:startColor="@color/cardview_dark_background"
         android:type="linear" />
-    <corners android:topLeftRadius="20dp"
-        android:bottomLeftRadius="20dp"/>
+    <corners android:radius="20dp"/>
     <stroke
         android:width="2dp"
         android:color="@color/orange1" />
