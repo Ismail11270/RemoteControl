@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="org.zoobie.remotecontrol.MainActivity">
+    tools:context="org.zoobie.remotecontrol.activity.MainActivity">
 
 
     <include layout="@layout/toolbar_layout"

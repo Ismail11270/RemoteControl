@@ -10,7 +10,7 @@
         android:id="@+id/trackPad"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/track_pad"
+        android:background="@android:color/transparent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
     <View
