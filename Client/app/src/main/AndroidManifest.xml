@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name="org.zoobie.remotecontrol.activity.ConnectionActivity"
             android:theme="@style/Theme.Design.NoActionBar"
@@ -28,6 +29,7 @@
         <activity
             android:name="org.zoobie.remotecontrol.activity.MainActivity"
             android:label="Remote Controller"
+            android:configChanges = "keyboardHidden|orientation|screenSize"
             android:theme="@style/Theme.Design.NoActionBar"/>
     </application>
 

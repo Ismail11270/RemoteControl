@@ -4,8 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.inputmethodservice.Keyboard;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +18,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.Guideline;
 
 import org.zoobie.pomd.remotecontrol.R;
 import org.zoobie.remotecontrol.core.listener.ScrollerGestureListener;
@@ -30,6 +37,7 @@ import java.util.concurrent.ExecutionException;
 public class TrackPadFragment extends androidx.fragment.app.Fragment {
 
     private static final int CONNECTION_RESULT = 123;
+    private static final String TAG = "TRACKPAD";
     private View trackPadView, scrollerView;
     private ImageButton leftClick, midClick, rightClick;
     private TouchPadKeysListener touchPadKeysListener;
@@ -42,6 +50,7 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
     private float sens;
     private ScrollerGestureListener scrollerGestureListener;
     private View view;
+    private Guideline guideline;
     public TrackPadFragment(){
 
     }
@@ -58,6 +67,9 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
         connectionSp = ctx.getSharedPreferences("org.zoobie.connectiondata", Context.MODE_PRIVATE);
         settingsSp = ctx.getSharedPreferences("org.zoobie.settings", Context.MODE_PRIVATE);
         initViews();
+        Configuration configuration = new Configuration();
+        configuration.orientation = getActivity().getResources().getConfiguration().orientation;
+        onConfigurationChanged(configuration);
 
         //Setup code here
 //        verifyConnection();
@@ -100,6 +112,23 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
 
 
     @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.i(TAG,"ORIENTATION CHANGED");
+        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            guideline.setGuidelinePercent(0.70f);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        } else if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            TypedValue typedValue = new TypedValue();
+            getResources().getValue(R.dimen.mouse_buttons_guideline,typedValue,true);
+            float value = typedValue.getFloat();
+            guideline.setGuidelinePercent(value);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        }
+    }
+
+
+    @Override
     public void onResume() {
         verifyConnection();
         updateSettings();
@@ -121,5 +150,6 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
         leftClick = view.findViewById(R.id.leftClick);
         midClick = view.findViewById(R.id.midClick);
         rightClick = view.findViewById(R.id.rightClick);
+        guideline = view.findViewById(R.id.guideline);
     }
 }

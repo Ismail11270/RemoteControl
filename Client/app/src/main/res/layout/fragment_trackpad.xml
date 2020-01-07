@@ -28,7 +28,7 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/leftClick"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintGuide_percent="0.88"
+        app:layout_constraintGuide_percent="@dimen/mouse_buttons_guideline"
         />
     <ImageButton
         android:id="@+id/leftClick"
