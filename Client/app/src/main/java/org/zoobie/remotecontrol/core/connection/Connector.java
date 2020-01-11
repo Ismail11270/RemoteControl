@@ -33,7 +33,9 @@ public class Connector {
     }
 
     public boolean checkUdpConnection() throws ExecutionException, InterruptedException {
-        return udpClient.checkConnection();
+        return true;
+
+//        return udpClient.checkConnection();
     }
 
 
