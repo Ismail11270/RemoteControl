@@ -1,7 +1,7 @@
 package org.zoobie.remotecontrol;
 
-import com.profesorfalken.jpowershell.PowerShell;
-import org.zoobie.remotecontrol.server.ServerUdp;
+import org.zoobie.remotecontrol.server.bluetooth.ServerBluetooth;
+import org.zoobie.remotecontrol.server.udp.ServerUdp;
 
 import javax.sound.sampled.*;
 import java.awt.*;
@@ -16,6 +16,9 @@ public class Main {
 
         serverUdp.listen();
         System.out.println("Udp Server started at " + serverUdp.getIp() + ":"+serverUdp.getPort());
+
+        ServerBluetooth sb = new ServerBluetooth();
+        sb.startServer();
 //        MouseInfo.getPointerInfo().getDevice().se
     }
 

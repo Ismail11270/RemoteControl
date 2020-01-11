@@ -20,6 +20,11 @@ public class VolumeAction implements Action {
     }
 
     @Override
+    public void performActionUdp() {
+        performAction();
+    }
+
+    @Override
     public void performAction() {
         try {
             switch (command[1]) {
@@ -29,15 +34,9 @@ public class VolumeAction implements Action {
                 case Actions.VOLUME_UP_ACTION:
                     up();
                     break;
-                case Actions.VOLUME_MUTE_ACTION:
-
-                    break;
-                case Actions.VOLUME_SET_ACTION:
-
-                    break;
             }
         }catch(IOException e){
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 

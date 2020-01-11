@@ -13,18 +13,24 @@ public class KeyboardAction implements Action {
     private final Robot robot;
     private final byte[] command;
 
-    public KeyboardAction(Robot robot, ArrayList<Locale> supportedLanguageLocales, byte... command) throws UnsupportedActionException {
+    public KeyboardAction(Robot robot, ArrayList<Locale> supportedLanguageLocales, byte... command) {
         this.robot = robot;
-        this.command = command;
         InputContext context = InputContext.getInstance();
         if (!supportedLanguageLocales.contains(context.getLocale())) {
-            throw new UnsupportedActionException("Current language is not supported");
-        }
+            System.err.println("Current language " + context.getLocale().toString() + " is not supported!");
+            this.command = null;
+        } else this.command = command;
     }
 
 
     @Override
+    public void performActionUdp() {
+        performAction();
+    }
+
+    @Override
     public void performAction() {
+        if(command == null) return;
         if (command[1] == Actions.TEXT_KEY_ACTION_CLICK) {
             char c = (char) command[2];
             pressKey(c);
@@ -33,9 +39,6 @@ public class KeyboardAction implements Action {
         } else if (command[1] == Actions.SPECIAL_KEY_ACTION_PRESS) {
             int keyCode = pressSpecialKey(command[2], false);
             keysPressed++;
-            if (keysPressed > 4) {
-
-            }
         } else if (command[1] == Actions.SPECIAL_KEY_ACTION_RELEASE) {
             keysPressed--;
         }

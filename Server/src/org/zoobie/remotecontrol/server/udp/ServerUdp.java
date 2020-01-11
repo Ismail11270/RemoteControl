@@ -1,6 +1,4 @@
-package org.zoobie.remotecontrol.server;
-
-import org.zoobie.remotecontrol.core.actions.ActionController;
+package org.zoobie.remotecontrol.server.udp;
 
 import java.io.IOException;
 import java.net.*;
@@ -14,14 +12,14 @@ public class ServerUdp {
     private int port;
     private byte[] byteData;
     private InetAddress ip;
-    private ActionController actionController;
+    private ActionControllerUdp actionControllerUdp;
 
     public ServerUdp(int port) {
         try {
             this.port = port;
             recieveSocket = new DatagramSocket(port);
             ip = InetAddress.getLocalHost();
-            actionController = new ActionController(this);
+            actionControllerUdp = new ActionControllerUdp(this);
         } catch (SocketException | UnknownHostException e) {
             e.printStackTrace();
         }
@@ -34,8 +32,8 @@ public class ServerUdp {
                     byteData = new byte[MAX_PACKET_SIZE];
                     packet = new DatagramPacket(byteData, byteData.length);
                     recieveSocket.receive(packet);
-                    synchronized (actionController) {
-                        actionController.performAction(packet);
+                    synchronized (actionControllerUdp) {
+                        actionControllerUdp.performAction(packet);
                     }
                 }
             } catch (IOException e) {

@@ -20,6 +20,10 @@ public class MouseAction implements Action {
 
 
     @Override
+    public void performActionUdp() {
+        performAction();
+    }
+    @Override
     public void performAction() {
         if (command[1] == Actions.MOUSE_KEY_ACTION) {
             if (command[2] >= 1 && command[2] <= 3) {

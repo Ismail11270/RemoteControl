@@ -1,28 +1,26 @@
-package org.zoobie.remotecontrol.core.actions;
+package org.zoobie.remotecontrol.server.udp;
 
-import org.zoobie.remotecontrol.server.ServerUdp;
+import org.zoobie.remotecontrol.core.actions.*;
 
 import java.awt.*;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
-public class ActionController {
+public class ActionControllerUdp {
     private Robot robot;
     private ServerUdp serverUdp;
     private Runtime runtime;
-    private static ArrayList<Locale> supportedLanguageLocales;
+    public static ArrayList<Locale> supportedLanguageLocales;
     static {
         supportedLanguageLocales = new ArrayList<>();
         supportedLanguageLocales.add(Locale.US);
+        supportedLanguageLocales.add(Locale.ENGLISH);
+        supportedLanguageLocales.add(Locale.UK);
     }
 
-    public ActionController(ServerUdp serverUdp) {
+    public ActionControllerUdp(ServerUdp serverUdp) {
         try {
             robot = new Robot();
             runtime = Runtime.getRuntime();
@@ -43,23 +41,19 @@ public class ActionController {
         if (actionBytes[0] == Actions.CONNECTION_ACTION) {
             System.out.println("Connection check");
             actionThread = new Thread(() -> {
-                new ConnectionAction(serverUdp, packet, actionBytes).performAction();
+                new ConnectionAction(serverUdp, packet, actionBytes).performActionUdp();
             });
         } else if (actionBytes[0] == Actions.MOUSE_ACTION) {
             actionThread = new Thread(() -> {
-                new MouseAction(robot, actionBytes).performAction();
+                new MouseAction(robot, actionBytes).performActionUdp();
             });
         } else if (actionBytes[0] == Actions.VOLUME_ACTION) {
             actionThread = new Thread(() -> {
-                new VolumeAction(actionBytes).performAction();
+                new VolumeAction(actionBytes).performActionUdp();
             });
         } else if(actionBytes[0] == Actions.KEYBOARD_ACTION){
             actionThread = new Thread(()->{
-                try {
-                    new KeyboardAction(robot,supportedLanguageLocales,actionBytes).performAction();
-                } catch (UnsupportedActionException e) {
-                    e.printStackTrace();
-                }
+                    new KeyboardAction(robot,supportedLanguageLocales,actionBytes).performActionUdp();
             });
         }
         actionThread.start();
