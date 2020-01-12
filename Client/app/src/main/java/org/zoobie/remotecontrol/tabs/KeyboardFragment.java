@@ -42,7 +42,6 @@ public class KeyboardFragment extends androidx.fragment.app.Fragment implements 
     private Connector connector;
     private Context ctx;
 
-    private EditText textInput;
     private ConstraintLayout keysLayout;
     private ArrayList<KeyboardButton> buttonsList;
     private Actions.Keys keys;
@@ -64,11 +63,9 @@ public class KeyboardFragment extends androidx.fragment.app.Fragment implements 
         ctx = container.getContext();
         view = inflater.inflate(R.layout.fragment_keyboard, container, false);
         connectionSp = ctx.getSharedPreferences("org.zoobie.connectiondata", Context.MODE_PRIVATE);
-        textInput = view.findViewById(R.id.textInput);
         res = getResources();
         keys = new Actions.Keys(res);
         initViews();
-        textInputSetup();
         keyboardInit();
         return view;
     }
@@ -77,74 +74,10 @@ public class KeyboardFragment extends androidx.fragment.app.Fragment implements 
 
     }
 
-    private void textInputSetup() {
-        textInput.setOnKeyListener((v, keyCode, event) -> {
-            Log.i(TAG, keyCode + " key pressed");
-            if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                switch (keyCode) {
-                    case KeyEvent.KEYCODE_DEL:
-                        connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, keys.getActionCodeForKey(R.string.tag_backspace));
-                        break;
-                    case KeyEvent.KEYCODE_ENTER:
-                        connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, keys.getActionCodeForKey(R.string.tag_enter));
-                        break;
-                    case KeyEvent.KEYCODE_BACK:
-                        v.clearFocus();
-                        break;
-                    default:
-                        return false;
-                }
-            } else if (event.getAction() == KeyEvent.ACTION_UP) {
-                switch (keyCode) {
-                    case KeyEvent.KEYCODE_DEL:
-                    case KeyEvent.KEYCODE_ENTER:
-                    case KeyEvent.KEYCODE_BACK:
-                        break;
-                    default:
-                        return false;
-                }
-            }
-            return true;
-        });
 
-        textInput.addTextChangedListener(new TextWatcher() {
-            boolean isChanged = true;
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Log.i(TAG, s.toString());
-                if (before < count && isChanged) {
-                    if (s.charAt(before) == '\n')
-                        connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, keys.getActionCodeForKey(R.string.tag_enter));
-                    else
-                        connector.send(Actions.KEYBOARD_ACTION, Actions.TEXT_KEY_ACTION_CLICK, (byte) s.charAt(before));
 
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!s.toString().equals(""))
-                    textInput.setText("");
-            }
-        });
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        textInput.clearFocus();
-        hideKeyboard();
-    }
-
-    private void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) ctx.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
 
     private void initViews() {
         keysLayout = (ConstraintLayout) view;

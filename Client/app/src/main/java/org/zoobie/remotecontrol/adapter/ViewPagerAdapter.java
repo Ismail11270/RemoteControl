@@ -11,7 +11,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import org.zoobie.remotecontrol.core.connection.Connector;
 import org.zoobie.remotecontrol.tabs.TrackPadFragment;
 import org.zoobie.remotecontrol.tabs.KeyboardFragment;
-import org.zoobie.remotecontrol.tabs.SpecialKeysFragment;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
@@ -31,8 +30,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
         Bundle bundle = new Bundle();
         if(position == 1) item = new TrackPadFragment(connector);
-        else if(position == 2) item = new KeyboardFragment(connector);
-        else item = new SpecialKeysFragment();
+        else item = new KeyboardFragment(connector);
         bundle.putString("message","" + position);
         bundle.putInt("id",position);
         item.setArguments(bundle);
@@ -41,7 +39,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
 
     @Nullable
@@ -51,9 +49,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
         if(position==1){
             return "TouchPad";
-        }
-        else if(position == 2){
-            return "Keypad";
-        } else return "MotionControl";
+        } else return "Keyboard";
     }
 }

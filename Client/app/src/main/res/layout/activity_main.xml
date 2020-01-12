@@ -10,7 +10,6 @@
 
     <include layout="@layout/toolbar_layout"
         />
-
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
@@ -27,4 +26,10 @@
         android:layout_height="match_parent"
         />
 
+    <EditText
+        android:id="@+id/inputField"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Enter text here"
+        />
 </LinearLayout>

@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -19,6 +22,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
@@ -38,8 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private View view;
 
-    private GestureDetector mGestureDetector;
-
+    private EditText inputFieldEt;
     private boolean fullScreen = false;
     private Toolbar toolbar;
     private AudioManager audioManager;
@@ -50,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private Connector connector;
     private SharedPreferences connectionSp;
     private Intent connectionIntent;
-
+    private Actions.Keys keys;
     //Adapters
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +70,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.navigation_icon);
         setSupportActionBar(toolbar);
 
-        //todo put tcp server on a seperate thread
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
-        StrictMode.setThreadPolicy(policy);
 
         setup();
         initConnection();
@@ -81,12 +82,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void setup() {
         //Toolbar setup
+
         toolbar = findViewById(R.id.toolBar);
         toolbar.setNavigationIcon(R.drawable.navigation_icon);
         setSupportActionBar(toolbar);
         //Views
         pager = (CustomViewPager) findViewById(R.id.pager);
         tabLayout = findViewById(R.id.tabs);
+        inputFieldEt = findViewById(R.id.inputField);
+
+        keys = new Actions.Keys(getResources());
+        textInputSetup();
     }
 
     @Override
@@ -105,10 +111,85 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Press back to exit fullscreen mode", Toast.LENGTH_LONG).show();
         } else if(item.getItemId() == R.id.connectionSettings){
             startActivity(connectionIntent);
-        } else if(item.getItemId() == R.id.settings){
-
+        } else if(item.getItemId() == R.id.keyboard){
+            Log.d(TAG,"OPENING KEYBOARD...");
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+            imm.showSoftInput(inputFieldEt, InputMethodManager.SHOW_IMPLICIT);
+            inputFieldEt.requestFocus();
         }
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        inputFieldEt.clearFocus();
+        hideKeyboard();
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    private void textInputSetup() {
+        inputFieldEt.setOnKeyListener((v, keyCode, event) -> {
+            Log.i(TAG, keyCode + " key pressed");
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                switch (keyCode) {
+                    case KeyEvent.KEYCODE_DEL:
+                        connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, keys.getActionCodeForKey(R.string.tag_backspace));
+                        break;
+                    case KeyEvent.KEYCODE_ENTER:
+                        connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, keys.getActionCodeForKey(R.string.tag_enter));
+                        break;
+                    case KeyEvent.KEYCODE_BACK:
+                        v.clearFocus();
+                        break;
+                    default:
+                        return false;
+                }
+            } else if (event.getAction() == KeyEvent.ACTION_UP) {
+                switch (keyCode) {
+                    case KeyEvent.KEYCODE_DEL:
+                    case KeyEvent.KEYCODE_ENTER:
+                    case KeyEvent.KEYCODE_BACK:
+                        break;
+                    default:
+                        return false;
+                }
+            }
+            return true;
+        });
+
+        inputFieldEt.addTextChangedListener(new TextWatcher() {
+            boolean isChanged = true;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                Log.d(TAG,"BEFORE TEXT CHANGED");
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.i(TAG, s.toString());
+                if (before < count && isChanged) {
+                    if (s.charAt(before) == '\n')
+                        connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, keys.getActionCodeForKey(R.string.tag_enter));
+                    else
+                        connector.send(Actions.KEYBOARD_ACTION, Actions.TEXT_KEY_ACTION_CLICK, (byte) s.charAt(before));
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().equals(""))
+                    inputFieldEt.setText("");
+            }
+        });
     }
 
     @Override

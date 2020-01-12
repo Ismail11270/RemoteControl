@@ -7,27 +7,16 @@
     android:orientation="vertical">
 
 
-    <EditText
-        android:id="@+id/textInput"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Type here..."
-        app:layout_constraintBottom_toTopOf="@id/guideline"
-        app:layout_constraintEnd_toStartOf="@id/backspace"
-        app:layout_constraintHorizontal_weight="3"
-        app:layout_constraintStart_toStartOf="parent"
 
-        />
 
     <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/backspace"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/tag_backspace"
         app:layout_constraintBottom_toTopOf="@id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/textInput"
-        app:layout_constraintTop_toTopOf="@id/textInput"
+        app:layout_constraintStart_toStartOf="parent"
         android:tag="@string/tag_backspace"
         />
 

@@ -30,7 +30,8 @@
             android:name="org.zoobie.remotecontrol.activity.MainActivity"
             android:label="Remote Controller"
             android:configChanges = "keyboardHidden|orientation|screenSize"
-            android:theme="@style/Theme.Design.NoActionBar"/>
+            android:theme="@style/Theme.Design.NoActionBar"
+            android:windowSoftInputMode="adjustResize"/>
     </application>
 
 </manifest>

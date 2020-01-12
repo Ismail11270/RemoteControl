@@ -6,6 +6,11 @@
         android:icon="@drawable/fullscreen"
         app:showAsAction="always"
         />
+    <item
+        android:id="@+id/keyboard"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="Keyboard"
+        app:showAsAction="always" />
     <group
         android:id="@+id/menuGroup"
         android:menuCategory="container"
