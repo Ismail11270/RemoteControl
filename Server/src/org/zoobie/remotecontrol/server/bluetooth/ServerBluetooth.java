@@ -15,7 +15,7 @@ public class ServerBluetooth implements Server {
     private ActionControllerBluetooth actionController;
     private LocalDevice localDevice;
     public ServerBluetooth() throws IOException {
-        uuid = new UUID("00230103210002A003B21F32F32", false);
+        uuid = new UUID("02fc312020003230100002f2afa2111b", false);
         address = "btspp://localhost:" + uuid + ";name=" + SERVER_NAME;
         System.out.println(SERVER_NAME + " started!");
         connectionListener = new BluetoothServerListener(this);
