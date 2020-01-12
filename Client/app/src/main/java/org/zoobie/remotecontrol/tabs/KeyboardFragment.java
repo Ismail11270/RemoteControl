@@ -1,6 +1,8 @@
 package org.zoobie.remotecontrol.tabs;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -169,6 +171,23 @@ public class KeyboardFragment extends androidx.fragment.app.Fragment implements 
     }
 
     private void verifyConnection() {
+        boolean btConnection = connectionSp.getBoolean("bt_connection",false);
+        if(btConnection) {
+            BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+            String device = connectionSp.getString("bluetooth_address","");
+            BluetoothDevice btDevice = btAdapter.getRemoteDevice(device);
+            connector = new Connector(btDevice);
+            try {
+                boolean isConnected = connector.checkConnection() > 0;
+                if (!isConnected) throw new ConnectionException("Couldn't connect to the server");
+                Toast.makeText(ctx, "Connected to " + btDevice.getName(), Toast.LENGTH_SHORT).show();
+            }catch(ConnectionException | ExecutionException | InterruptedException e){
+                Toast.makeText(ctx, "FAILED TO CONNECT", Toast.LENGTH_SHORT).show();
+                Intent connectionIntent = new Intent(ctx, ConnectionActivity.class);
+                startActivity(connectionIntent);
+            }
+            return;
+        }
         String ip = connectionSp.getString("server_ip", null);
         Integer portUdp = connectionSp.getInt("udp_port", -1) == -1 ? null : connectionSp.getInt("udp_port", -1);
         Server server = new Server(ip, portUdp);

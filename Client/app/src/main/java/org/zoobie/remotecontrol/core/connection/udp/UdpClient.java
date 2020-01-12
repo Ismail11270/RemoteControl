@@ -46,9 +46,8 @@ public class UdpClient implements Client {
 
     @Override
     public boolean checkConnection() throws ExecutionException, InterruptedException {
-        System.out.println("checked connection");
+        Log.i(TAG,"Checking udp connection....");
         byte[] recieved = ask(Actions.CONNECTION_ACTION,Actions.CONNECTION_CHECK_ACTION);
-        System.out.println(Arrays.toString(recieved));
         return recieved[0] == Actions.CONNECTION_CHECK_ACTION;
     }
 

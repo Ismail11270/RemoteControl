@@ -1,6 +1,8 @@
 package org.zoobie.remotecontrol.core.connection;
 
 
+import android.bluetooth.BluetoothDevice;
+
 import org.zoobie.remotecontrol.core.connection.bluetooth.BluetoothClient;
 import org.zoobie.remotecontrol.core.connection.udp.Server;
 import org.zoobie.remotecontrol.core.connection.udp.UdpClient;
@@ -22,7 +24,13 @@ public class Connector {
         this.server = server;
         udpClient = new UdpClient(server);
         prioritiseInetConnection = true;
-        bluetoothClient = new BluetoothClient();
+        bluetoothClient = null;
+    }
+
+    public Connector(BluetoothDevice device){
+        prioritiseInetConnection = false;
+        bluetoothClient = new BluetoothClient(device);
+        udpClient = null;
     }
 
     public int checkConnection() throws ExecutionException, InterruptedException {
@@ -33,13 +41,14 @@ public class Connector {
     }
 
     public boolean checkUdpConnection() throws ExecutionException, InterruptedException {
-        return true;
-
-//        return udpClient.checkConnection();
+//        return true;
+        if(udpClient == null) return false;
+        return udpClient.checkConnection();
     }
 
 
     public boolean checkBluetoothConnection() {
+        if(bluetoothClient == null) return false;
         return bluetoothClient.checkConnection();
     }
 

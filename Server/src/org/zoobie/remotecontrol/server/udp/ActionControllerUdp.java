@@ -35,7 +35,7 @@ public class ActionControllerUdp {
     //from udp
     public void performAction(DatagramPacket packet) {
         byte[] actionBytes = packet.getData();
-        System.out.println(Arrays.toString(actionBytes));
+        System.out.println("[UDP-server] " + Arrays.toString(actionBytes));
         //Mouse action
         Thread actionThread = null;
         if (actionBytes[0] == Actions.CONNECTION_ACTION) {

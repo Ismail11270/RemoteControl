@@ -43,7 +43,7 @@ public class ConnectionAction implements Action {
     public void performAction() {
         switch (command[1]) {
             case Actions.CONNECTION_CHECK_ACTION:
-                replyUdp((byte) 1);
+                reply((byte) 1);
                 break;
             case Actions.CONNECTION_GET_SERVER_NAME:
                 reply(server.getMachineName().getBytes());
@@ -53,7 +53,7 @@ public class ConnectionAction implements Action {
         }
     }
 
-    private void reply(byte[] bytes) {
+    private void reply(byte... bytes) {
         System.out.println("Sending reply to the client");
         server.reply(bytes);
     }

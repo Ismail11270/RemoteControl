@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -152,16 +154,34 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initConnection() {
+        boolean btConnection = connectionSp.getBoolean("bt_connection",false);
+        if(btConnection) {
+            BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+            String device = connectionSp.getString("bluetooth_address","");
+            BluetoothDevice btDevice = btAdapter.getRemoteDevice(device);
+            connector = new Connector(btDevice);
+            try {
+                boolean isConnected = connector.checkConnection() > 0;
+                if (!isConnected) throw new ConnectionException("Couldn't connect to the server");
+                Toast.makeText(this, "Connected to " + btDevice.getName(), Toast.LENGTH_SHORT).show();
+            }catch(ConnectionException | ExecutionException | InterruptedException e){
+                Toast.makeText(this, "FAILED TO CONNECT", Toast.LENGTH_SHORT).show();
+                Intent connectionIntent = new Intent(this, ConnectionActivity.class);
+                startActivity(connectionIntent);
+            }
+            return;
+        }
         String ip = connectionSp.getString("server_ip", null);
         Integer portUdp = connectionSp.getInt("udp_port", -1) == -1 ? null : connectionSp.getInt("udp_port", -1);
         Server server = new Server(ip, portUdp);
         try {
             connector = new Connector(server);
-            boolean isConnected = connector.checkUdpConnection() | connector.checkBluetoothConnection();
+            boolean isConnected = connector.checkConnection() > 0;
             if (!isConnected) throw new ConnectionException("Couldn't connect to the server");
             Toast.makeText(this, "Connected to " + connector.getServerName(), Toast.LENGTH_SHORT).show();
         } catch (ConnectionException | ExecutionException | InterruptedException e) {
             Toast.makeText(this, "FAILED TO CONNECT", Toast.LENGTH_SHORT).show();
+            Intent connectionIntent = new Intent(this, ConnectionActivity.class);
             startActivity(connectionIntent);
         }
     }
