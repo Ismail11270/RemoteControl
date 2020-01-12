@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import org.zoobie.remotecontrol.core.actions.Actions;
 import org.zoobie.remotecontrol.core.connection.Connector;
@@ -45,7 +44,7 @@ public class TouchPadGestureListener implements View.OnTouchListener,  GestureDe
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
         int keyCode = 1;
-        byte[] bytes = new byte[]{Actions.MOUSE_ACTION,Actions.MOUSE_KEY_ACTION, (byte) keyCode};
+        byte[] bytes = new byte[]{Actions.MOUSE_ACTION,Actions.MOUSE_KEY_CLICK, (byte) keyCode};
         connector.sendUdp(bytes);
         return true;
     }

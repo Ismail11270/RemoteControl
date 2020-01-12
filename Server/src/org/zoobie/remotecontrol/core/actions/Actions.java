@@ -11,9 +11,11 @@ public abstract class Actions {
 
     //Mouse Actions
     public static final byte MOUSE_ACTION = 100;
-    public static final byte MOUSE_KEY_ACTION = 101;
-    public static final byte MOUSE_MOVE_ACTION = 102;
-    public static final byte MOUSE_SCROLL_ACTION = 103;
+    public static final byte MOUSE_CLICK_ACTION = 1;
+    public static final byte MOUSE_MOVE_ACTION = 2;
+    public static final byte MOUSE_SCROLL_ACTION = 3;
+    public static final byte MOUSE_DOWN_ACTION = 4;
+    public static final byte MOUSE_UP_ACTION = 5;
 
     public static final byte MESSAGE_RECIEVED = 42;
 

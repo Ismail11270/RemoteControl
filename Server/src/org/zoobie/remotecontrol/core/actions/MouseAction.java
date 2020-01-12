@@ -1,10 +1,6 @@
 package org.zoobie.remotecontrol.core.actions;
 
-import org.zoobie.remotecontrol.Main;
-
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 
 public class MouseAction implements Action {
 
@@ -21,10 +17,10 @@ public class MouseAction implements Action {
 
     @Override
     public void performAction() {
-        if (command[1] == Actions.MOUSE_KEY_ACTION) {
+        if (command[1] == Actions.MOUSE_CLICK_ACTION || command[1] == Actions.MOUSE_DOWN_ACTION || command[1] == Actions.MOUSE_UP_ACTION) {
             if (command[2] >= 1 && command[2] <= 3) {
                 keyCode = (int) Math.pow(2, 9 + command[2]);
-                performClick();
+                performKeyAction(command[1]);
             }
         } else if (command[1] == Actions.MOUSE_MOVE_ACTION) {
             int x = command[2], y = command[3];
@@ -45,10 +41,19 @@ public class MouseAction implements Action {
         robot.mouseWheel(x);
     }
 
-    private void performClick() {
-        System.out.println(keyCode);
-        robot.mousePress(keyCode);
-        robot.mouseRelease(keyCode);
+    private void performKeyAction(byte actionCode) {
+        switch(actionCode){
+            case Actions.MOUSE_CLICK_ACTION:
+                robot.mousePress(keyCode);
+                robot.mouseRelease(keyCode);
+                break;
+            case Actions.MOUSE_DOWN_ACTION:
+                robot.mousePress(keyCode);
+                break;
+            case Actions.MOUSE_UP_ACTION:
+                robot.mouseRelease(keyCode);
+                break;
+        }
     }
 
     private void moveBy(int x, int y){

@@ -12,11 +12,11 @@ import java.util.HashMap;
  */
 public class Actions {
     public static final byte MOUSE_ACTION = 100;
-    public static final byte MOUSE_KEY_ACTION = 101;
-    public static final byte MOUSE_DOWN_ACTION = 1;
-    public static final byte MOUSE_UP_ACTION = 2;
-    public static final byte MOUSE_MOVE_ACTION = 102;
-    public static final byte MOUSE_SCROLL_ACTION = 103;
+    public static final byte MOUSE_MOVE_ACTION = 2;
+    public static final byte MOUSE_SCROLL_ACTION = 3;
+    public static final byte MOUSE_KEY_CLICK = 1;
+    public static final byte MOUSE_DOWN_ACTION = 4;
+    public static final byte MOUSE_UP_ACTION = 5;
 
     //keyboard actions
     public static final byte KEYBOARD_ACTION = 30;

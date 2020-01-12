@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintGuide_percent="@dimen/mouse_buttons_guideline"
         />
-    <ImageButton
+    <org.zoobie.remotecontrol.view.TouchpadButton
         android:id="@+id/leftClick"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -42,7 +42,7 @@
         app:layout_constraintTop_toBottomOf="@id/guideline"
         android:tag="1"/>
 
-    <ImageButton
+    <org.zoobie.remotecontrol.view.TouchpadButton
         android:id="@+id/midClick"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -54,7 +54,7 @@
         app:layout_constraintTop_toBottomOf="@id/guideline"
         android:tag="2"/>
 
-    <ImageButton
+    <org.zoobie.remotecontrol.view.TouchpadButton
         android:id="@+id/rightClick"
         android:layout_width="0dp"
         android:layout_height="0dp"

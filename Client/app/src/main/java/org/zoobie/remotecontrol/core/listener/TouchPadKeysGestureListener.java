@@ -8,6 +8,7 @@ import android.view.View;
 
 import org.zoobie.remotecontrol.core.actions.Actions;
 import org.zoobie.remotecontrol.core.connection.Connector;
+import org.zoobie.remotecontrol.view.TouchpadButton;
 
 public class TouchPadKeysGestureListener extends GestureDetector.SimpleOnGestureListener implements View.OnTouchListener {
     private static final String TAG = "Touch_Pad_Keys_Listener";
@@ -18,7 +19,7 @@ public class TouchPadKeysGestureListener extends GestureDetector.SimpleOnGesture
     private View view;
     private TouchPadGestureListener touchpadListener;
 
-    public TouchPadKeysGestureListener(Context context, Connector connector,TouchPadGestureListener touchpadListener) {
+    public TouchPadKeysGestureListener(Context context, Connector connector, TouchPadGestureListener touchpadListener) {
         this.context = context;
         this.connector = connector;
         gestureDetector = new GestureDetector(context, this);
@@ -40,14 +41,7 @@ public class TouchPadKeysGestureListener extends GestureDetector.SimpleOnGesture
                 Log.i(TAG, "Action down");
                 break;
             case MotionEvent.ACTION_MOVE:
-                Log.i(TAG,event.getPointerCount() + " Pointers found");
-
-//                if (event.getPointerCount() > 1) {
-//                    MotionEvent.PointerCoords coords = new MotionEvent.PointerCoords();
-//                    event.getPointerCoords(1,coords);
-//                    touchpadListener.move((int)coords.x,(int)coords.y);
-//                }
-//                else touchpadListener.onTouch(view,event);
+                Log.i(TAG, event.getPointerCount() + " Pointers found");
                 break;
         }
         gestureDetector.onTouchEvent(event);
@@ -56,21 +50,48 @@ public class TouchPadKeysGestureListener extends GestureDetector.SimpleOnGesture
 
 
     @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        sendClick(view);
-        return super.onSingleTapUp(e);
-    }
-
-    @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
         Log.i(TAG, "SCROLLING");
         return true;
     }
 
-    private void sendClick(View v) {
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        TouchpadButton bt = (TouchpadButton) view;
+        if (bt.isButtonPressed()) {
+            bt.toggle();
+            bt.buttonPress();
+            sendCommand(view,Actions.MOUSE_UP_ACTION);
+        } else sendCommand(view,Actions.MOUSE_KEY_CLICK);
+
+        return super.onSingleTapUp(e);
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+        TouchpadButton bt = (TouchpadButton) view;
+        Log.d(TAG,"LONG CLICK");
+        if (bt.isButtonPressed()) {
+            bt.toggle();
+            bt.buttonPress();
+            sendCommand(view,Actions.MOUSE_UP_ACTION);
+        } else
+        {
+            sendCommand(view,Actions.MOUSE_DOWN_ACTION);
+            bt.toggle();
+            bt.buttonPress();
+        }
+    }
+
+    /**
+     * @see Actions
+     * @param v
+     * @param actionCode - Actions mouse action codes
+     */
+    private void sendCommand(View v,byte actionCode) {
         int keyCode = Integer.parseInt(v.getTag().toString());
-        Log.d(TAG, "Key " + keyCode);
-        byte[] bytes = new byte[]{Actions.MOUSE_ACTION,Actions.MOUSE_KEY_ACTION, (byte) keyCode};
+        byte[] bytes = new byte[]{Actions.MOUSE_ACTION, actionCode, (byte) keyCode};
         connector.sendUdp(bytes);
     }
+
 }

@@ -18,8 +18,10 @@ public class TouchPadKeysListener implements View.OnClickListener {
     public void onClick(View v) {
         int keyCode = Integer.parseInt(v.getTag().toString());
         Log.d(TAG,"Key " + keyCode);
-        byte[] bytes = new byte[] {Actions.MOUSE_KEY_ACTION, (byte)keyCode};
+        byte[] bytes = new byte[] {Actions.MOUSE_KEY_CLICK, (byte)keyCode};
         connector.sendUdp(bytes);
     }
+
+
 
 }

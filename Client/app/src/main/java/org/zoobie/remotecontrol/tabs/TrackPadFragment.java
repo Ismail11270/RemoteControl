@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.inputmethodservice.Keyboard;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,6 +32,8 @@ import org.zoobie.remotecontrol.core.connection.Connector;
 import org.zoobie.remotecontrol.core.connection.udp.Server;
 import org.zoobie.remotecontrol.core.listener.TouchPadGestureListener;
 import org.zoobie.remotecontrol.core.listener.TouchPadKeysListener;
+import org.zoobie.remotecontrol.view.KeyboardButton;
+import org.zoobie.remotecontrol.view.TouchpadButton;
 
 import java.util.concurrent.ExecutionException;
 
@@ -39,7 +42,7 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
     private static final int CONNECTION_RESULT = 123;
     private static final String TAG = "TRACKPAD";
     private View trackPadView, scrollerView;
-    private ImageButton leftClick, midClick, rightClick;
+    private TouchpadButton leftClick, midClick, rightClick;
     private TouchPadKeysListener touchPadKeysListener;
     private TouchPadKeysGestureListener touchPadKeysGestureListener;
     private TouchPadGestureListener touchPadGestureListener;
@@ -84,7 +87,6 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
         leftClick.setOnTouchListener(touchPadKeysGestureListener);
         midClick.setOnTouchListener(touchPadKeysGestureListener);
         rightClick.setOnTouchListener(touchPadKeysGestureListener);
-
         updateSettings();
         return view;
     }
@@ -152,5 +154,9 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
         midClick = view.findViewById(R.id.midClick);
         rightClick = view.findViewById(R.id.rightClick);
         guideline = view.findViewById(R.id.guideline);
+
+        midClick.setBackground(getResources().getDrawable(R.drawable.mouse_middle_button_background,null));
+        midClick.setBackground(R.drawable.mouse_middle_button_background);
+        midClick.setBackgroundPressed(R.drawable.mouse_buttons_background_pressed_middle);
     }
 }
