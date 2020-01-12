@@ -24,7 +24,7 @@
         <item name="tag_copy">copy</item>
         <item name="tag_paste">paste</item>
         <item name="tag_space">space</item>
-        <item name="tag_ctrl_alt_del">cad</item>
+        <item name="tag_task_manager">tskmgr</item>
         <item name="tag_backspace">backspace</item>
         <item name="tag_down">down</item>
         <item name="tag_up">up</item>
@@ -34,6 +34,9 @@
         <item name="win_d">win-d</item>
         <item name="tag_alt_tab">alt-tab</item>
         <item name="tag_esc">esc</item>
+        <item name="tag_tab">tab</item>
+        <item name="tag_play_pause">plps</item>
+
     </string-array>
     <!--    KEYS-->
     <string name="tag_caps">capslock</string>
@@ -58,7 +61,7 @@
     <string name="tag_copy">copy</string>
     <string name="tag_paste">paste</string>
     <string name="tag_space">space</string>
-    <string name="tag_ctrl_alt_del">cad</string>
+    <string name="tag_task_manager">tskmgr</string>
     <string name="tag_backspace">backspace</string>
     <string name="tag_down">down</string>
     <string name="tag_up">up</string>
@@ -68,5 +71,7 @@
     <string name="win_d">win-d</string>
     <string name="tag_alt_tab">alt-tab</string>
     <string name="tag_esc">esc</string>
+    <string name="tag_tab">tab</string>
+    <string name="tag_play_pause">plps</string>
     <!--    END KEYS-->
 </resources>

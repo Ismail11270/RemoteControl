@@ -74,11 +74,6 @@ public class KeyboardFragment extends androidx.fragment.app.Fragment implements 
 
     }
 
-
-
-
-
-
     private void initViews() {
         keysLayout = (ConstraintLayout) view;
         ArrayList<View> views = keysLayout.getTouchables(); //get touchable children

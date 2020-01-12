@@ -14,20 +14,20 @@ import java.util.Locale;
 
 public class ActionController {
     private Robot robot;
-    private ServerUdp serverUdp;
-    private Runtime runtime;
-    private static ArrayList<Locale> supportedLanguageLocales;
-    static {
-        supportedLanguageLocales = new ArrayList<>();
-        supportedLanguageLocales.add(Locale.US);
-    }
+            private ServerUdp serverUdp;
+            private Runtime runtime;
+            private static ArrayList<Locale> supportedLanguageLocales;
+            static {
+                supportedLanguageLocales = new ArrayList<>();
+                supportedLanguageLocales.add(Locale.US);
+            }
 
     public ActionController(ServerUdp serverUdp) {
-        try {
-            robot = new Robot();
-            runtime = Runtime.getRuntime();
-            this.serverUdp = serverUdp;
-        } catch (AWTException e) {
+                try {
+                    robot = new Robot();
+                    runtime = Runtime.getRuntime();
+                    this.serverUdp = serverUdp;
+                } catch (AWTException e) {
             e.printStackTrace();
         }
     }

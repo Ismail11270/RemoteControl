@@ -2,6 +2,7 @@ package org.zoobie.remotecontrol.core.actions;
 
 import javax.sound.sampled.*;
 
+@Deprecated(forRemoval = true)
 public class VolumeControl extends FloatControl {
 
     private boolean isWindows = false;
@@ -16,8 +17,6 @@ public class VolumeControl extends FloatControl {
     protected void volUp(){
 
     }
-
-
 
 
     private void non() throws LineUnavailableException {

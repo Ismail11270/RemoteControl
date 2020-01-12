@@ -18,31 +18,40 @@ public class KeyboardButton extends AppCompatButton {
     }
 
     private boolean pressed = false;
-    private int background = R.drawable.button_background;
-    private int backgroundPressed = R.drawable.button_background_pressed;
-
+    private int background = R.drawable.mouse_middle_button_background;
+    private int backgroundPressed = R.drawable.mouse_buttons_background_pressed_middle;
+    private int textColor = R.color.amber_light;
+    private int textColorPressed = R.color.red2;
     public KeyboardButton(Context context) {
         super(context);
         this.setBackground(getResources().getDrawable(background,null));
+        setTextColor(getResources().getColor(textColor,null));
     }
 
     public KeyboardButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setBackground(getResources().getDrawable(background,null));
         keysCount++;
+
+
+        setTextColor(getResources().getColor(textColor,null));
     }
 
     public KeyboardButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.setBackground(getResources().getDrawable(background,null));
+        setTextColor(getResources().getColor(textColor,null));
+
     }
 
     public void toggle(){
         Drawable newBackground;
         if(!pressed){
             newBackground = getResources().getDrawable(backgroundPressed,null);
+            setTextColor(getResources().getColor(textColorPressed,null));
         } else {
             newBackground = getResources().getDrawable(background,null);
+            setTextColor(getResources().getColor(textColor,null));
         }
         this.setBackground(newBackground);
     }

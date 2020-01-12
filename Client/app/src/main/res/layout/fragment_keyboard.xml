@@ -11,13 +11,40 @@
 
     <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/backspace"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="@string/tag_backspace"
-        app:layout_constraintBottom_toTopOf="@id/guideline"
+        app:layout_constraintBottom_toTopOf="@id/arrowLeft"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toEndOf="@id/play_pause"
+        app:layout_constraintTop_toTopOf="@id/guideline"
         android:tag="@string/tag_backspace"
+        />
+
+    <org.zoobie.remotecontrol.view.KeyboardButton
+        android:id="@+id/esc"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/tag_esc"
+        android:tag="@string/tag_esc"
+        app:layout_constraintTop_toTopOf="@id/guideline"
+        app:layout_constraintBottom_toTopOf="@id/arrowLeft"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/play_pause"
+        />
+    <org.zoobie.remotecontrol.view.KeyboardButton
+        android:id="@+id/play_pause"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Play/Pause"
+        android:tag="@string/tag_play_pause"
+        app:layout_constraintTop_toTopOf="@id/guideline"
+        app:layout_constraintStart_toEndOf="@id/esc"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintEnd_toStartOf="@id/backspace"
+        app:layout_constraintBottom_toTopOf="@id/arrowLeft"
         />
 
     <androidx.constraintlayout.widget.Guideline
@@ -26,7 +53,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/paste"
-        app:layout_constraintGuide_percent="0.1"
+        app:layout_constraintGuide_percent="0.0"
         app:layout_constraintTop_toTopOf="parent" />
 
     <org.zoobie.remotecontrol.view.KeyboardButton
@@ -35,7 +62,7 @@
         android:layout_height="0dp"
         android:text="◄"
         android:textSize="30sp"
-        app:layout_constraintTop_toBottomOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/backspace"
         app:layout_constraintBottom_toTopOf="@id/copy"
         app:layout_constraintEnd_toStartOf="@id/arrowUp"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +75,7 @@
         android:layout_height="0dp"
         android:text="►"
         android:textSize="30sp"
-        app:layout_constraintTop_toBottomOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/backspace"
         app:layout_constraintBottom_toTopOf="@id/copy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/arrowDown"
@@ -60,7 +87,7 @@
         android:layout_height="0dp"
         android:text="▲"
         android:textSize="30sp"
-        app:layout_constraintTop_toBottomOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/backspace"
         app:layout_constraintBottom_toTopOf="@id/copy"
         app:layout_constraintEnd_toStartOf="@id/arrowDown"
         app:layout_constraintStart_toEndOf="@id/arrowLeft"
@@ -73,7 +100,7 @@
         android:layout_height="0dp"
         android:text="▼"
         android:textSize="30sp"
-        app:layout_constraintTop_toBottomOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/backspace"
         app:layout_constraintBottom_toTopOf="@id/copy"
         app:layout_constraintEnd_toStartOf="@id/arrowRight"
         app:layout_constraintStart_toEndOf="@id/arrowUp"
@@ -287,15 +314,15 @@
 
 
     <org.zoobie.remotecontrol.view.KeyboardButton
-        android:id="@+id/esc"
+        android:id="@+id/tab"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="@string/tag_esc"
+        android:text="@string/tag_tab"
         app:layout_constraintBottom_toTopOf="@+id/space"
         app:layout_constraintEnd_toStartOf="@+id/alt_tab"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/capslock"
-        android:tag="@string/tag_esc"
+        android:tag="@string/tag_tab"
         />
 
     <org.zoobie.remotecontrol.view.KeyboardButton
@@ -303,10 +330,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="@string/tag_alt_tab"
-        app:layout_constraintBottom_toBottomOf="@+id/esc"
+        app:layout_constraintBottom_toBottomOf="@+id/tab"
         app:layout_constraintEnd_toStartOf="@+id/win_d"
-        app:layout_constraintStart_toEndOf="@+id/esc"
-        app:layout_constraintTop_toTopOf="@+id/esc"
+        app:layout_constraintStart_toEndOf="@+id/tab"
+        app:layout_constraintTop_toTopOf="@+id/tab"
         android:tag="@string/tag_alt_tab"/>
 
     <org.zoobie.remotecontrol.view.KeyboardButton
@@ -314,10 +341,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="@string/win_d"
-        app:layout_constraintBottom_toBottomOf="@+id/esc"
+        app:layout_constraintBottom_toBottomOf="@+id/tab"
         app:layout_constraintEnd_toStartOf="@+id/alt_f4"
         app:layout_constraintStart_toEndOf="@+id/alt_tab"
-        app:layout_constraintTop_toTopOf="@+id/esc"
+        app:layout_constraintTop_toTopOf="@+id/tab"
         android:tag="@string/win_d"/>
 
     <org.zoobie.remotecontrol.view.KeyboardButton
@@ -325,10 +352,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="@string/tag_alt_f4"
-        app:layout_constraintBottom_toBottomOf="@+id/esc"
+        app:layout_constraintBottom_toBottomOf="@+id/tab"
         app:layout_constraintEnd_toStartOf="@id/enter"
         app:layout_constraintStart_toEndOf="@+id/win_d"
-        app:layout_constraintTop_toTopOf="@+id/esc"
+        app:layout_constraintTop_toTopOf="@+id/tab"
         android:tag="@string/tag_alt_f4"
         />
 
@@ -340,7 +367,7 @@
         android:layout_marginBottom="4dp"
         android:text="@string/tag_caps"
         android:tag="@string/tag_caps"
-        app:layout_constraintBottom_toTopOf="@+id/esc"
+        app:layout_constraintBottom_toTopOf="@+id/tab"
         app:layout_constraintEnd_toStartOf="@+id/fn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/f7" />
@@ -401,15 +428,15 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/esc"
+        app:layout_constraintTop_toBottomOf="@+id/tab"
         app:layout_constraintVertical_bias="1.0" />
 
     <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/ctrl_alt_del"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="CTRL-ALT-DEl"
-        android:tag="@string/tag_ctrl_alt_del"
+        android:text="Task Manager"
+        android:tag="@string/tag_task_manager"
         app:layout_constraintBottom_toBottomOf="@+id/space"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"

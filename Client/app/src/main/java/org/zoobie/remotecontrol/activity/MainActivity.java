@@ -112,11 +112,15 @@ public class MainActivity extends AppCompatActivity {
         } else if(item.getItemId() == R.id.connectionSettings){
             startActivity(connectionIntent);
         } else if(item.getItemId() == R.id.keyboard){
-            Log.d(TAG,"OPENING KEYBOARD...");
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-            imm.showSoftInput(inputFieldEt, InputMethodManager.SHOW_IMPLICIT);
-            inputFieldEt.requestFocus();
+            if(inputFieldEt.isFocused()){
+                hideKeyboard();
+            } else {
+                Log.d(TAG, "OPENING KEYBOARD...");
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+                imm.showSoftInput(inputFieldEt, InputMethodManager.SHOW_IMPLICIT);
+                inputFieldEt.requestFocus();
+            }
         }
         return true;
     }
@@ -124,13 +128,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        inputFieldEt.clearFocus();
         hideKeyboard();
     }
 
     private void hideKeyboard() {
+        inputFieldEt.clearFocus();
         InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(inputFieldEt.getWindowToken(), 0);
     }
 
     private void textInputSetup() {

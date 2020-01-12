@@ -56,7 +56,7 @@ public abstract class Actions {
             specialKeysMap.put((byte) 19, new Integer[]{KeyEvent.VK_CONTROL, KeyEvent.VK_C});
             specialKeysMap.put((byte) 20, new Integer[]{KeyEvent.VK_CONTROL, KeyEvent.VK_V});
             specialKeysMap.put((byte) 21, new Integer[]{KeyEvent.VK_SPACE});
-            specialKeysMap.put((byte) 22, new Integer[]{KeyEvent.VK_CONTROL, KeyEvent.VK_ALT, KeyEvent.VK_DELETE});
+            specialKeysMap.put((byte) 22, new Integer[]{KeyEvent.VK_CONTROL, KeyEvent.VK_SHIFT, KeyEvent.VK_ESCAPE});
             specialKeysMap.put((byte) 23, new Integer[]{KeyEvent.VK_BACK_SPACE});
             specialKeysMap.put((byte) 24, new Integer[]{KeyEvent.VK_DOWN});
             specialKeysMap.put((byte) 25, new Integer[]{KeyEvent.VK_UP});
