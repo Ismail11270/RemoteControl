@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RemoteControl0</string>
+    <string name="app_name">RemoteControl</string>
 
     <string-array name="tags">
         <item name="tag_caps">capslock</item>
