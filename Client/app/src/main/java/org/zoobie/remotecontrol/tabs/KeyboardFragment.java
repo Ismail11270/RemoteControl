@@ -1,20 +1,13 @@
 package org.zoobie.remotecontrol.tabs;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,7 +16,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import org.zoobie.pomd.remotecontrol.R;
 import org.zoobie.remotecontrol.activity.ConnectionActivity;
-import org.zoobie.remotecontrol.activity.MainActivity;
 import org.zoobie.remotecontrol.core.actions.Actions;
 import org.zoobie.remotecontrol.core.connection.ConnectionException;
 import org.zoobie.remotecontrol.core.connection.Connector;
@@ -31,7 +23,6 @@ import org.zoobie.remotecontrol.core.connection.udp.Server;
 import org.zoobie.remotecontrol.view.KeyboardButton;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 public class KeyboardFragment extends androidx.fragment.app.Fragment implements View.OnClickListener, View.OnLongClickListener {
@@ -105,7 +96,7 @@ public class KeyboardFragment extends androidx.fragment.app.Fragment implements 
             connector = new Connector(server);
             boolean isConnected = connector.checkConnection() > 0;
             if (!isConnected) throw new ConnectionException("Couldn't connect to the server");
-            Toast.makeText(ctx, "Connected to " + connector.getServerName(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ctx, "Connected to " + connector.requestServerName(), Toast.LENGTH_SHORT).show();
         } catch (ConnectionException | ExecutionException | InterruptedException e) {
             Toast.makeText(ctx, "FAILED TO CONNECT", Toast.LENGTH_SHORT).show();
             Intent connectionIntent = new Intent(ctx, ConnectionActivity.class);

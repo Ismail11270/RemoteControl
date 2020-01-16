@@ -9,7 +9,7 @@ import android.view.View;
 import org.zoobie.remotecontrol.core.actions.Actions;
 import org.zoobie.remotecontrol.core.connection.Connector;
 
-public class TouchPadGestureListener implements View.OnTouchListener,  GestureDetector.OnGestureListener {
+public class TouchPadGestureListener extends GestureDetector.SimpleOnGestureListener implements View.OnTouchListener{
     private Context context;
     private GestureDetector gestureDetector;
     private Connector connector;
@@ -21,25 +21,10 @@ public class TouchPadGestureListener implements View.OnTouchListener,  GestureDe
         this.context = context;
         this.connector = connector;
         gestureDetector = new GestureDetector(context, this);
-//        gestureDetector.setOnDoubleTapListener(this);
-    }
-
-    public GestureDetector getGestureDetector() {
-        return gestureDetector;
     }
 
     private final String TAG = "TouchPadListener";
 
-    @Override
-    public boolean onDown(MotionEvent e) {
-        Log.i(TAG, "ON DOWN");
-        return true;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-        Log.i(TAG, "ON SHOW PRESS");
-    }
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
@@ -58,26 +43,15 @@ public class TouchPadGestureListener implements View.OnTouchListener,  GestureDe
         if (counter < ACCURACY) {
             counter++;
         } else {
-//            Toast.makeText(context, "SCROLL", Toast.LENGTH_SHORT).show();
             Log.i(TAG, "ON SCROLL " + distanceX + " " + distanceY);
-            move((int)distanceX,(int)distanceY);
+            sendMove((int)distanceX,(int)distanceY);
         }
         return true;
     }
 
-    void move(int x, int y){
+    private void sendMove(int x, int y){
         x*=sens; y*=sens;
         connector.send(Actions.MOUSE_ACTION,Actions.MOUSE_MOVE_ACTION, (byte)x,(byte)y);
-    }
-    @Override
-    public void onLongPress(MotionEvent e) {
-//        Log.i(TAG,"ON LONG PRESS");
-    }
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-//        Log.i(TAG,"ON FLING");
-        return true;
     }
 
     @Override

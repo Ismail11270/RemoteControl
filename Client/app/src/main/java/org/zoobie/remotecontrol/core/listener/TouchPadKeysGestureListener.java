@@ -15,7 +15,6 @@ public class TouchPadKeysGestureListener extends GestureDetector.SimpleOnGesture
     private Context context;
     private GestureDetector gestureDetector;
     private Connector connector;
-    private boolean tapped = false;
     private View view;
     private TouchPadGestureListener touchpadListener;
 
@@ -48,12 +47,6 @@ public class TouchPadKeysGestureListener extends GestureDetector.SimpleOnGesture
         return true;
     }
 
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        Log.i(TAG, "SCROLLING");
-        return true;
-    }
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {

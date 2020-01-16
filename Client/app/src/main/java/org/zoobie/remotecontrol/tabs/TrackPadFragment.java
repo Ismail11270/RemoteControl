@@ -5,21 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.inputmethodservice.Keyboard;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Guideline;
 
@@ -32,7 +27,6 @@ import org.zoobie.remotecontrol.core.connection.Connector;
 import org.zoobie.remotecontrol.core.connection.udp.Server;
 import org.zoobie.remotecontrol.core.listener.TouchPadGestureListener;
 import org.zoobie.remotecontrol.core.listener.TouchPadKeysListener;
-import org.zoobie.remotecontrol.view.KeyboardButton;
 import org.zoobie.remotecontrol.view.TouchpadButton;
 
 import java.util.concurrent.ExecutionException;
@@ -98,9 +92,9 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
         Server server = new Server(ip, portUdp);
         try {
             connector = new Connector(server);
-            boolean isConnected = connector.checkUdpConnection() | connector.checkBluetoothConnection();
+            boolean isConnected = connector.checkUdpConnection();
             if (!isConnected) throw new ConnectionException("Couldn't connect to the server");
-            Toast.makeText(ctx, "Connected to " + connector.getServerName(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ctx, "Connected to " + connector.requestServerName(), Toast.LENGTH_SHORT).show();
         } catch (ConnectionException | ExecutionException | InterruptedException e) {
             Toast.makeText(ctx, "FAILED TO CONNECT", Toast.LENGTH_SHORT).show();
             Intent connectionIntent = new Intent(ctx, ConnectionActivity.class);

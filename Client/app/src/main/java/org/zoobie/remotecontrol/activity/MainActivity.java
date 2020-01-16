@@ -11,11 +11,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -242,9 +240,9 @@ public class MainActivity extends AppCompatActivity {
         Server server = new Server(ip, portUdp);
         try {
             connector = new Connector(server);
-            boolean isConnected = connector.checkUdpConnection() | connector.checkBluetoothConnection();
+            boolean isConnected = connector.checkUdpConnection();
             if (!isConnected) throw new ConnectionException("Couldn't connect to the server");
-            Toast.makeText(this, "Connected to " + connector.getServerName(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Connected to " + connector.requestServerName(), Toast.LENGTH_SHORT).show();
         } catch (ConnectionException | ExecutionException | InterruptedException e) {
             Toast.makeText(this, "FAILED TO CONNECT", Toast.LENGTH_SHORT).show();
             startActivity(connectionIntent);
