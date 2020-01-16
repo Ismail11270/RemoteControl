@@ -43,7 +43,6 @@ public class KeyboardAction implements Action {
 
     private int pressSpecialKey(byte b, boolean release) {
         Integer[] keyCodes = Actions.Keys.specialKeysMap.get(b);
-        System.out.println(Arrays.toString(keyCodes) + " KEYS NEED TO BE PRESSED");
         if (keyCodes.length > 1) {
             for (int i : keyCodes) {
                 robot.keyPress(i);
