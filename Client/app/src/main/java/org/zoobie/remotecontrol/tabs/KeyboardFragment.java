@@ -74,6 +74,7 @@ public class KeyboardFragment extends androidx.fragment.app.Fragment implements 
 
     }
 
+
     private void initViews() {
         keysLayout = (ConstraintLayout) view;
         ArrayList<View> views = keysLayout.getTouchables(); //get touchable children
@@ -114,15 +115,18 @@ public class KeyboardFragment extends androidx.fragment.app.Fragment implements 
 
     @Override
     public void onClick(View v) {
-        if (v instanceof KeyboardButton) {
+        if(v.getTag() == res.getString(R.string.tag_play_pause)){
+            connector.send(Actions.MEDIA_ACTION,Actions.MEDIA_PLAY_PAUSE);
+        }
+        else if (v instanceof KeyboardButton) {
             KeyboardButton b = (KeyboardButton) v;
             byte keyCode = keys.getActionCodeForKey(b.getTag().toString());
             if (b.isButtonPressed()) {
                 b.toggle();
                 b.buttonPress();
                 connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_RELEASE, keyCode);
-            }
-            connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, keyCode);
+            } else
+                connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, keyCode);
         }
     }
 
@@ -130,15 +134,18 @@ public class KeyboardFragment extends androidx.fragment.app.Fragment implements 
     public boolean onLongClick(View v) {
         if (v instanceof KeyboardButton) {
             KeyboardButton b = (KeyboardButton) v;
-            byte keyCode = keys.getActionCodeForKey(b.getTag().toString());
-            if (!b.isButtonPressed()) {
-                b.toggle();
-                b.buttonPress();
-                connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_PRESS, keyCode);
-            } else {
-                connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_RELEASE, keyCode);
-                b.toggle();
-                b.buttonPress();
+            if (!b.isToggleable()) onClick(v);
+            else {
+                byte keyCode = keys.getActionCodeForKey(b.getTag().toString());
+                if (!b.isButtonPressed()) {
+                    b.toggle();
+                    b.buttonPress();
+                    connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_PRESS, keyCode);
+                } else {
+                    connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_RELEASE, keyCode);
+                    b.toggle();
+                    b.buttonPress();
+                }
             }
         }
         return true;

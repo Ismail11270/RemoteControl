@@ -6,14 +6,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-
-
     <org.zoobie.remotecontrol.view.KeyboardButton
         android:id="@+id/backspace"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="@string/tag_backspace"
+        app:isToggleable="false"
         app:layout_constraintBottom_toTopOf="@id/arrowLeft"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="2"
@@ -39,6 +37,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="Play/Pause"
+        app:isToggleable="false"
         android:tag="@string/tag_play_pause"
         app:layout_constraintTop_toTopOf="@id/guideline"
         app:layout_constraintStart_toEndOf="@id/esc"

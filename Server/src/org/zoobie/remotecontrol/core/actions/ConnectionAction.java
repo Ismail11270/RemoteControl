@@ -32,7 +32,7 @@ public class ConnectionAction implements Action {
 
     private void reply(byte... reply) {
         try {
-            System.out.println("Sending confirmation");
+            System.out.println("Connection confirmed!");
             serverUdp.reply(senderPacket, reply);
         } catch (IOException e) {
             e.printStackTrace();

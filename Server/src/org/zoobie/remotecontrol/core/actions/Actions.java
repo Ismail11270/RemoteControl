@@ -27,6 +27,15 @@ public abstract class Actions {
     //todo
     public static final byte VOLUME_SET_ACTION = 55;
 
+
+
+    //Media actions
+    public static final byte MEDIA_ACTION = 40;
+    public static final byte MEDIA_PLAY_PAUSE = 1;
+    public static final byte MEDIA_NEXT = 2;
+    public static final byte MEDIA_PREVIOUS = 3;
+
+
     //keyboard actions
     public static final byte KEYBOARD_ACTION = 30;
     public static final byte SPECIAL_KEY_ACTION_CLICK = 1;
@@ -66,6 +75,8 @@ public abstract class Actions {
             specialKeysMap.put((byte) 29, new Integer[]{KeyEvent.VK_WINDOWS, KeyEvent.VK_D});
             specialKeysMap.put((byte) 30, new Integer[]{KeyEvent.VK_ALT, KeyEvent.VK_TAB});
             specialKeysMap.put((byte) 31, new Integer[]{KeyEvent.VK_ESCAPE});
+            specialKeysMap.put((byte)32, new Integer[]{KeyEvent.VK_TAB});
+            specialKeysMap.put((byte)33, new Integer[]{KeyEvent.VK_PAUSE});
 
             //adding numeric keys
             for (int i = 0x30; i <= 0x39; i++) {

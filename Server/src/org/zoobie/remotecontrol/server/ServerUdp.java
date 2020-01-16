@@ -39,20 +39,18 @@ public class ServerUdp {
                     }
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println("Error receiving packet!");
             }
         }).start();
     }
 
     public void reply(DatagramPacket packet, byte[] replyData) throws IOException {
-        System.out.println(packet.getAddress() + ":" + packet.getPort());
         packet.setData(replyData);
         recieveSocket.send(packet);
     }
 
     public void send(byte[] data) throws IOException {
         DatagramPacket dgPacket = new DatagramPacket(data, data.length, ip, port);
-        System.out.println("sent");
         recieveSocket.send(dgPacket);
     }
 

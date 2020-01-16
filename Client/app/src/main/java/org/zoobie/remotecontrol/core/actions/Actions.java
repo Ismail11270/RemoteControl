@@ -59,6 +59,12 @@ public class Actions {
     public static final byte VOLUME_SET_ACTION = 55;
 
 
+    //Media actions
+    public static final byte MEDIA_ACTION = 40;
+    public static final byte MEDIA_PLAY_PAUSE = 1;
+    public static final byte MEDIA_NEXT = 2;
+    public static final byte MEDIA_PREVIOUS = 3;
+
     //Connection actions
     public static final byte CONNECTION_ACTION = 127;
     public static final byte CONNECTION_CHECK_ACTION = 1;
