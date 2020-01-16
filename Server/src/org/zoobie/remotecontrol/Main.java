@@ -1,6 +1,5 @@
 package org.zoobie.remotecontrol;
 
-import com.profesorfalken.jpowershell.PowerShell;
 import org.zoobie.remotecontrol.server.ServerUdp;
 
 import javax.sound.sampled.*;
@@ -11,11 +10,19 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException, AWTException, InterruptedException, LineUnavailableException {
-
-        ServerUdp serverUdp = new ServerUdp(1711);
-
-        serverUdp.listen();
-        System.out.println("Udp Server started at " + serverUdp.getIp() + ":"+serverUdp.getPort());
+        ServerUdp serverUdp = null;
+            for (int i = 1711; i < 5000; i++) {
+                try {
+                    serverUdp = new ServerUdp(i);
+                    serverUdp.listen();
+                    break;
+                }catch(Exception e){
+                    continue;
+                }
+        }
+        if(serverUdp!=null) {
+            System.out.println("Udp Server started at " + serverUdp.getIp() + ":" + serverUdp.getPort());
+        } else System.err.println("Error starting the server!");
 //        MouseInfo.getPointerInfo().getDevice().se
     }
 

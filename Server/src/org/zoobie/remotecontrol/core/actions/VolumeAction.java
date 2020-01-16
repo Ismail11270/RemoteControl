@@ -1,8 +1,6 @@
 package org.zoobie.remotecontrol.core.actions;
 
-import com.profesorfalken.jpowershell.PowerShell;
 
-import javax.swing.*;
 import java.io.IOException;
 
 public class VolumeAction implements Action {

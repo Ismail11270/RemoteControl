@@ -8,23 +8,19 @@ import java.net.*;
 public class ServerUdp {
 
     private static final int MAX_PACKET_SIZE = 5;
-    private DatagramSocket recieveSocket;
-    private DatagramSocket sendSocket;
+    private DatagramSocket socket;
     private DatagramPacket packet;
     private int port;
     private byte[] byteData;
     private InetAddress ip;
     private ActionController actionController;
 
-    public ServerUdp(int port) {
-        try {
+    public ServerUdp(int port) throws SocketException, UnknownHostException {
             this.port = port;
-            recieveSocket = new DatagramSocket(port);
+            socket = new DatagramSocket(port);
             ip = InetAddress.getLocalHost();
             actionController = new ActionController(this);
-        } catch (SocketException | UnknownHostException e) {
-            e.printStackTrace();
-        }
+
     }
 
     public void listen() {
@@ -33,7 +29,7 @@ public class ServerUdp {
                 while (true) {
                     byteData = new byte[MAX_PACKET_SIZE];
                     packet = new DatagramPacket(byteData, byteData.length);
-                    recieveSocket.receive(packet);
+                    socket.receive(packet);
                     synchronized (actionController) {
                         actionController.performAction(packet);
                     }
@@ -46,12 +42,12 @@ public class ServerUdp {
 
     public void reply(DatagramPacket packet, byte[] replyData) throws IOException {
         packet.setData(replyData);
-        recieveSocket.send(packet);
+        socket.send(packet);
     }
 
     public void send(byte[] data) throws IOException {
         DatagramPacket dgPacket = new DatagramPacket(data, data.length, ip, port);
-        recieveSocket.send(dgPacket);
+        socket.send(dgPacket);
     }
 
     public String getMachineName() {

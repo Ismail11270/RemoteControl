@@ -3,7 +3,6 @@
     <output-path>$PROJECT_DIR$/out/artifacts/Server_jar</output-path>
     <root id="archive" name="Server.jar">
       <element id="module-output" name="Server" />
-      <element id="library" level="project" name="jPowerShell-3.1.1" />
     </root>
   </artifact>
 </component>

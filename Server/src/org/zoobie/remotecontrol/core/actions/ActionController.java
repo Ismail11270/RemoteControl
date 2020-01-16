@@ -11,7 +11,6 @@ import java.util.Locale;
 public class ActionController {
     private Robot robot;
     private ServerUdp serverUdp;
-    private Runtime runtime;
     private static ArrayList<Locale> supportedLanguageLocales;
 
     static {
@@ -22,7 +21,6 @@ public class ActionController {
     public ActionController(ServerUdp serverUdp) {
         try {
             robot = new Robot();
-            runtime = Runtime.getRuntime();
             this.serverUdp = serverUdp;
         } catch (AWTException e) {
             System.err.println("Robot initialization error!");
