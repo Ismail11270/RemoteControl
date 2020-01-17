@@ -24,7 +24,6 @@ public class TouchpadButton extends AppCompatButton {
     public TouchpadButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setBackground(getResources().getDrawable(background,null));
-
     }
 
     public TouchpadButton(Context context, AttributeSet attrs, int defStyleAttr) {

@@ -7,7 +7,6 @@
     android:orientation="vertical"
     tools:context="org.zoobie.remotecontrol.activity.MainActivity">
 
-
     <include layout="@layout/toolbar_layout"
         />
     <com.google.android.material.tabs.TabLayout
@@ -25,7 +24,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
-
     <EditText
         android:id="@+id/inputField"
         android:layout_width="match_parent"

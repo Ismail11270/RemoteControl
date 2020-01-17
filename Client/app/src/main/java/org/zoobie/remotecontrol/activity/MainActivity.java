@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.settings_menu, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.fullscreen) {
@@ -136,63 +135,66 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void textInputSetup() {
-        inputFieldEt.setOnKeyListener((v, keyCode, event) -> {
-            Log.i(TAG, keyCode + " key pressed");
-            if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                switch (keyCode) {
-                    case KeyEvent.KEYCODE_DEL:
-                        connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, keys.getActionCodeForKey(R.string.tag_backspace));
-                        break;
-                    case KeyEvent.KEYCODE_ENTER:
-                        connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, keys.getActionCodeForKey(R.string.tag_enter));
-                        break;
-                    case KeyEvent.KEYCODE_BACK:
-                        v.clearFocus();
-                        break;
-                    default:
-                        return false;
-                }
-            } else if (event.getAction() == KeyEvent.ACTION_UP) {
-                switch (keyCode) {
-                    case KeyEvent.KEYCODE_DEL:
-                    case KeyEvent.KEYCODE_ENTER:
-                    case KeyEvent.KEYCODE_BACK:
-                        break;
-                    default:
-                        return false;
-                }
-            }
-            return true;
-        });
-
-        inputFieldEt.addTextChangedListener(new TextWatcher() {
-            boolean isChanged = true;
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                Log.d(TAG,"BEFORE TEXT CHANGED");
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Log.i(TAG, s.toString());
-                if (before < count && isChanged) {
-                    if (s.charAt(before) == '\n')
-                        connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, keys.getActionCodeForKey(R.string.tag_enter));
-                    else
-                        connector.send(Actions.KEYBOARD_ACTION, Actions.TEXT_KEY_ACTION_CLICK, (byte) s.charAt(before));
-
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!s.toString().equals(""))
-                    inputFieldEt.setText("");
-            }
-        });
+        inputFieldEt.setOnKeyListener(softKeyboardKeyListener);
+        inputFieldEt.addTextChangedListener(softKeyboardTextWatcher);
     }
+
+    private View.OnKeyListener softKeyboardKeyListener = (v, keyCode, event) -> {
+        Log.i(TAG, keyCode + " key pressed");
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_DEL:
+                    connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, keys.getActionCodeForKey(R.string.tag_backspace));
+                    break;
+                case KeyEvent.KEYCODE_ENTER:
+                    connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, keys.getActionCodeForKey(R.string.tag_enter));
+                    break;
+                case KeyEvent.KEYCODE_BACK:
+                    v.clearFocus();
+                    break;
+                default:
+                    return false;
+            }
+        } else if (event.getAction() == KeyEvent.ACTION_UP) {
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_DEL:
+                case KeyEvent.KEYCODE_ENTER:
+                case KeyEvent.KEYCODE_BACK:
+                    break;
+                default:
+                    return false;
+            }
+        }
+        return true;
+    };
+
+    private TextWatcher softKeyboardTextWatcher = new TextWatcher() {
+        boolean isChanged = true;
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            Log.d(TAG, "BEFORE TEXT CHANGED");
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            Log.i(TAG, s.toString());
+            if (before < count && isChanged) {
+                if (s.charAt(before) == '\n')
+                    connector.send(Actions.KEYBOARD_ACTION, Actions.SPECIAL_KEY_ACTION_CLICK, keys.getActionCodeForKey(R.string.tag_enter));
+                else
+                    connector.send(Actions.KEYBOARD_ACTION, Actions.TEXT_KEY_ACTION_CLICK, (byte) s.charAt(before));
+
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (!s.toString().equals(""))
+                inputFieldEt.setText("");
+        }
+    };
 
     @Override
     public void onBackPressed() {
@@ -204,8 +206,6 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
     }
-
-
 
     private boolean volumeButtonPressed = false;
 

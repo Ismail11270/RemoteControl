@@ -31,7 +31,7 @@ import org.zoobie.remotecontrol.view.TouchpadButton;
 
 import java.util.concurrent.ExecutionException;
 
-public class TrackPadFragment extends androidx.fragment.app.Fragment {
+public class TouchpadFragment extends androidx.fragment.app.Fragment {
 
     private static final int CONNECTION_RESULT = 123;
     private static final String TAG = "TRACKPAD";
@@ -48,10 +48,10 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
     private ScrollerGestureListener scrollerGestureListener;
     private View view;
     private Guideline guideline;
-    public TrackPadFragment(){
+    public TouchpadFragment(){
 
     }
-    public TrackPadFragment(Connector connector){
+    public TouchpadFragment(Connector connector){
         this.connector = connector;
     }
     @SuppressLint("ClickableViewAccessibility")
@@ -60,7 +60,7 @@ public class TrackPadFragment extends androidx.fragment.app.Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //Inflate the layout for this fragment
         ctx = container.getContext();
-        view = inflater.inflate(R.layout.fragment_trackpad, container, false);
+        view = inflater.inflate(R.layout.fragment_touchpad, container, false);
         connectionSp = ctx.getSharedPreferences("org.zoobie.connectiondata", Context.MODE_PRIVATE);
         settingsSp = ctx.getSharedPreferences("org.zoobie.settings", Context.MODE_PRIVATE);
         initViews();

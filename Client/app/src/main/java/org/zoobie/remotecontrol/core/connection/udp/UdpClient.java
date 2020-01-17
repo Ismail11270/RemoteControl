@@ -46,10 +46,7 @@ public class UdpClient implements Client {
 
     @Override
     public boolean checkConnection() throws ExecutionException, InterruptedException {
-        System.out.println("checked connection");
-        byte[] recieved = ask(Actions.CONNECTION_ACTION,Actions.CONNECTION_CHECK_ACTION);
-        System.out.println(Arrays.toString(recieved));
-        return recieved[0] == Actions.CONNECTION_CHECK_ACTION;
+        return ask(Actions.CONNECTION_ACTION,Actions.CONNECTION_CHECK_ACTION)[0] == Actions.CONNECTION_CHECK_ACTION;
     }
 
     public String askServerName() throws ExecutionException, InterruptedException {
@@ -76,13 +73,11 @@ public class UdpClient implements Client {
                 DatagramPacket recievedPacket = new DatagramPacket(recievedBytes,recievedBytes.length);
                 socket[0].receive(recievedPacket);
                 recievedBytes[0] = recievedPacket.getData()[0];
-                System.out.println(socket[0].getLocalPort() + " " + recievedBytes[0]);
                 socket[0].setSoTimeout(0);
             } catch (IOException e) {
-                System.out.println(e.getMessage());
+                Log.e(TAG, e.getMessage());
             } finally {
             }
-
             return recievedBytes;
         }
     }

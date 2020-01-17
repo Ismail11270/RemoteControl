@@ -15,12 +15,11 @@
         android:id="@+id/menuGroup"
         android:menuCategory="container"
         android:enabled="true">
-
         <item android:title="Settings"
-            android:id="@+id/settings"/>
+            android:id="@+id/settings"
+            android:enabled="false"/>
         <item
             android:id="@+id/connectionSettings"
             android:title="Connection"/>
-
     </group>
 </menu>

@@ -13,6 +13,7 @@
         android:background="@android:color/transparent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
+
     <View
         android:id="@+id/scroller"
         android:layout_width="60dp"
