@@ -9,7 +9,7 @@ import android.view.View;
 import org.zoobie.remotecontrol.core.actions.Actions;
 import org.zoobie.remotecontrol.core.connection.Connector;
 
-public class TouchPadGestureListener extends GestureDetector.SimpleOnGestureListener implements View.OnTouchListener{
+public class TouchPadGestureListener implements View.OnTouchListener, GestureDetector.OnGestureListener{
     private Context context;
     private GestureDetector gestureDetector;
     private Connector connector;
@@ -49,6 +49,7 @@ public class TouchPadGestureListener extends GestureDetector.SimpleOnGestureList
         return true;
     }
 
+
     private void sendMove(int x, int y){
         x*=sens; y*=sens;
         connector.send(Actions.MOUSE_ACTION,Actions.MOUSE_MOVE_ACTION, (byte)x,(byte)y);
@@ -75,4 +76,23 @@ public class TouchPadGestureListener extends GestureDetector.SimpleOnGestureList
     public void setSens(float sens) {
         this.sens = sens;
     }
+
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;
+    }
+    @Override
+    public void onShowPress(MotionEvent e) {
+
+    }
+    @Override
+    public void onLongPress(MotionEvent e) {
+
+    }
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        return false;
+    }
+
 }

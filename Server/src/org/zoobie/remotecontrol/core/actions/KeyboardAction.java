@@ -31,22 +31,36 @@ public class KeyboardAction implements Action {
         } else if (command[1] == Actions.SPECIAL_KEY_ACTION_CLICK) {
             pressSpecialKey(command[2], true);
         } else if (command[1] == Actions.SPECIAL_KEY_ACTION_PRESS) {
+            System.out.println("Key " + command[2] + " toggled");
             int keyCode = pressSpecialKey(command[2], false);
             keysPressed++;
             if (keysPressed > 4) {
 
             }
         } else if (command[1] == Actions.SPECIAL_KEY_ACTION_RELEASE) {
+            release(command[2]);
+            System.out.println("Key " + command[2] +" release");
             keysPressed--;
         }
     }
-
+    private int release(byte b){
+        Integer[] keyCodes = Actions.Keys.specialKeysMap.get(b);
+        System.out.println(keyCodes[0]);
+        if (keyCodes.length > 0) {
+            for (int i : keyCodes) {
+                robot.keyRelease(i);
+            }
+        }
+        return keyCodes[0];
+    }
     private int pressSpecialKey(byte b, boolean release) {
         Integer[] keyCodes = Actions.Keys.specialKeysMap.get(b);
+        System.out.println(keyCodes[0]);
         if (keyCodes.length > 1) {
             for (int i : keyCodes) {
                 robot.keyPress(i);
             }
+            if(release)
             for (int i : keyCodes) {
                 robot.keyRelease(i);
             }
